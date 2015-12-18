@@ -5,7 +5,7 @@ import * as UserinfoActions from '../../actions/userinfo';
 
 class NavHeader extends Component {
   componentDidMount() {
-    this.props.actions.getUserinfo();
+    this.props.actions.fetchUserInfo();
   }
 
   render() {

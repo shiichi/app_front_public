@@ -1,7 +1,7 @@
 import {
-  GET_USERINFO,
-  GET_USERINFO_SUCCESS,
-  GET_USERINFO_FAIL,
+  REQUEST_USERINFO,
+  REQUEST_USERINFO_SUCCESS,
+  REQUEST_USERINFO_FAIL,
 } from '../constants/ActionTypes';
 
 const initialState = {
@@ -15,13 +15,13 @@ const initialState = {
 export default function user(state = initialState, action) {
   switch (action.type) {
 
-  case GET_USERINFO:
+  case REQUEST_USERINFO:
     return state;
 
-  case GET_USERINFO_SUCCESS:
+  case REQUEST_USERINFO_SUCCESS:
     return action.data;
 
-  case GET_USERINFO_FAIL:
+  case REQUEST_USERINFO_FAIL:
     return state;
 
   default:

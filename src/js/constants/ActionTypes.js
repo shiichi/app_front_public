@@ -10,10 +10,10 @@ export const CLEAR_COMPLETED = 'CLEAR_COMPLETED';
 Drone system
 */
 
-//get user infomation
-export const GET_USERINFO = 'GET_USERINFO';
-export const GET_USERINFO_SUCCESS = 'GET_USERINFO_SUCCESS';
-export const GET_USERINFO_FAIL = 'GET_USERINFO_FAIL';
+//request user infomation
+export const REQUEST_USERINFO = 'REQUEST_USERINFO';
+export const REQUEST_USERINFO_SUCCESS = 'REQUEST_USERINFO_SUCCESS';
+export const REQUEST_USERINFO_FAIL = 'REQUEST_USERINFO_FAIL';
 
 export const SET_TYPE_STATUS = 'SET_TYPE_STATUS';
 export const CHANGE_TYPE_CHECKED = 'CHANGE_TYPE_CHECKED';

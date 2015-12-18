@@ -71,7 +71,7 @@ export function requestTimetableFail(key) {
 export function fetchTimetable(key, request) {
   return dispatch => {
     dispatch(requestTimetable(key));
-    return fetch(domainName + '/api/timetable', {
+    return fetch(domainName + '/api/getTimetable', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
