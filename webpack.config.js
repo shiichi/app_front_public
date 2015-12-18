@@ -5,7 +5,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: [
-    //'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
+    'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
     'bootstrap-sass!./src/theme/bootstrap-sass.config.js',
     './src/index'
   ],
@@ -26,7 +26,7 @@ module.exports = {
       //{ test: /\.css?$/, loaders: [ 'style', 'raw' ], include: __dirname },
 
       /* bootstrap-webpack has access to the jQuery object */
-      // { test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
+      //{ test: /bootstrap\/js\//, loader: 'imports?jQuery=jquery' },
       //{ test: /bootstrap-sass\/assets\/javascripts\//, loader: 'imports?jQuery=jquery' },
 
       { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap' },

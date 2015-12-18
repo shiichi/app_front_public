@@ -37,6 +37,6 @@ export function fetchUserInfo(key, request) {
     })
     .then(response => response.json())
     .then(result => dispatch(requestUserInfoSuccess(result)))
-    .catch(ex => console.lob(ex));
+    .catch(ex => console.log(ex));
   };
 }

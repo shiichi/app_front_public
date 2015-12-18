@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import ReactDOM, { render } from 'react-dom';
 
 class Message extends Component {
   handleClick(e) {
