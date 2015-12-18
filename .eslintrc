@@ -1,0 +1,32 @@
+//eslintをglobalにインストールして使う場合、pluginもまたglobalにインストールしないと使えない
+//ローカルにeslintが入っているとglobalなeslintコマンドでもローカルを参照するようになる
+//今はlocal,global共にeslint及びそのプラグインがインストールされている状態
+
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "mocha": true,
+    "node": true
+  },
+  "rules": {
+    //Ensure JSDoc comments are valid
+    //"valid-jsdoc": 2,
+
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2,
+    "react/react-in-jsx-scope": 2,
+
+    // require let or const instead of var
+    //"no-var": 0,
+    //require declaration of all vars at the top of their containing scope
+    "vars-on-top": 0,
+
+    // Disable comma-dangle unless need to support it
+    "comma-dangle": 0,
+    "spaced-comment": 0,
+  },
+  "plugins": [
+    "react"
+  ]
+}

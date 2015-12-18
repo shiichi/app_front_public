@@ -1,0 +1,107 @@
+.alert-wrap{
+  .custom-alert{
+    width: 400px;
+    height: 70px;
+    background: #FFFFFF;
+    border: 2px solid;
+    border-radius: 4px;
+    position: fixed;
+    right: 10px;
+    z-index: 1000;
+    animation-duration: 1.3s;  /* アニメーション時間 */
+    animation-name: slidein;  /* アニメーション名 */
+
+    .btn-close {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      color: #cc3;
+      cursor: pointer;
+        font-size: 20px;
+        height: 16px;
+        width: 16px;
+        line-height: 16px;
+        text-align: center;
+    }
+
+    p {
+      &.alert-title{
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0 5px 20px;
+      }
+
+      &.alert-detail{
+        font-size: 12px;
+        margin: 0 0 0 20px;
+      }
+    }
+
+    &.alert-success{
+      border-color: #4A90E2;
+
+      p { color: #4A90E2; }
+      .btn-close { color: #4A90E2; }
+
+      &:before{
+        content:"";
+        background-image:url(/img/icon/icon-success.svg);
+        width: 28px;
+        height: 28px;
+          position: absolute;
+          top: -14px;
+          left: -14px;
+      }
+    }
+
+    &.alert-danger{
+      border-color: #DA4453;
+
+      p {
+        color: #DA4453;
+      }
+      .btn-close { color: #DA4453; }
+
+      &:before{
+        content:"";
+        background-image:url(/img/icon/icon-danger.svg);
+        width: 28px;
+        height: 28px;
+        position: absolute;
+        top: -14px;
+        left: -14px;
+      }
+    }
+
+    &:nth-child(1){
+      top: 100px;
+    }
+    &:nth-child(2){
+      top: 175px;
+    }
+    &:nth-child(3){
+      top: 250px;
+    }
+  }
+
+}
+
+@keyframes slidein {
+from {
+position: fixed;
+right: -400px;
+}
+to {
+position: fixed;
+  right: 10px;
+  }
+}
+
+@media screen and (max-width: 680px){
+.alert-wrap{
+  .custom-alert{
+    width: 200px;
+    height: 60px;
+  }
+}
+}
