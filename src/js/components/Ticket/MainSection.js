@@ -9,7 +9,6 @@ class MainSection extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(e.target);
     //const request = {id: e.target[0].value};
     //this.props.validateReservation(request);
   }
@@ -35,18 +34,23 @@ class MainSection extends Component {
 
     return (
       <Accordion activeKey={ticketPanel} onSelect={this.handleSelect.bind(this)} accordion>
-        <Panel header={paypal} eventKey='1'>
+        <Panel header={paypal} eventKey="1">
           <CreditCard setTicket={setTicket} initTicket={initTicket}/>
         </Panel>
-        <Panel header={credit} eventKey='2'>
+        <Panel header={credit} eventKey="2">
           <PayPal/>
         </Panel>
-        <Panel header={pincode} eventKey='3'>
+        <Panel header={pincode} eventKey="3">
           <PinCode/>
         </Panel>
       </Accordion>
     );
   }
 }
+
+MainSection.propTypes = {
+  ticketPanel: PropTypes.bool.isRequired,
+  actions: PropTypes.object.isRequired
+};
 
 export default MainSection;

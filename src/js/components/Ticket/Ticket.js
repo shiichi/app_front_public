@@ -8,7 +8,7 @@ import MainSection from './MainSection';
 
 class Ticket extends Component {
   render() {
-  	const { ticketPanel, actions} = this.props;
+    const { ticketPanel, actions} = this.props;
 
     return (
       <div>
@@ -23,7 +23,7 @@ class Ticket extends Component {
 
 Ticket.propTypes = {
   message: PropTypes.object.isRequired,
-  ticket: PropTypes.bool.isRequired,
+  ticketPanel: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired
 };
 
