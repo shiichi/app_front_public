@@ -6,7 +6,9 @@ import createLogger from 'redux-logger';
 import promiseMiddleware from '../middleware/promiseMiddleware';
 import * as reducers from '../reducers';
 
-const logger = createLogger();
+const logger = createLogger({
+  predicate: (getState, action) => process.env.NODE_ENV === `dev`
+});
 //reducers/index.jsから全てのreducerを取得してcombine
 const rootReducer = combineReducers(reducers);
 
@@ -29,3 +31,4 @@ export default function configureStore(initialState) {
 
   return store;
 }
+

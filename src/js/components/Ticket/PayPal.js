@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import ReactDOM from 'react-dom';
 
 class PayPal extends Component {
-
   handleSubmit(e) {
     e.preventDefault();
     console.log(e.target);

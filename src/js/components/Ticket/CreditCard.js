@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import ReactDOM from 'react-dom';
-
+import ReactDOM from "react-dom";
 class CreditCard extends Component {
   constructor(props, context) {
     super(props, context);

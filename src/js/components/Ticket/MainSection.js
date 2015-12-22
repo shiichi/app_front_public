@@ -1,11 +1,16 @@
 import React, { PropTypes, Component } from 'react';
-import ReactDOM, { render } from 'react-dom';
 import { Accordion, Panel } from 'react-bootstrap';
 import CreditCard from './CreditCard';
-import PayPal from './PayPal';
-import PinCode from './PinCode';
+//import PayPal from './PayPal';
+//import PinCode from './PinCode';
 
 class MainSection extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      currentComponent: function(){}
+    };
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -22,6 +27,16 @@ class MainSection extends Component {
     const { ticketPanel } = this.props;
     const { setTicket, initTicket } = this.props.actions;
 
+    var PinCode;
+    require.ensure([], () => {
+      PinCode = require('./PinCode.js');
+    });
+
+    var PayPal;
+    require.ensure([], () => {
+      PayPal = require('./PayPal.js');
+    });
+
     const credit = (
       <p>PayPalアカウンントをお持ちの方<span className="icon paypal"></span></p>
     );
@@ -32,16 +47,17 @@ class MainSection extends Component {
       <p>シリアルコードをお持ちの方</p>
     );
 
+    console.log("aaa", PinCode)
     return (
       <Accordion activeKey={ticketPanel} onSelect={this.handleSelect.bind(this)} accordion>
         <Panel header={paypal} eventKey="1">
           <CreditCard setTicket={setTicket} initTicket={initTicket}/>
         </Panel>
         <Panel header={credit} eventKey="2">
-          <PayPal/>
+          {PayPal && <PayPal/>}
         </Panel>
         <Panel header={pincode} eventKey="3">
-          <PinCode/>
+          {PinCode && <PinCode/>}
         </Panel>
       </Accordion>
     );
