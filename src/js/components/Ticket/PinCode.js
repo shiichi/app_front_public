@@ -11,15 +11,15 @@ class PinCode extends Component {
   render() {
     const { reservation, cancel } = this.props;
     return (
-		<div class="panel-body">
-			<div class="buy-head">
+		<div className="panel-body">
+			<div className="buy-head">
 				<p>お持ちのシリアルコードを入力してください。</p>
 			</div>
 			<div>
-				<form class="form-pin" action="http://boiler.com/ticket/ticket/addByPin" method="post">
+				<form className="form-pin" action="http://boiler.com/ticket/ticket/addByPin" method="post">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}" />
-					<button class="btn btn-danger" type="button" onclick="submit();">チケットを購入</button>
-					<input type="text" name="pin" class=""/>
+					<button className="btn btn-danger" type="button" onclick="submit();">チケットを購入</button>
+					<input type="text" name="pin" className=""/>
 				</form>
 			</div>
 		</div>

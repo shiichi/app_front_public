@@ -24,7 +24,7 @@ class Reserve extends Component {
         const token = getLocal('testConnectionResult');
         if (token) {
           modalOff();
-          const request = {token: token}
+          const request = {token: token};
           reserve(request);
           return clearInterval(loadResult);
         }

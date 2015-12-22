@@ -1,9 +1,10 @@
 import 'babel-core/polyfill'
 import React, { Component, PropTypes } from 'react'
-import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router, Route, Link, Redirect, IndexRoute } from 'react-router'
-import { ReduxRouter, routerStateReducer, reduxReactRouter } from 'redux-router'
+import { ReduxRouter, routerStateReducer, reduxReactRouter } from 'redux-router';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react'
+import DiffMonitor from 'redux-devtools-diff-monitor'
 import configureProdStore from '../store/configureProdStore'
 
 // Components
@@ -33,7 +34,6 @@ export default class Root extends Component {
 
   render() {
     const { history } = this.props;
-    console.log("prod", process.env.NODE_ENV);
 
     return (
       <div>
