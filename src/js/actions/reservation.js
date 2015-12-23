@@ -29,6 +29,13 @@ export function deleteMessage(id) {
   };
 }
 
+function updateReservation(num) {
+  return {
+    type: types.UPDATE_USERINFO_RESERVATION,
+    num: num
+  };
+}
+
 export function setReservation(rsvs) {
   return {
     type: types.SET_RESERVATION,
@@ -84,6 +91,7 @@ export function reserve(request) {
           const tokenId = 'flight' + result.jwt.id;
           setLocal(tokenId, result.jwt.token);
           dispatch(addMessage(result.msg));
+          dispatch(updateReservation(result.reservations));
         }
       })
       .catch(ex => console.log(ex));

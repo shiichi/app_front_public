@@ -1,49 +1,83 @@
 import * as types from '../constants/ActionTypes';
-//import { CSRFToken, domainName } from '../utils/csrfUtils';
-//import fetch from 'isomorphic-fetch';
+import { CSRFToken, domainName } from '../utils/csrfUtils';
+import fetch from 'isomorphic-fetch';
 
-export function changeTicketPanel(key) {
+export function addMessage(msg) {
   return {
-    type: types.CHANGE_TICKET_PANEL,
-    key: key,
+    type: types.ADD_MESSAGE,
+    msg: msg
   };
 }
 
-function requestWebpay() {
+function updateTickets(num) {
   return {
-    type: types.REQUEST_WEBPAY,
+    type: types.UPDATE_USERINFO_TICKETS,
+    num: num
   };
 }
 
-export function requestWebpaySuccess(data) {
+function requestTicket() {
   return {
-    type: types.REQUEST_WEBPAY_SUCCESS,
-    data: data,
+    type: types.REQUEST_TICKET
   };
 }
 
-export function requestWebpayFail(ex) {
+export function requestTicketSuccess(data) {
   return {
-    type: types.REQUEST_WEBPAY_FAIL,
-    ex: ex,
+    type: types.REQUEST_TICKET_SUCCESS,
+    data: data
+  };
+}
+
+export function requestTicketFail(ex) {
+  return {
+    type: types.REQUEST_TICKET_FAIL,
+    ex: ex
   };
 }
 
 export function fetchWebpay(request) {
   return dispatch => {
-    dispatch(requestWebpay());
+    dispatch(requestTicket());
     return fetch(domainName + '/api/webpay', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken,
+        'X-CSRF-Token': CSRFToken
       },
       credentials: 'same-origin',
-      body: JSON.stringify(request),
+      body: JSON.stringify(request)
     })
-    .then(response => response.json())
-    .then(result => dispatch(requestTimetableSuccess(result)))
-    .catch(ex => dispatch(requestTimetableFail(ex)));
+      .then(response => response.json())
+      .then(result => {
+        dispatch(requestTicketSuccess(result));
+        dispatch(updateTickets(result.tickets));
+        dispatch(addMessage(result.msg));
+      })
+      .catch(ex => dispatch(requestTicketFail(ex)));
+  };
+}
+
+export function fetchPin(pin) {
+  return dispatch => {
+    dispatch(requestTicket());
+    return fetch(domainName + '/api/pin', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': CSRFToken
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(pin)
+    })
+      .then(response => response.json())
+      .then(result => {
+        dispatch(requestTicketSuccess(result));
+        dispatch(updateTickets(result.tickets));
+        dispatch(addMessage(result.msg));
+      })
+      .catch(ex => dispatch(requestTicketFail(ex)));
   };
 }

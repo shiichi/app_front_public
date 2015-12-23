@@ -3,8 +3,6 @@ import React, { Component, PropTypes } from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route, Link, Redirect, IndexRoute } from 'react-router'
 import { ReduxRouter, routerStateReducer, reduxReactRouter } from 'redux-router';
-import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react'
-import DiffMonitor from 'redux-devtools-diff-monitor'
 import configureProdStore from '../store/configureProdStore'
 
 // Components

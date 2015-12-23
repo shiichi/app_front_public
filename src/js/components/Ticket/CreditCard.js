@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import ReactDOM from "react-dom";
+
 class CreditCard extends Component {
   constructor(props, context) {
     super(props, context);
@@ -54,11 +55,11 @@ class CreditCard extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const request = {
+      'num': e.target.children['2'].children['1'].children['0'].value,
       'amount': e.target.children['3'].children['1'].value,
-      'webpay-token': e.target.children['4'].children['1'].children['1'].value,
-    }
-    console.log(request);
-    //fetchWebpay();
+      'webpay-token': e.target.children['4'].children['1'].children['1'].value
+    };
+    this.props.fetchWebpay(request);
   }
 
   render() {

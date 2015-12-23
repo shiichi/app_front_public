@@ -41,7 +41,7 @@ export default class Root extends Component {
         <Provider store={store}>
           <Router history={history} routes={rootRoute} />
         </Provider>
-        <DevTools store={store} monitor={DiffMonitor} shortcut='ctrl+d'/>
+        {/* <DevTools store={store} monitor={DiffMonitor} shortcut='ctrl+d'/> */}
       </div>
     )
   }
