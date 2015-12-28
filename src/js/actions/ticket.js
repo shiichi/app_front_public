@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import fetch from 'isomorphic-fetch';
-import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
+import { fetchWithJson } from '../utils/fetchUtils';
+import { WEBPAY, PIN } from '../../config/url';
 
 export function addMessage(msg) {
   return {
@@ -39,16 +39,7 @@ export function requestTicketFail(ex) {
 export function fetchWebpay(request) {
   return dispatch => {
     dispatch(requestTicket());
-    return fetch(DOMAIN_NAME + '/api/webpay', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request)
-    })
+    fetchWithJson(WEBPAY, request)
       .then(response => response.json())
       .then(result => {
         dispatch(requestTicketSuccess(result));
@@ -69,16 +60,7 @@ export function fetchWebpay(request) {
 export function fetchPin(pin) {
   return dispatch => {
     dispatch(requestTicket());
-    return fetch(DOMAIN_NAME + '/api/pin', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(pin)
-    })
+    fetchWithJson(PIN, pin)
       .then(response => response.json())
       .then(result => {
         dispatch(requestTicketSuccess(result));

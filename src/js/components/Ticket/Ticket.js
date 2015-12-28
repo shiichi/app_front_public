@@ -24,10 +24,17 @@ Ticket.propTypes = {
   actions: PropTypes.object.isRequired
 };
 
+//不要だが消すとバグる
+function mapStateToProps() {
+  return {
+    ticketPanel: ""
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(TicketActions, dispatch)
   };
 }
 
-export default connect(mapDispatchToProps)(Ticket);
+export default connect( mapStateToProps, mapDispatchToProps)(Ticket);

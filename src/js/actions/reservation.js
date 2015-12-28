@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import fetch from 'isomorphic-fetch';
-import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
+import { fetchWithJson } from '../utils/fetchUtils';
+import { REQUEST_TEST_TOKEN, RESERVE, REQUEST_RESERVATION_LIST, CANCEL } from '../../config/url';
 import { setLocal, delLocal } from '../utils/WebStrageUtils';
 
 export function addMessage(msg) {
@@ -45,16 +45,7 @@ export function setReservation(rsvs) {
 
 export function validateReservation(request) {
   return dispatch => {
-    return fetch(DOMAIN_NAME + '/api/getTestToken', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request)
-    })
+    fetchWithJson(REQUEST_TEST_TOKEN, request)
       .then(response => response.json())
       .then(result => {
         if (result.msg.type === 'error') {
@@ -77,16 +68,7 @@ export function validateReservation(request) {
 
 export function reserve(request, key) {
   return dispatch => {
-    return fetch(DOMAIN_NAME + '/api/reserve', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request)
-    })
+    fetchWithJson(RESERVE, request)
       .then(response => response.json())
       .then(result => {
         if (result.msg.type === 'error') {
@@ -112,15 +94,7 @@ export function reserve(request, key) {
 
 export function getDefaultRsv() {
   return dispatch => {
-    return fetch(DOMAIN_NAME + '/api/rsvList', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin'
-    })
+    fetchWithJson(REQUEST_RESERVATION_LIST)
       .then(response => response.json())
       .then(result => dispatch(setReservation(result)))
       .catch(ex => {
@@ -135,16 +109,7 @@ export function getDefaultRsv() {
 
 export function cancel(request) {
   return dispatch => {
-    return fetch(DOMAIN_NAME + '/api/cancel', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request)
-    })
+    fetchWithJson(CANCEL, request)
       .then(response => response.json())
       .then(result => {
         if (result.msg.type === 'error') {

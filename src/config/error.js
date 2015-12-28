@@ -1,3 +1,11 @@
-export const ERROR_MESSAGE = {
+export const NETWORK_ERROR = {
+
+};
+
+export const APP_ERROR = {
+
+};
+
+export const VARIDATION_ERROR = {
 
 };

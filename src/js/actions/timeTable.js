@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import fetch from 'isomorphic-fetch';
-import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
+import { fetchWithJson } from '../utils/fetchUtils';
+import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../config/url';
 import { setSession } from '../utils/WebStrageUtils';
 
 export function changeWeek(week) {
@@ -64,26 +64,17 @@ export function requestTimetableSuccess(key, data) {
 export function requestTimetableFail(key) {
   return {
     type: types.REQUEST_TIMETABLE_FAIL,
-    key: key,
+    key: key
   };
 }
 
 export function fetchTimetable(key, request) {
   return dispatch => {
     dispatch(requestTimetable(key));
-    return fetch(DOMAIN_NAME + '/api/getTimetable', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN,
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request),
-    })
-    .then(response => response.json())
-    .then(result => dispatch(requestTimetableSuccess(key, result)))
-    .catch(ex => dispatch(requestTimetableFail(key)));
+    fetchWithJson(REQUEST_TIMETABLE, request)
+      .then(response => response.json())
+      .then(result => dispatch(requestTimetableSuccess(key, result)))
+      .catch(ex => dispatch(requestTimetableFail(key)));
   };
 }
 
@@ -109,15 +100,7 @@ export function fetchTimetableIfNeeded(key, request) {
 
 export function fetchDefaultStatus() {
   return dispatch => {
-    return fetch(DOMAIN_NAME + '/api/getDefaultStatus', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin'
-    })
+    fetchWithJson(REQUEST_DEFAULT_STATUS)
       .then(response => response.json())
       .then(result => {
         const { types, places, plans } = result.selector;

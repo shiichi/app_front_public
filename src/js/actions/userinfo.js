@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import fetch from 'isomorphic-fetch';
-import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
+import { fetchWithJson } from '../utils/fetchUtils';
+import { REQUEST_USER_INFO, UPDATE_USER_PROF, CHANGE_PASSWORD } from '../../config/url';
 
 export function addMessage(msg) {
   return {
@@ -32,16 +32,7 @@ export function requestUserInfoFail(ex) {
 export function fetchUserInfo(key, request) {
   return dispatch => {
     dispatch(requestUserInfo());
-    return fetch(DOMAIN_NAME + '/api/getUserInfo', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request)
-    })
+    fetchWithJson(REQUEST_USER_INFO, request)
     .then(response => response.json())
     .then(result => dispatch(requestUserInfoSuccess(result)))
     .catch(ex => dispatch(requestUserInfoFail(ex)));
@@ -51,16 +42,7 @@ export function fetchUserInfo(key, request) {
 export function fetchUpdateUserProf(request) {
   return dispatch => {
     dispatch(requestUserInfo());
-    return fetch(DOMAIN_NAME + '/api/updateUserProf', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request)
-    })
+    fetchWithJson(UPDATE_USER_PROF, request)
       .then(response => response.json())
       .then(result => {
         dispatch(requestUserInfoSuccess(result.userProf));
@@ -93,16 +75,7 @@ export function changePasswordFail(ex) {
 export function postChangePassword(request) {
   return dispatch => {
     dispatch(changePassword());
-    return fetch(DOMAIN_NAME + '/api/changePassword', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request)
-    })
+    fetchWithJson(CHANGE_PASSWORD, request)
       .then(response => response.json())
       .then(result => dispatch(addMessage(result)))
       .catch(ex => dispatch(changePasswordFail(ex)));

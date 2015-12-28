@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import fetch from 'isomorphic-fetch';
-import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
+import { fetchWithJson } from '../utils/fetchUtils';
+import { REQUEST_LOG } from '../../config/url';
 
 function requestLog() {
   return {
@@ -22,19 +22,10 @@ export function requestLogFail(ex) {
   };
 }
 
-export function fetchLog(key, request) {
+export function fetchLog(request) {
   return dispatch => {
     dispatch(requestLog());
-    return fetch(DOMAIN_NAME + '/api/getLog', {
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRF_TOKEN
-      },
-      credentials: 'same-origin',
-      body: JSON.stringify(request)
-    })
+    fetchWithJson(REQUEST_LOG, request)
       .then(response => response.json())
       .then(result => dispatch(requestLogSuccess(result)))
       .catch(ex => dispatch(requestLogFail(ex)));

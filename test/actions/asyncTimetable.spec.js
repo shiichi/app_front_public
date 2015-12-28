@@ -61,12 +61,12 @@ function mockStore2(getState, expectedAction) {
 describe('fetchTimetableIfNeeded', () => {
   afterEach(() => {
     nock.cleanAll()
-  })
+  });
 
   it('should fetch and SUCCESS', (done) => {
     nock('http://l.com/')
-      .post('/api/timetable')
-      .reply(200, ['date', 'timetable'])
+      .post('/api/getTimetable')
+      .reply(200, ['date', 'timetable']);
 
     const key = '1_1_0'
     const request = { flightType: 1, place: 1, week: 0 }
