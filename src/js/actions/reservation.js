@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import { CSRFToken, domainName } from '../utils/csrfUtils';
 import fetch from 'isomorphic-fetch';
+import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
 import { setLocal, delLocal } from '../utils/WebStrageUtils';
 
 export function addMessage(msg) {
@@ -45,12 +45,12 @@ export function setReservation(rsvs) {
 
 export function validateReservation(request) {
   return dispatch => {
-    return fetch(domainName + '/api/getTestToken', {
+    return fetch(DOMAIN_NAME + '/api/getTestToken', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken
+        'X-CSRF-Token': CSRF_TOKEN
       },
       credentials: 'same-origin',
       body: JSON.stringify(request)
@@ -65,18 +65,24 @@ export function validateReservation(request) {
           dispatch(modalOn());
         }
       })
-      .catch(ex => console.log(ex));
+      .catch(ex => {
+        const msg = {
+          type: 'error',
+          msg: '接続テストを実行できませんでした' + ex
+        };
+        dispatch(addMessage(msg));
+      });
   };
 }
 
 export function reserve(request, key) {
   return dispatch => {
-    return fetch(domainName + '/api/reserve', {
+    return fetch(DOMAIN_NAME + '/api/reserve', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken
+        'X-CSRF-Token': CSRF_TOKEN
       },
       credentials: 'same-origin',
       body: JSON.stringify(request)
@@ -95,35 +101,46 @@ export function reserve(request, key) {
           dispatch(timetableIsOld(key));
         }
       })
-      .catch(ex => console.log(ex));
-  };
+      .catch(ex => {
+        const msg = {
+          type: 'error',
+          msg: '予約に失敗しました' + ex
+        };
+        dispatch(addMessage(msg));
+      }); };
 }
 
 export function getDefaultRsv() {
   return dispatch => {
-    return fetch(domainName + '/api/rsvList', {
+    return fetch(DOMAIN_NAME + '/api/rsvList', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken
+        'X-CSRF-Token': CSRF_TOKEN
       },
       credentials: 'same-origin'
     })
       .then(response => response.json())
       .then(result => dispatch(setReservation(result)))
-      .catch(ex => console.log(ex));
+      .catch(ex => {
+        const msg = {
+          type: 'error',
+          msg: '予約情報の取得に失敗しました' + ex
+        };
+        dispatch(addMessage(msg));
+      });
   };
 }
 
 export function cancel(request) {
   return dispatch => {
-    return fetch(domainName + '/api/cancel', {
+    return fetch(DOMAIN_NAME + '/api/cancel', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken
+        'X-CSRF-Token': CSRF_TOKEN
       },
       credentials: 'same-origin',
       body: JSON.stringify(request)
@@ -143,6 +160,12 @@ export function cancel(request) {
           dispatch(updateReservation(result.reservations));
         }
       })
-      .catch(ex => console.log(ex));
+      .catch(ex => {
+        const msg = {
+          type: 'error',
+          msg: '予約のキャンセルに失敗しました' + ex
+        };
+        dispatch(addMessage(msg));
+      });
   };
 }

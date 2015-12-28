@@ -7,8 +7,6 @@ class SelectBox extends Component {
     if (!this.props.isFetching && e.target.checked ) {
       if (e.target.name === 'type') this.props.handleType(Number(e.target.value));
       if (e.target.name === 'place') this.props.handlePlace(Number(e.target.value));
-    } else {
-      console.log('now loading');
     }
   }
 

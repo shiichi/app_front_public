@@ -9,7 +9,7 @@ class Message extends Component {
 
      if (nextProps.message.length > message.length) {
        const id = nextProps.message.reduce((maxId, msg) => Math.max(msg.id, maxId), -1);
-       setTimeout(function() { deleteMessage(id); }, 4000);
+       setTimeout(function() { deleteMessage(id); }, 5000);
      }
    }
 

@@ -28,7 +28,8 @@ ReservationBox.propTypes = {
   isOld: PropTypes.bool,
   data: PropTypes.object,
   handleWeek: PropTypes.func,
-  fetchTimetableAgain: PropTypes.func
+  fetchTimetableAgain: PropTypes.func,
+  validateReservation: PropTypes.func.isRequired
 };
 
 export default ReservationBox;

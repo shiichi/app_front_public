@@ -118,6 +118,7 @@ MainSection.propTypes = {
   isOld: PropTypes.bool,
   data: PropTypes.object,
   actions: PropTypes.object.isRequired,
+  validateReservation: PropTypes.func.isRequired
 };
 
 export default MainSection;

@@ -98,5 +98,9 @@ class Panel extends Component {
   }
 }
 
-export default Panel;
+Panel.propTypes = {
+  status: PropTypes.object.isRequired,
+  cancel: PropTypes.func.isRequired
+};
 
+export default Panel;

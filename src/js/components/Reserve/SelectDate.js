@@ -14,9 +14,9 @@ class SelectDate extends Component {
       break;
     }
 
-    if (!isFetching) handleWeek(n);
-    //else if (load == "fail" ) console.log("fail")
-    else console.log('now loading');
+    if (!isFetching) {
+      handleWeek(n);
+    }
   }
 
   render() {
@@ -31,7 +31,7 @@ class SelectDate extends Component {
 
 SelectDate.propTypes = {
   isFetching: PropTypes.bool.isRequired,
-  handleWeek: PropTypes.func.isRequired,
+  handleWeek: PropTypes.func.isRequired
 };
 
 export default SelectDate;

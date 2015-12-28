@@ -1,7 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Icon from 'react-fa';
 require('bootstrap-social');
-
 
 class LoginInfo extends Component {
   constructor(props, context) {

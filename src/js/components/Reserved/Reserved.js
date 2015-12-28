@@ -12,7 +12,7 @@ class Reserve extends Component {
   }
 
   render() {
-    const { reservation, actions:{cancel} } = this.props;
+    const { reservation, actions: {cancel} } = this.props;
     return (
       <div>
         <Header/>

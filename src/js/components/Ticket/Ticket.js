@@ -8,13 +8,12 @@ import MainSection from './MainSection';
 
 class Ticket extends Component {
   render() {
-    const { ticketPanel, actions } = this.props;
+    const { actions } = this.props;
 
     return (
       <div>
         <Header/>
         <MainSection
-          ticketPanel={ticketPanel}
           actions={actions}/>
       </div>
     );
@@ -22,16 +21,8 @@ class Ticket extends Component {
 }
 
 Ticket.propTypes = {
-  ticketPanel: PropTypes.string.isRequired,
   actions: PropTypes.object.isRequired
 };
-
-function mapStateToProps(state) {
-  const { ticketPanel} = state;
-  return {
-    ticketPanel
-  };
-}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -39,4 +30,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(Ticket);
+export default connect(mapDispatchToProps)(Ticket);

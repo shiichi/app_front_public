@@ -1,5 +1,4 @@
-import React, { PropTypes, Component } from 'react';
-import ReactDOM, { render } from 'react-dom';
+import React, { Component } from 'react';
 
 class MainHeader extends Component {
   render() {

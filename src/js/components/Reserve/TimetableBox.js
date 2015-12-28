@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Button } from 'react-bootstrap';
 import Icon from 'react-fa';
+//components
 import Date from './Date';
 import TimetableColumns from './TimetableColumns';
 
@@ -90,7 +91,8 @@ TimetableBox.propTypes = {
   didInvalidate: PropTypes.bool,
   isOld: PropTypes.bool,
   data: PropTypes.object,
-  fetchTimetableAgain: PropTypes.func
+  fetchTimetableAgain: PropTypes.func,
+  validateReservation: PropTypes.func.isRequired
 };
 
 export default TimetableBox;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM, { render } from 'react-dom';
 import { Link } from 'react-router';
 import NavHeader from './NavHeader';
 import Icon from 'react-fa';

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import fetch from 'isomorphic-fetch';
-import { CSRFToken, domainName } from '../../utils/csrfUtils';
+import { CSRF_TOKEN, DOMAIN_NAME } from '../../../config/env';
 
 class UserProf extends Component {
   constructor(props, context) {
@@ -46,12 +46,12 @@ class UserProf extends Component {
       const request = {post1: post1, post2: post2};
 
       (function fetchAddress(set) {
-        fetch(domainName + '/api/getAddress', {
+        fetch(DOMAIN_NAME + '/api/getAddress', {
           method: 'post',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'X-CSRF-Token': CSRFToken,
+            'X-CSRF-Token': CSRF_TOKEN,
           },
           credentials: 'same-origin',
           body: JSON.stringify(request),

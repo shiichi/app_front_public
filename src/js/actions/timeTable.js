@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import { CSRFToken, domainName } from '../utils/csrfUtils';
 import fetch from 'isomorphic-fetch';
+import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
 import { setSession } from '../utils/WebStrageUtils';
 
 export function changeWeek(week) {
@@ -71,12 +71,12 @@ export function requestTimetableFail(key) {
 export function fetchTimetable(key, request) {
   return dispatch => {
     dispatch(requestTimetable(key));
-    return fetch(domainName + '/api/getTimetable', {
+    return fetch(DOMAIN_NAME + '/api/getTimetable', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken,
+        'X-CSRF-Token': CSRF_TOKEN,
       },
       credentials: 'same-origin',
       body: JSON.stringify(request),
@@ -109,12 +109,12 @@ export function fetchTimetableIfNeeded(key, request) {
 
 export function fetchDefaultStatus() {
   return dispatch => {
-    return fetch(domainName + '/api/getDefaultStatus', {
+    return fetch(DOMAIN_NAME + '/api/getDefaultStatus', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken
+        'X-CSRF-Token': CSRF_TOKEN
       },
       credentials: 'same-origin'
     })

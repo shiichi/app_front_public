@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
+import { WEBPAY_PUBLIC_KEY } from '../../../config/env';
 
 class CreditCard extends Component {
   constructor(props, context) {
@@ -13,7 +14,7 @@ class CreditCard extends Component {
     const webpayForm = ReactDOM.findDOMNode(this.refs.webpayForm);
     const script = document.createElement('script');
     script.setAttribute('src', 'https://checkout.webpay.jp/v2/');
-    script.setAttribute('data-key', 'test_public_f9va9N1e58PT9M7gXz8iwdi8');
+    script.setAttribute('data-key', WEBPAY_PUBLIC_KEY);
     script.setAttribute('data-lang', 'ja');
     script.setAttribute('data-token-name', 'webpayToken');
     script.setAttribute('data-partial', 'true');

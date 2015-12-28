@@ -15,12 +15,14 @@ class MainSection extends Component {
             <LoginInfo user={user} postChangePassword={postChangePassword}/>
           </div>
         </div>
+        {!user.isFetching &&
         <div className="row">
           <h4>プロフィール</h4>
+          {user.didInvalidate && <p>ユーザー情報の更新に失敗しました</p>}
           <div className="wrap-white">
             <UserProf user={user} fetchUpdateUserProf={fetchUpdateUserProf}/>
           </div>
-        </div>
+        </div>}
       </div>
     );
   }

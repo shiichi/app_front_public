@@ -8,7 +8,7 @@ import MainSection from './MainSection';
 
 class Profile extends Component {
   render() {
-    const { user, actions, actions: {deleteMessage} } = this.props;
+    const { user, actions } = this.props;
 
     return (
       <div>
@@ -25,7 +25,7 @@ Profile.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { user} = state;
+  const { user } = state;
   return {
     user
   };

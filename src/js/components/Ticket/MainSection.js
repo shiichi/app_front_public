@@ -1,14 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { Accordion, Panel } from 'react-bootstrap';
 import CreditCard from './CreditCard';
-//import PayPal from './PayPal';
-//import PinCode from './PinCode';
 
 class MainSection extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      panel: this.props.num || '1'
+      panel: '1'
     };
   }
 
@@ -20,12 +18,12 @@ class MainSection extends Component {
     const { panel } = this.state;
     const { fetchWebpay, fetchPin } = this.props.actions;
 
-    var PinCode;
+    let PinCode;
     require.ensure([], () => {
       PinCode = require('./PinCode.js');
     });
 
-    var PayPal;
+    let PayPal;
     require.ensure([], () => {
       PayPal = require('./PayPal.js');
     });

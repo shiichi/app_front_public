@@ -1,6 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import fetch from 'isomorphic-fetch';
-import { CSRFToken } from '../../utils/csrfUtils';
 
 class TimetableColmuns extends Component {
 
@@ -70,6 +68,7 @@ class TimetableColmuns extends Component {
 
 TimetableColmuns.propTypes = {
   columns: PropTypes.array.isRequired,
+  validateReservation: PropTypes.func.isRequired
 };
 
 export default TimetableColmuns;
