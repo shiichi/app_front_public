@@ -97,6 +97,17 @@ position: fixed;
   }
 }
 
+@keyframes slideout {
+  from {
+    position: fixed;
+    right: 10px;
+  }
+  to {
+    position: fixed;
+    right: -4000px;
+  }
+}
+
 @media screen and (max-width: 680px){
 .alert-wrap{
   .custom-alert{

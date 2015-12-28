@@ -10,14 +10,8 @@ export function addMessage(msg) {
   };
 }
 
-export function deleteMessage(id) {
-  return {
-    type: types.DELETE_MESSAGE,
-    id: id
-  };
-}
-
 export function timetableIsOld(key) {
+  console.log("timetableIsOld is coled with key =", key)
   return {
     type: types.TIMETABLE_IS_OLD,
     key: key

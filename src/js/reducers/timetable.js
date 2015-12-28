@@ -23,6 +23,7 @@ function change(state = {
     return Object.assign({}, state, {
       isFetching: false,
       didInvalidate: false,
+      isOld: false,
       data: action.data,
       lastUpdated: action.receivedAt
     });

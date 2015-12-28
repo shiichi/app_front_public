@@ -96,7 +96,8 @@ function shouldFetchTimetable(state, key) {
   if (timetable.isFetching) {
     return false;
   }
-  return timetable.didInvalidate;
+  return timetable.isOld;
+  //return timetable.didInvalidate;
 }
 
 export function fetchTimetableIfNeeded(key, request) {

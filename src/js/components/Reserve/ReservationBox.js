@@ -4,7 +4,7 @@ import TimetableBox from './TimetableBox';
 
 class ReservationBox extends Component {
   render() {
-    const { isFetching, didInvalidate, data, handleWeek, fetchTimetableAgain, validateReservation } = this.props;
+    const { isFetching, didInvalidate, isOld, data, handleWeek, fetchTimetableAgain, validateReservation } = this.props;
     return (
       <div className="timetable-box">
         <SelectDate
@@ -13,6 +13,7 @@ class ReservationBox extends Component {
         <TimetableBox
           isFetching = {isFetching}
           didInvalidate = {didInvalidate}
+          isOld = {isOld}
           data = {data}
           fetchTimetableAgain = {fetchTimetableAgain}
           validateReservation = {validateReservation} />
@@ -24,6 +25,7 @@ class ReservationBox extends Component {
 ReservationBox.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
+  isOld: PropTypes.bool.isRequired,
   data: PropTypes.object,
   handleWeek: PropTypes.function,
   fetchTimetableAgain: PropTypes.function

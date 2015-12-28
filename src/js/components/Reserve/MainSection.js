@@ -59,7 +59,6 @@ class MainSection extends Component {
   }
 
   fetchTimetableAgain() {
-    console.log("確認")
     const { flightTypes, places, week } = this.props.selector;
 
     const status = {
@@ -87,13 +86,11 @@ class MainSection extends Component {
   fetchTimetable(request) {
     const { fetchTimetableIfNeeded } = this.props.actions;
     let key = request.flightType + '_' + request.place + '_' + request.week;
-
-    console.log("確認")
     fetchTimetableIfNeeded(key, request);
   }
 
   render() {
-    const { selector, isFetching, didInvalidate, data, validateReservation} = this.props;
+    const { selector, isFetching, didInvalidate, isOld, data, validateReservation} = this.props;
     return (
       <div>
         <SelectBox
@@ -104,6 +101,7 @@ class MainSection extends Component {
         <ReservationBox
           isFetching = {isFetching}
           didInvalidate = {didInvalidate}
+          isOld = {isOld}
           data = {data}
           handleWeek = {this.handleWeek.bind(this)}
           fetchTimetableAgain = {this.fetchTimetableAgain.bind(this)}
@@ -117,6 +115,7 @@ MainSection.propTypes = {
   selector: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
+  isOld: PropTypes.bool.isRequired,
   data: PropTypes.object,
   actions: PropTypes.object.isRequired,
 };

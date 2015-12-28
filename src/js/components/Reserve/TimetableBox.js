@@ -5,6 +5,12 @@ import Date from './Date';
 import TimetableColumns from './TimetableColumns';
 
 class TimetableBox extends Component {
+  componentDidUpdate() {
+    const { fetchTimetableAgain, isOld } = this.props;
+    if (isOld) {
+      fetchTimetableAgain();
+    }
+  }
 
   validateReservation(request) {
     this.props.validateReservation(request);
@@ -82,6 +88,7 @@ class TimetableBox extends Component {
 TimetableBox.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
+  isOld: PropTypes.bool.isRequired,
   data: PropTypes.object,
   fetchTimetableAgain: PropTypes.func
 };
