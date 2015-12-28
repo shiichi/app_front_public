@@ -34,6 +34,9 @@ module.exports = {
         loaders: [ 'babel' ],
         exclude: /node_modules/
       }, {
+        test: /bootstrap-social.css$/,
+        loaders: ['style-loader','css-loader']
+      }, {
         test: /\.scss$/,
         loader: 'css?localIdentName=[path]!postcss-loader!sass'
       }, {

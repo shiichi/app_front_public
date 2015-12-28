@@ -149,10 +149,11 @@ class UserProf extends Component {
   }
 
   render() {
+    const { user } = this.props;
     const { name, first_name, last_name, age, sex, post1, post2, state, city, street, building} = this.state;
 
     let hasErr;
-    if (name.err || age.err || post1.err || name.value === null){
+    if (name.err || age.err || post1.err || name.value === null) {
       hasErr = true;
     } else {
       hasErr = false;
@@ -163,7 +164,8 @@ class UserProf extends Component {
         <div className={name.err ? 'form-group has-error' : 'form-group'}>
           <label htmlFor="name" className="col-sm-2 control-label">ユーザーID</label>
           <div className="col-sm-4">
-            <input type="text" name="name" className="form-control" id="" placeholder="" value={name.value}/>
+            <input type="text" name="name" className="form-control" id=""
+                   placeholder="" defaultValue={user.name} value={name.value}/>
           </div>
           {name.err && <div className="col-sm-4 help-block">{name.err}</div> }
         </div>
@@ -171,24 +173,27 @@ class UserProf extends Component {
           <label htmlFor="firstName" className="col-sm-2 control-label">名前</label>
           <div className="row">
             <div className="col-sm-2">
-              <input type="text" name="firstName" className="form-control" placeholder="性" value={first_name.value}/>
+              <input type="text" name="firstName" className="form-control"
+                     placeholder="性" defaultValue={user.first_name} value={first_name.value}/>
             </div>
             <div className="col-sm-2">
-              <input type="text" name="lastName" className="form-control" placeholder="名" value={last_name.value}/>
+              <input type="text" name="lastName" className="form-control"
+                     placeholder="名" defaultValue={user.last_name} value={last_name.value}/>
             </div>
           </div>
         </div>
         <div className={age.err ? 'form-group has-error' : 'form-group'}>
           <label htmlFor="age" className="col-sm-2 control-label">年齢</label>
           <div className="col-sm-1">
-            <input type="text" name="age" className="form-control" id="" placeholder="" value={age.value}/>
+            <input type="text" name="age" className="form-control" id=""
+                   placeholder="" defaultValue={user.age} value={age.value}/>
           </div>
           {age.err && <div className="col-sm-4 help-block">{age.err}</div> }
         </div>
         <div className="form-group">
           <label htmlFor="sex" className="col-sm-2 control-label">性別</label>
           <div className="col-sm-1">
-            <select name="sex" className="form-control" value={sex.value}>
+            <select name="sex" className="form-control" defaultValue={user.sex} value={sex.value}>
               <option value="0">男</option>
               <option value="1">女</option>
             </select>
@@ -198,10 +203,12 @@ class UserProf extends Component {
           <label htmlFor="post1" className="col-sm-2 control-label">郵便番号</label>
           <div className="row">
             <div className="col-sm-2">
-              <input type="text" name="post1" className="form-control" placeholder="000" value={post1.value}/>
+              <input type="text" name="post1" className="form-control"
+                     placeholder="000" defaultValue={user.postal_code.substr(0, 3)} value={post1.value}/>
             </div>
             <div className="col-sm-2">
-              <input type="text" name="post2"className="form-control" placeholder="0000" value={post2.value}/>
+              <input type="text" name="post2"className="form-control"
+                     placeholder="0000" defaultValue={user.postal_code.substr(3, 6)} value={post2.value}/>
             </div>
             <div className="col-sm-2">
               <button type="button" className="btn btn-default" onClick={this.getAddress.bind(this)}>
@@ -214,7 +221,7 @@ class UserProf extends Component {
         <div className="form-group">
           <label className="col-sm-2 control-label">住所</label>
           <div className="col-sm-3">
-            <select className="form-control" name="state" value={state.value}>
+            <select className="form-control" name="state" defaultValue={user.state} value={state.value}>
               <option value="北海道">北海道</option>
               <option value="青森県">青森県</option>
               <option value="岩手県">岩手県</option>
@@ -268,24 +275,28 @@ class UserProf extends Component {
         <div className="form-group">
           <label htmlFor="" className="col-sm-2 control-label"> </label>
           <div className="col-sm-8">
-            <input type="text" name="city" className="form-control" id="" placeholder="住所１" value={city.value}/>
+            <input type="text" name="city" className="form-control" id=""
+                   placeholder="住所１" defaultValue={user.city} value={city.value}/>
           </div>
         </div>
         <div className="form-group">
           <label htmlFor="inputPassword3" className="col-sm-2 control-label"> </label>
           <div className="col-sm-8">
-            <input type="text" name="street" className="form-control" id="" placeholder="住所２" value={street.value}/>
+            <input type="text" name="street" className="form-control" id=""
+                   placeholder="住所２" defaultValue={user.street} value={street.value}/>
           </div>
         </div>
         <div className="form-group">
           <label htmlFor="inputPassword3" className="col-sm-2 control-label"> </label>
           <div className="col-sm-8">
-            <input type="text" name="building" className="form-control" id="" placeholder="マンション名など" value={building.value}/>
+            <input type="text" name="building" className="form-control" id=""
+                   placeholder="マンション名など" defaultValue={user.building} value={building.value}/>
           </div>
         </div>
         <div className="form-group">
           <div className="col-sm-8 col-sm-offset-2">
-            <button type="button" className={hasErr ? 'btn btn-danger disabled' : 'btn btn-danger'} onClick={this.handleSubmit.bind(this)}>
+            <button type="button" className={hasErr ? 'btn btn-danger disabled' : 'btn btn-danger'}
+                    onClick={this.handleSubmit.bind(this)}>
               変更を保存
             </button>
           </div>

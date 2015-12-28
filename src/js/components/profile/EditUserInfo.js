@@ -51,7 +51,7 @@ class SynchronousValidationForm extends Component {
 
   render() {
     const {fields: {username, email, age, post1, post2}, resetForm, handleSubmit, submitting} = this.props;
-    console.log(this.props)
+    console.log(this.props);
 
     return (
       <form onSubmit={handleSubmit}>

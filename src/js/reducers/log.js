@@ -8,16 +8,16 @@ const initialState = [];
 
 export default function log(state = initialState, action) {
   switch (action.type) {
-    case REQUEST_LOG:
-      return state;
+  case REQUEST_LOG:
+    return state;
 
-    case REQUEST_LOG_SUCCESS:
-      return action.data;
+  case REQUEST_LOG_SUCCESS:
+    return action.data;
 
-    case REQUEST_LOG_FAIL:
-      return state;
+  case REQUEST_LOG_FAIL:
+    return state;
 
-    default:
-      return state;
+  default:
+    return state;
   }
 }

@@ -50,16 +50,16 @@ export default function user(state = initialState, action) {
   case UPDATE_USERINFO_TICKETS:
     return Object.assign({}, state, {
       status: {
-          reservations: state.status.reservations,
-          remainingTickets: action.num
-        }});
+        reservations: state.status.reservations,
+        remainingTickets: action.num
+      }});
 
   case UPDATE_USERINFO_RESERVATION:
     return Object.assign({}, state, {
       status: {
-          reservations: action.num,
-          remainingTickets: state.status.remainingTickets
-        }});
+        reservations: action.num,
+        remainingTickets: state.status.remainingTickets
+      }});
 
   default:
     return state;

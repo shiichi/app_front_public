@@ -66,7 +66,7 @@ class MainSection extends Component {
       place: places.map(t => t.checked ? t.id : 0).reduce((x, y) => Number(x) + Number(y)),
       week: week
     };
-    this.fetchTimetable(status)
+    this.fetchTimetable(status);
   }
 
   changeSelectorStatus(status) {
@@ -114,8 +114,8 @@ class MainSection extends Component {
 MainSection.propTypes = {
   selector: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  didInvalidate: PropTypes.bool.isRequired,
-  isOld: PropTypes.bool.isRequired,
+  didInvalidate: PropTypes.bool,
+  isOld: PropTypes.bool,
   data: PropTypes.object,
   actions: PropTypes.object.isRequired,
 };

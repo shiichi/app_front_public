@@ -87,8 +87,8 @@ class TimetableBox extends Component {
 
 TimetableBox.propTypes = {
   isFetching: PropTypes.bool.isRequired,
-  didInvalidate: PropTypes.bool.isRequired,
-  isOld: PropTypes.bool.isRequired,
+  didInvalidate: PropTypes.bool,
+  isOld: PropTypes.bool,
   data: PropTypes.object,
   fetchTimetableAgain: PropTypes.func
 };

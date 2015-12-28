@@ -20,21 +20,21 @@ class LoginInfo extends Component {
       if (/^[a-z\d]{6,20}$/i.test(value)) {
         this.setState({ oldPass: {value: value, err: false }});
       } else {
-        this.setState({ oldPass: {value: value, err: "英数字6文字以上で入力してください"}});
+        this.setState({ oldPass: {value: value, err: '英数字6文字以上で入力してください'}});
       }
       break;
     case 'pass':
       if (/^[a-z\d]{6,20}$/i.test(value)) {
         this.setState({ pass: {value: value, err: false }});
       } else {
-        this.setState({ pass: {value: value, err: "英数字6文字以上で入力してください" }});
+        this.setState({ pass: {value: value, err: '英数字6文字以上で入力してください' }});
       }
       break;
     case 'passConf':
       if (value === this.state.pass.value) {
         this.setState({ passConf: {value: value, err: false }});
       } else {
-        this.setState({ passConf: {value: value, err: "パスワードが一致していません" }});
+        this.setState({ passConf: {value: value, err: 'パスワードが一致していません' }});
       }
       break;
     default :
@@ -49,10 +49,10 @@ class LoginInfo extends Component {
       password_confirmation: e.target.children['1'].children['2'].children['1'].children['0'].value
     };
 
-    this.props.postChangePassword(request)
+    this.props.postChangePassword(request);
   }
 
-  renderPass () {
+  renderPass() {
     const {oldPass, pass, passConf} = this.state;
 
     let hasErr;
@@ -96,11 +96,11 @@ class LoginInfo extends Component {
     );
   }
 
-  renderSocial () {
-    const socialIcon = this.props.user.auth.map(t =>
-      <div className="col-sm-2">
-        <a className={'btn btn-block btn-social btn-'+t}>
-          <span className={'fa-'+t}></span> {t}
+  renderSocial() {
+    const socialIcon = this.props.user.auth.map((t, i)=>
+      <div className="col-sm-2" key={i}>
+        <a className={'btn btn-block btn-social btn-' + t}>
+          <span className={'fa-' + t}></span> {t}
         </a>
       </div>
     );
@@ -122,7 +122,7 @@ class LoginInfo extends Component {
           <label className="col-sm-2 control-label">メールアドレス</label>
           <label className="col-sm-2 control-label">{email}</label>
         </div>
-        {auth.length == 0 && this.renderPass()}
+        {auth.length === 0 && this.renderPass()}
         {auth.length > 0 && this.renderSocial()}
       </form>
     );

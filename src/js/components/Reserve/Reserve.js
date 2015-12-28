@@ -16,7 +16,7 @@ class Reserve extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { modal }  = nextProps;
+    const { modal } = nextProps;
     const { timetableKey, rsvActions: {modalOff, reserve} } = this.props;
 
     if (modal) {
@@ -54,9 +54,9 @@ class Reserve extends Component {
 Reserve.propTypes = {
   selector: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  didInvalidate: PropTypes.bool.isRequired,
-  isOld: PropTypes.bool.isRequired,
-  data: PropTypes.object.isRequired,
+  didInvalidate: PropTypes.bool,
+  isOld: PropTypes.bool,
+  data: PropTypes.object,
   timetableKey: PropTypes.string.isRequired,
   modal: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
@@ -90,4 +90,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(Reserve);
+export default connect(mapStateToProps, mapDispatchToProps)(Reserve);

@@ -8,7 +8,7 @@ class MainSection extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      panel: this.props.num || "1"
+      panel: this.props.num || '1'
     };
   }
 

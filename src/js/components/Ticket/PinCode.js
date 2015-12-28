@@ -3,14 +3,12 @@ import React, { PropTypes, Component } from 'react';
 class PinCode extends Component {
   handleSubmit(e) {
     e.preventDefault();
-		const pin = {pin: e.target.children['1'].value}
-		this.props.fetchPin(pin);
+    const pin = {pin: e.target.children['1'].value};
+    this.props.fetchPin(pin);
   }
 
   render() {
-    const { reservation, cancel } = this.props;
-
-		return (
+    return (
 		<div className="panel-body">
 			<div className="buy-head">
 				<p>お持ちのシリアルコードを入力してください</p>
@@ -27,7 +25,7 @@ class PinCode extends Component {
 }
 
 PinCode.propTypes = {
-	fetchPin: PropTypes.func.isRequired
+  fetchPin: PropTypes.func.isRequired
 };
 
 export default PinCode;

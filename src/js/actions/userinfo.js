@@ -83,8 +83,8 @@ export function fetchUpdateUserProf(request) {
     })
       .then(response => response.json())
       .then(result => {
-        dispatch(updateUserProfSuccess(result.userProf))
-        dispatch(addMessage(result.msg))
+        dispatch(updateUserProfSuccess(result.userProf));
+        dispatch(addMessage(result.msg));
       })
       .catch(ex => dispatch(updateUserProfFail(ex)));
   };

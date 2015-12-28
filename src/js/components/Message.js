@@ -8,8 +8,8 @@ class Message extends Component {
      const { message, actions:{deleteMessage} } = this.props;
 
      if (nextProps.message.length > message.length) {
-       const id = nextProps.message.reduce((maxId, msg) => Math.max(msg.id, maxId), -1)
-       setTimeout(function(){ deleteMessage(id) }, 4000);
+       const id = nextProps.message.reduce((maxId, msg) => Math.max(msg.id, maxId), -1);
+       setTimeout(function() { deleteMessage(id); }, 4000);
      }
    }
 

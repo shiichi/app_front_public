@@ -13,7 +13,6 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    //publicPath: '/dist/',
     publicPath: 'http://localhost:3000/static/'
   },
   plugins: [
@@ -28,11 +27,10 @@ module.exports = {
       { test: /\.js$/,
         loaders: [ 'babel' ],
         exclude: /node_modules/
-      },
-      { test: /bootstrap-social.css$/,
+      }, {
+        test: /bootstrap-social.css$/,
         loaders: ['style-loader','css-loader']
-      },
-      {
+      }, {
         test: /\.scss$/,
         loader: 'css?localIdentName=[path]!postcss-loader!sass'
       }, {

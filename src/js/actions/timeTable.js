@@ -62,7 +62,6 @@ export function requestTimetableSuccess(key, data) {
 }
 
 export function requestTimetableFail(key) {
-  console.log("requestTimetableFail", key)
   return {
     type: types.REQUEST_TIMETABLE_FAIL,
     key: key,
@@ -137,6 +136,6 @@ export function fetchDefaultStatus() {
         dispatch(setPlaceStatus( places ));
         dispatch(changePlaceChecked( minPlaceId ));
       })
-      .catch(ex => console.log('parsing failed', ex));
+      .catch(ex => console.log(ex));
   };
 }

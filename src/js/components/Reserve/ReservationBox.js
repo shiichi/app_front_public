@@ -24,11 +24,11 @@ class ReservationBox extends Component {
 
 ReservationBox.propTypes = {
   isFetching: PropTypes.bool.isRequired,
-  didInvalidate: PropTypes.bool.isRequired,
-  isOld: PropTypes.bool.isRequired,
+  didInvalidate: PropTypes.bool,
+  isOld: PropTypes.bool,
   data: PropTypes.object,
-  handleWeek: PropTypes.function,
-  fetchTimetableAgain: PropTypes.function
+  handleWeek: PropTypes.func,
+  fetchTimetableAgain: PropTypes.func
 };
 
 export default ReservationBox;

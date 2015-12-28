@@ -11,7 +11,6 @@ export function addMessage(msg) {
 }
 
 export function timetableIsOld(key) {
-  console.log("timetableIsOld is coled with key =", key)
   return {
     type: types.TIMETABLE_IS_OLD,
     key: key
@@ -131,7 +130,6 @@ export function cancel(request) {
     })
       .then(response => response.json())
       .then(result => {
-
         if (result.msg.type === 'error') {
           dispatch(addMessage(result.msg));
         }

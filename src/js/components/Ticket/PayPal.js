@@ -1,15 +1,7 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 
 class PayPal extends Component {
-  handleSubmit(e) {
-    e.preventDefault();
-    console.log(e.target);
-    //const request = {id: e.target[0].value};
-    //this.props.validateReservation(request);
-  }
-
   render() {
-    const { reservation, cancel } = this.props;
     return (
 		<div className="panel-body">
 			<div className="buy-head">
@@ -32,7 +24,7 @@ class PayPal extends Component {
 					<p>送付先情報と合計金額を確認し、「同意して続行」ボタンをクリックしてお支払いを完了します。</p>
 					<img src="/img/paypal2.jpg" />
 				</div>
-			</div>	
+			</div>
 		</div>
     );
   }

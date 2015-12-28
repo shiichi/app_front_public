@@ -7,13 +7,13 @@ const initialState = false;
 
 export default function message(state = initialState, action) {
   switch (action.type) {
-    case MODAL_ON:
-      return true;
+  case MODAL_ON:
+    return true;
 
-    case MODAL_OFF:
-      return false;
+  case MODAL_OFF:
+    return false;
 
-    default:
-      return state;
+  default:
+    return state;
   }
 }

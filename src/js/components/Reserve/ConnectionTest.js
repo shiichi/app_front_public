@@ -4,7 +4,7 @@ import { CSRFToken, domainName } from '../../utils/csrfUtils';
 class ConnectionTest extends Component {
   render() {
     const { columns } = this.props;
-    const src = domainName + "/mypage/test";
+    const src = domainName + '/mypage/test';
     return (
       <div>
         <iframe id='iframe' src={ src } sandbox='allow-same-origin allow-scripts' ></iframe>

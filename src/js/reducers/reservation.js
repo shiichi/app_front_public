@@ -8,10 +8,10 @@ const initialState = [];
 
 export default function reservation(state = initialState, action) {
   switch (action.type) {
-    case SET_RESERVATION:
-      return action.rsvs;
+  case SET_RESERVATION:
+    return action.rsvs;
 
-    default:
-      return state;
+  default:
+    return state;
   }
 }
