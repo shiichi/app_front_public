@@ -43,7 +43,7 @@ export function setReservation(rsvs) {
   };
 }
 
-export function validateReservation(request) {
+export function fetchTestToken(request) {
   return dispatch => {
     fetchWithJson(REQUEST_TEST_TOKEN, request)
       .then(response => response.json())

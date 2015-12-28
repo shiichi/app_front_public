@@ -13,8 +13,8 @@ class TimetableBox extends Component {
     }
   }
 
-  validateReservation(request) {
-    this.props.validateReservation(request);
+  fetchTestToken(request) {
+    this.props.fetchTestToken(request);
   }
 
   handleClick() {
@@ -32,7 +32,7 @@ class TimetableBox extends Component {
   renderTimetableColumns() {
     const { timetable } = this.props.data;
     return timetable.map((t, i) =>
-      <TimetableColumns columns={t} key={i} validateReservation={this.validateReservation.bind(this)}/>
+      <TimetableColumns columns={t} key={i} fetchTestToken={this.fetchTestToken.bind(this)}/>
     );
   }
 
@@ -92,7 +92,7 @@ TimetableBox.propTypes = {
   isOld: PropTypes.bool,
   data: PropTypes.object,
   fetchTimetableAgain: PropTypes.func,
-  validateReservation: PropTypes.func.isRequired
+  fetchTestToken: PropTypes.func.isRequired
 };
 
 export default TimetableBox;

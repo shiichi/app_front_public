@@ -1,9 +1,9 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { devTools, persistState } from 'redux-devtools';
+import {devTools, persistState as persistDevToolsState} from 'redux-devtools';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import createLogger from 'redux-logger';
-import promiseMiddleware from '../middleware/promiseMiddleware';
+import persistState from 'redux-localstorage'
 import {reducer as formReducer} from 'redux-form';
 import * as reducers from '../reducers';
 
@@ -18,10 +18,12 @@ const allReducers = {
 };
 const rootReducer = combineReducers(allReducers);
 
+//persistStateはdevToolsより上に記述
 const createStoreWithMiddleware = compose(
-  applyMiddleware(thunk, promiseMiddleware, promise, logger),
+  applyMiddleware(thunk, promise, logger),
+  persistState('user'),
   devTools(),
-  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+  persistDevToolsState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore);
 
 export default function configureStore(initialState) {

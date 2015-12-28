@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
 
-export function fetchWithJson(url, request){
+export function fetchWithJson(url, request) {
   return fetch(DOMAIN_NAME + url, {
     method: 'post',
     headers: {
@@ -11,5 +11,5 @@ export function fetchWithJson(url, request){
     },
     credentials: 'same-origin',
     body: JSON.stringify(request)
-  })
+  });
 }

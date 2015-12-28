@@ -90,7 +90,7 @@ class MainSection extends Component {
   }
 
   render() {
-    const { selector, isFetching, didInvalidate, isOld, data, validateReservation} = this.props;
+    const { selector, isFetching, didInvalidate, isOld, data, fetchTestToken} = this.props;
     return (
       <div>
         <SelectBox
@@ -105,7 +105,7 @@ class MainSection extends Component {
           data = {data}
           handleWeek = {this.handleWeek.bind(this)}
           fetchTimetableAgain = {this.fetchTimetableAgain.bind(this)}
-          validateReservation = {validateReservation} />
+          fetchTestToken = {fetchTestToken} />
       </div>
     );
   }
@@ -118,7 +118,7 @@ MainSection.propTypes = {
   isOld: PropTypes.bool,
   data: PropTypes.object,
   actions: PropTypes.object.isRequired,
-  validateReservation: PropTypes.func.isRequired
+  fetchTestToken: PropTypes.func.isRequired
 };
 
 export default MainSection;

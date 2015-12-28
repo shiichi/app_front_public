@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as TimetableActions from '../../actions/timetable';
 import * as ReservationActions from '../../actions/reservation';
-import { getSession, getLocal } from '../../utils/WebStrageUtils';
+import { getLocal } from '../../utils/WebStrageUtils';
 //components
 import Header from './Header';
 import MainSection from './MainSection';
@@ -44,7 +44,7 @@ class Reserve extends Component {
           isOld = {isOld}
           data = {data}
           actions = {actions}
-          validateReservation = {this.props.rsvActions.validateReservation} />
+          fetchTestToken = {this.props.rsvActions.fetchTestToken} />
         {modal && <ConnectionTest/>}
       </div>
     );

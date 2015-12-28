@@ -5,7 +5,7 @@ import * as messageActions from '../actions/message';
 
 class Message extends Component {
    componentWillReceiveProps(nextProps) {
-     const { message, actions:{deleteMessage} } = this.props;
+     const { message, actions: {deleteMessage} } = this.props;
 
      if (nextProps.message.length > message.length) {
        const id = nextProps.message.reduce((maxId, msg) => Math.max(msg.id, maxId), -1);

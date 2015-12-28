@@ -1,8 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { devTools, persistState } from 'redux-devtools';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
-import promiseMiddleware from '../middleware/promiseMiddleware';
+import persistState from 'redux-localstorage';
 import {reducer as formReducer} from 'redux-form';
 import * as reducers from '../reducers';
 
@@ -14,7 +13,8 @@ const allReducers = {
 const rootReducer = combineReducers(allReducers);
 
 const createStoreWithMiddleware = compose(
-  applyMiddleware(thunk, promiseMiddleware, promise)
+  applyMiddleware(thunk, promise),
+  persistState('user')
 )(createStore);
 
 export default function configureProdStore(initialState) {

@@ -27,7 +27,7 @@ Ticket.propTypes = {
 //不要だが消すとバグる
 function mapStateToProps() {
   return {
-    ticketPanel: ""
+    ticketPanel: ''
   };
 }
 

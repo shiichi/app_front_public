@@ -5,7 +5,7 @@ class TimetableColmuns extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const request = {id: e.target[0].value};
-    this.props.validateReservation(request);
+    this.props.fetchTestToken(request);
   }
 
   renderClose() {
@@ -68,7 +68,7 @@ class TimetableColmuns extends Component {
 
 TimetableColmuns.propTypes = {
   columns: PropTypes.array.isRequired,
-  validateReservation: PropTypes.func.isRequired
+  fetchTestToken: PropTypes.func.isRequired
 };
 
 export default TimetableColmuns;

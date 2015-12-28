@@ -1,7 +1,5 @@
 import {
   SET_RESERVATION,
-  ADD_RESERVATION,
-  DELETE_RESERVATION
 } from '../constants/ActionTypes';
 
 const initialState = [];
