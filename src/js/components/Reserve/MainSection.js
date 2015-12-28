@@ -4,7 +4,6 @@ import ReservationBox from './ReservationBox';
 import { getSession } from '../../utils/WebStrageUtils';
 
 class MainSection extends Component {
-
   //typeが変更された時、選択先のtype_idとplaceの状態配列とplanの組合わせ配列より、異動先のplace_idを返す
   getPlaceId(type_id, places, plans) {
     let checked_id = places.map(p => p.checked ? p.id : 0).reduce((x, y) => Number(x) + Number(y));
@@ -60,6 +59,7 @@ class MainSection extends Component {
   }
 
   fetchTimetableAgain() {
+    console.log("確認")
     const { flightTypes, places, week } = this.props.selector;
 
     const status = {
@@ -88,11 +88,12 @@ class MainSection extends Component {
     const { fetchTimetableIfNeeded } = this.props.actions;
     let key = request.flightType + '_' + request.place + '_' + request.week;
 
+    console.log("確認")
     fetchTimetableIfNeeded(key, request);
   }
 
   render() {
-    const { selector, isFetching, didInvalidate, data, validateReservation } = this.props;
+    const { selector, isFetching, didInvalidate, data, validateReservation} = this.props;
     return (
       <div>
         <SelectBox

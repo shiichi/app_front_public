@@ -8,13 +8,12 @@ import MainSection from './MainSection';
 
 class Profile extends Component {
   render() {
-    const {user, actions} = this.props;
-    console.log("Profile", this.props);
+    const { user, actions, actions: {deleteMessage} } = this.props;
 
     return (
       <div>
         <Header/>
-        <MainSection user={user}/>
+        <MainSection user={user} actions={actions}/>
       </div>
     );
   }
@@ -22,12 +21,13 @@ class Profile extends Component {
 
 Profile.propTypes = {
   user: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
+  const { user} = state;
   return {
-    user: state.user
+    user
   };
 }
 

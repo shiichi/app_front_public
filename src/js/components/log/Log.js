@@ -2,19 +2,17 @@ import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as LogActions from '../../actions/log';
-// components
+//components
 import Header from './Header';
 import MainSection from './MainSection';
 
 class Log extends Component {
-  componentDidMount() {
-    const fetchLog = this.props.actions.fetchLog
-    fetchLog();
+  componentWillMount() {
+    this.props.actions.fetchLog();
   }
 
   render() {
-    const {log, actions} = this.props;
-    console.log(this.props)
+    const { log } = this.props;
 
     return (
       <div>
@@ -26,13 +24,15 @@ class Log extends Component {
 }
 
 Log.propTypes = {
-  log: PropTypes.array.isRequired,
+  message: PropTypes.array,
+  log: PropTypes.array,
   actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
+  const { log} = state;
   return {
-    log: state.log
+    log
   };
 }
 

@@ -2,13 +2,15 @@ import {
   REQUEST_TIMETABLE,
   REQUEST_TIMETABLE_SUCCESS,
   REQUEST_TIMETABLE_FAIL,
+  TIMETABLE_IS_OLD
 } from '../constants/ActionTypes';
 
 function change(state = {
   isFetching: false,
   didInvalidate: false,
   lastUpdated: '',
-  data: {},
+  isOld: false,
+  data: {}
 }, action) {
   switch (action.type) {
   case REQUEST_TIMETABLE:
@@ -31,6 +33,11 @@ function change(state = {
       didInvalidate: true
     });
 
+  case TIMETABLE_IS_OLD:
+    return Object.assign({}, state, {
+      isOld: true
+    });
+
   default:
     return state;
   }
@@ -41,6 +48,7 @@ export default function timetable(state = {}, action) {
   case REQUEST_TIMETABLE:
   case REQUEST_TIMETABLE_SUCCESS:
   case REQUEST_TIMETABLE_FAIL:
+  case TIMETABLE_IS_OLD:
     return Object.assign({}, state, {
       [action.key]: change(state[action.key], action)
     });

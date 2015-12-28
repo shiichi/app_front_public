@@ -1,0 +1,67 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/4.2.1/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'css-loader',
+1 verbose cli   '—save-dev' ]
+2 info using npm@3.4.0
+3 info using node@v4.2.1
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData css-loader@^0.23.0
+8 silly fetchPackageMetaData —save-dev
+9 silly fetchNamedPackageData css-loader
+10 silly mapToRegistry name css-loader
+11 silly mapToRegistry using default registry
+12 silly mapToRegistry registry https://registry.npmjs.org/
+13 silly mapToRegistry uri https://registry.npmjs.org/css-loader
+14 silly fetchOtherPackageData —save-dev
+15 silly cache add args [ '—save-dev', null ]
+16 verbose cache add spec —save-dev
+17 silly cache add parsed spec Result {
+17 silly cache add   raw: '—save-dev',
+17 silly cache add   scope: null,
+17 silly cache add   name: null,
+17 silly cache add   rawSpec: '—save-dev',
+17 silly cache add   spec: '/Users/shiichi/develop/droview-front/—save-dev',
+17 silly cache add   type: 'local' }
+18 error addLocal Could not install /Users/shiichi/develop/droview-front/—save-dev
+19 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/Users/shiichi/develop/droview-front/—save-dev'
+19 silly fetchPackageMetaData     at Error (native)
+19 silly fetchPackageMetaData  error for —save-dev { [Error: ENOENT: no such file or directory, open '/Users/shiichi/develop/droview-front/—save-dev']
+19 silly fetchPackageMetaData   errno: -2,
+19 silly fetchPackageMetaData   code: 'ENOENT',
+19 silly fetchPackageMetaData   syscall: 'open',
+19 silly fetchPackageMetaData   path: '/Users/shiichi/develop/droview-front/—save-dev' }
+20 verbose request uri https://registry.npmjs.org/css-loader
+21 verbose request no auth needed
+22 info attempt registry request try #1 at 00:14:26
+23 verbose request id 525bb4ddb6ffda4a
+24 verbose etag "9G2US40U4A88BWG4PLEJ5VKSS"
+25 http request GET https://registry.npmjs.org/css-loader
+26 http 400 https://registry.npmjs.org/css-loader
+27 verbose headers {}
+28 silly get cb [ 304, undefined ]
+29 verbose etag https://registry.npmjs.org/css-loader from cache
+30 verbose get saving css-loader to /Users/shiichi/.npm/registry.npmjs.org/css-loader/.cache.json
+31 silly rollbackFailedOptional Starting
+32 silly rollbackFailedOptional Finishing
+33 silly runTopLevelLifecycles Starting
+34 silly runTopLevelLifecycles Finishing
+35 silly install printInstalled
+36 verbose stack Error: ENOENT: no such file or directory, open '/Users/shiichi/develop/droview-front/—save-dev'
+36 verbose stack     at Error (native)
+37 verbose cwd /Users/shiichi/develop/droview-front
+38 error Darwin 14.5.0
+39 error argv "/usr/local/Cellar/node/4.2.1/bin/node" "/usr/local/bin/npm" "install" "css-loader" "—save-dev"
+40 error node v4.2.1
+41 error npm  v3.4.0
+42 error path /Users/shiichi/develop/droview-front/—save-dev
+43 error code ENOENT
+44 error errno -2
+45 error syscall open
+46 error enoent ENOENT: no such file or directory, open '/Users/shiichi/develop/droview-front/—save-dev'
+46 error enoent This is most likely not a problem with npm itself
+46 error enoent and is related to npm not being able to find a file.
+47 verbose exit [ -2, true ]

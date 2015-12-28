@@ -4,10 +4,8 @@ import Panel from './Panel';
 class MainSection extends Component {
   render() {
     const { reservation, cancel } = this.props;
-    console.log(reservation);
-
-      const renderPanel = reservation.map(r =>
-        <Panel status={r} cancel={cancel} />
+    const renderPanel = reservation.map((r, i) =>
+        <Panel status={r} cancel={cancel} key={i}/>
       );
 
     return (
@@ -17,5 +15,10 @@ class MainSection extends Component {
     );
   }
 }
+
+MainSection.propTypes = {
+  reservation: PropTypes.array.isRequired,
+  cancel: PropTypes.func.isRequired
+};
 
 export default MainSection;

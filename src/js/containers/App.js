@@ -1,14 +1,15 @@
 import React, { Component, PropTypes } from 'react';
+//components
 import Navigation from '../components/Navigation/Navigation';
+import Message from '../components/message';
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <div className="Sidebar col-md-2">
-          <Navigation />
-        </div>
-        <div className="Content col-md-10">
+      <div className="container">
+        <Navigation />
+        <Message />
+        <div className="content col-md-10">
           {this.props.children}
         </div>
       </div>

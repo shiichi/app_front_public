@@ -1,9 +1,21 @@
 import React, { PropTypes, Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as messageActions from '../actions/message';
 
 class Message extends Component {
+   componentWillReceiveProps(nextProps) {
+     const { message, actions:{deleteMessage} } = this.props;
+     
+     if (nextProps.message.length > message.length) {
+       const id = nextProps.message.reduce((maxId, msg) => Math.max(msg.id, maxId), -1)
+       setTimeout(function(){ deleteMessage(id) }, 4000);
+     }
+   }
+
   handleClick(e) {
     const id = Number(e.target.title);
-    this.props.deleteMessage(id);
+    this.props.actions.deleteMessage(id);
   }
 
   render() {
@@ -40,8 +52,21 @@ class Message extends Component {
 }
 
 Message.propTypes = {
-  message: PropTypes.object,
-  deleteMessage: PropTypes.func.isRequired
+  message: PropTypes.array,
+  actions: PropTypes.object.isRequired
 };
 
-export default Message;
+function mapStateToProps(state) {
+  const { message } = state;
+  return {
+    message
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(messageActions, dispatch)
+  };
+}
+
+export default connect( mapStateToProps, mapDispatchToProps)(Message);

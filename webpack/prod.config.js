@@ -4,7 +4,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'source-map',
   entry: [
     'bootstrap-sass!./src/theme/bootstrap-sass.config.js',
     './src/index'
@@ -16,15 +16,16 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify("prod")
     }),
-    new webpack.optimize.UglifyJsPlugin({minimize: true}),
-    //new webpack.optimize.MinChunkSizePlugin({minChunkSize: 1000}),
-    //new webpack.optimize.LimitChunkCountPlugin({maxChunks: 10}),
-    //new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.AggressiveMergingPlugin(),
     new ExtractTextPlugin('bundle.css')
   ],
   module: {
@@ -61,7 +62,6 @@ module.exports = {
       }
     ]
   },
-
   postcss: function() {
     return [autoprefixer({ browsers: ['last 2 versions', 'safari 5', 'ie 9', 'ios 6', 'android 4'] })];
   }

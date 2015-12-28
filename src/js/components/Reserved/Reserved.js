@@ -2,49 +2,44 @@ import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as ReservationActions from '../../actions/reservation';
-import Message from '../Message';
+//components
 import Header from './Header';
 import MainSection from './MainSection';
 
 class Reserve extends Component {
-  componentDidMount() {
-    const { getDefaultRsv } = this.props.rsvActions;
-    getDefaultRsv();
+  componentWillMount() {
+    this.props.actions.getDefaultRsv();
   }
 
   render() {
-    const { message, reservation, rsvActions } = this.props;
+    const { reservation, actions:{cancel} } = this.props;
     return (
       <div>
-        <Message
-          message = {message}
-          deleteMessage = {this.props.rsvActions.deleteMessage}/>
         <Header/>
         <MainSection
           reservation = {reservation}
-          cancel = {rsvActions.cancel} />
+          cancel = {cancel} />
       </div>
     );
   }
 }
 
 Reserve.propTypes = {
-  message: PropTypes.object.isRequired,
-  reservation: PropTypes.bool.isRequired,
-  rsvActions: PropTypes.object.isRequired
+  message: PropTypes.array,
+  reservation: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
-  const { message, reservation} = state;
+  const { reservation} = state;
   return {
-    message,
     reservation
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    rsvActions: bindActionCreators(ReservationActions, dispatch)
+    actions: bindActionCreators(ReservationActions, dispatch)
   };
 }
 

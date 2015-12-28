@@ -2,23 +2,30 @@ import * as types from '../constants/ActionTypes';
 import { CSRFToken, domainName } from '../utils/csrfUtils';
 import fetch from 'isomorphic-fetch';
 
+export function addMessage(msg) {
+  return {
+    type: types.ADD_MESSAGE,
+    msg: msg
+  };
+}
+
 function requestUserInfo() {
   return {
-    type: types.REQUEST_USERINFO,
+    type: types.REQUEST_USERINFO
   };
 }
 
 export function requestUserInfoSuccess(data) {
   return {
     type: types.REQUEST_USERINFO_SUCCESS,
-    data: data,
+    data: data
   };
 }
 
 export function requestUserInfoFail(ex) {
   return {
     type: types.REQUEST_USERINFO_FAIL,
-    ex: ex,
+    ex: ex
   };
 }
 
@@ -30,10 +37,10 @@ export function fetchUserInfo(key, request) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken,
+        'X-CSRF-Token': CSRFToken
       },
       credentials: 'same-origin',
-      body: JSON.stringify(request),
+      body: JSON.stringify(request)
     })
     .then(response => response.json())
     .then(result => dispatch(requestUserInfoSuccess(result)))
@@ -41,41 +48,76 @@ export function fetchUserInfo(key, request) {
   };
 }
 
-function requestUserProf() {
+function updateUserProf() {
   return {
-    type: types.REQUEST_USERPROF,
+    type: types.UPDATE_USERPROF,
   };
 }
 
-export function requestUserProfSuccess(data) {
+export function updateUserProfSuccess(data) {
   return {
-    type: types.REQUEST_USERPROF_SUCCESS,
-    data: data,
+    type: types.UPDATE_USERPROF_SUCCESS,
+    data: data
   };
 }
 
-export function requestUserProfFail(ex) {
+export function updateUserProfFail(ex) {
   return {
-    type: types.REQUEST_USERPROF_FAIL,
-    ex: ex,
+    type: types.UPDATE_USERPROF_FAIL,
+    ex: ex
   };
 }
 
-export function fetchUserProf(key, request) {
+export function fetchUpdateUserProf(request) {
   return dispatch => {
-    dispatch(requestUserProf());
-    return fetch(domainName + '/api/getUserProf', {
+    dispatch(updateUserProf());
+    return fetch(domainName + '/api/updateUserProf', {
       method: 'post',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'X-CSRF-Token': CSRFToken,
+        'X-CSRF-Token': CSRFToken
       },
       credentials: 'same-origin',
-      body: JSON.stringify(request),
+      body: JSON.stringify(request)
     })
       .then(response => response.json())
-      .then(result => dispatch(requestUserProfSuccess(result)))
-      .catch(ex => dispatch(requestUserProfFail(ex)));
+      .then(result => {
+        dispatch(updateUserProfSuccess(result.userProf))
+        dispatch(addMessage(result.msg))
+      })
+      .catch(ex => dispatch(updateUserProfFail(ex)));
+  };
+}
+
+function changePassword() {
+  return {
+    type: types.CHANGE_PASS
+  };
+}
+
+export function changePasswordFail(ex) {
+  return {
+    type: types.CHANGE_PASS_FAIL,
+    ex: ex
+  };
+}
+
+export function postChangePassword(request) {
+  return dispatch => {
+    dispatch(changePassword());
+    return fetch(domainName + '/api/changePassword', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': CSRFToken
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify(request)
+    })
+      .then(response => response.json())
+      .then(result => dispatch(addMessage(result)))
+      .catch(ex => dispatch(changePasswordFail(ex)));
   };
 }

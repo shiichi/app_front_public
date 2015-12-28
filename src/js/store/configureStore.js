@@ -4,13 +4,19 @@ import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import createLogger from 'redux-logger';
 import promiseMiddleware from '../middleware/promiseMiddleware';
+import {reducer as formReducer} from 'redux-form';
 import * as reducers from '../reducers';
 
 const logger = createLogger({
   predicate: (getState, action) => process.env.NODE_ENV === `dev`
 });
-//reducers/index.jsから全てのreducerを取得してcombine
-const rootReducer = combineReducers(reducers);
+
+//reducers/index.jsから全てのreducerを取得,formReducerとそれらをcombine
+const allReducers = {
+  ...reducers,
+  form: formReducer
+};
+const rootReducer = combineReducers(allReducers);
 
 const createStoreWithMiddleware = compose(
   applyMiddleware(thunk, promiseMiddleware, promise, logger),
@@ -31,4 +37,3 @@ export default function configureStore(initialState) {
 
   return store;
 }
-

@@ -10,9 +10,9 @@ class TimetableBox extends Component {
     this.props.validateReservation(request);
   }
 
-  handleClick(e) {
+  handleClick() {
     const { fetchTimetableAgain } = this.props;
-    fetchTimetableAgain()
+    fetchTimetableAgain();
   }
 
   renderDate() {
@@ -25,7 +25,7 @@ class TimetableBox extends Component {
   renderTimetableColumns() {
     const { timetable } = this.props.data;
     return timetable.map((t, i) =>
-      <TimetableColumns columns={t}  key={i} validateReservation={this.validateReservation.bind(this)}/>
+      <TimetableColumns columns={t} key={i} validateReservation={this.validateReservation.bind(this)}/>
     );
   }
 

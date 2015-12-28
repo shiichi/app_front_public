@@ -3,18 +3,6 @@ import { CSRFToken, domainName } from '../utils/csrfUtils';
 import fetch from 'isomorphic-fetch';
 import { setLocal, delLocal } from '../utils/WebStrageUtils';
 
-export function modalOn() {
-  return {
-    type: types.MODAL_ON
-  };
-}
-
-export function modalOff() {
-  return {
-    type: types.MODAL_OFF
-  };
-}
-
 export function addMessage(msg) {
   return {
     type: types.ADD_MESSAGE,
@@ -26,6 +14,25 @@ export function deleteMessage(id) {
   return {
     type: types.DELETE_MESSAGE,
     id: id
+  };
+}
+
+export function timetableIsOld(key) {
+  return {
+    type: types.TIMETABLE_IS_OLD,
+    key: key
+  };
+}
+
+export function modalOn() {
+  return {
+    type: types.MODAL_ON
+  };
+}
+
+export function modalOff() {
+  return {
+    type: types.MODAL_OFF
   };
 }
 
@@ -69,7 +76,7 @@ export function validateReservation(request) {
   };
 }
 
-export function reserve(request) {
+export function reserve(request, key) {
   return dispatch => {
     return fetch(domainName + '/api/reserve', {
       method: 'post',
@@ -92,6 +99,7 @@ export function reserve(request) {
           setLocal(tokenId, result.jwt.token);
           dispatch(addMessage(result.msg));
           dispatch(updateReservation(result.reservations));
+          dispatch(timetableIsOld(key));
         }
       })
       .catch(ex => console.log(ex));
@@ -130,16 +138,17 @@ export function cancel(request) {
       .then(response => response.json())
       .then(result => {
 
-        if (result.type === 'error') {
+        if (result.msg.type === 'error') {
           dispatch(addMessage(result.msg));
         }
-        if (result.type === 'success') {
-
+        if (result.msg.type === 'success') {
           const tokenId = 'flight' + request.id;
           delLocal(tokenId);
           localStorage.removeItem(tokenId);
-          dispatch(addMessage(result));
+
+          dispatch(addMessage(result.msg));
           dispatch(getDefaultRsv());
+          dispatch(updateReservation(result.reservations));
         }
       })
       .catch(ex => console.log(ex));

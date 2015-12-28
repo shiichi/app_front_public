@@ -40,9 +40,3 @@ export function fetchLog(key, request) {
       .catch(ex => dispatch(requestLogFail(ex)));
   };
 }
-
-function requestUserProf() {
-  return {
-    type: types.REQUEST_USERPROF,
-  };
-}

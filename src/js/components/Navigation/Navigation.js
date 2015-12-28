@@ -7,7 +7,7 @@ import Icon from 'react-fa';
 class Navigation extends Component {
   render() {
     return (
-      <div className="side-bar">
+      <div className="side-bar col-md-2">
           <NavHeader />
           <div className="side-bar-menu">
               <ul className="nav nav-pills nav-stacked">

@@ -5,7 +5,7 @@ module.exports = {
   //bootstrapCustomizations: './_bootstrap-customizations.scss',
 
   mainSass: './src/theme/main.scss',
-  //styleLoader: 'style-loader!css-loader!sass-loader',
+  styleLoader: 'style-loader!css-loader!sass-loader',
 
   scripts: {
     'transition': false,
