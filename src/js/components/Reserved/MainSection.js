@@ -4,7 +4,7 @@ import Panel from './Panel';
 class MainSection extends Component {
   render() {
     const { reservation, cancel } = this.props;
-    const renderPanel = reservation.map((r, i) =>
+    const renderPanel = reservation.data.map((r, i) =>
         <Panel status={r} cancel={cancel} key={i}/>
       );
 

@@ -21,7 +21,7 @@ const rootReducer = combineReducers(allReducers);
 //persistStateはdevToolsより上に記述
 const createStoreWithMiddleware = compose(
   applyMiddleware(thunk, promise, logger),
-  persistState('user'),
+  persistState(['user','jwtToken']),
   devTools(),
   persistDevToolsState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore);

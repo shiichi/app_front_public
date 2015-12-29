@@ -1,17 +1,19 @@
 import expect from 'expect';
 import { applyMiddleware } from 'redux';
-import * as actions from '../../src/js/actions/reservation';
-import * as types from '../../src/js/constants/ActionTypes';
 import nock from 'nock';
 import thunk from 'redux-thunk';
 const middlewares = [ thunk ];
+import * as actions from '../../src/js/actions/reservation';
+import * as types from '../../src/js/constants/ActionTypes';
+import { DOMAIN_NAME } from '../../src/config/env';
+import { REQUEST_RESERVATIONS, REQUEST_TEST_TOKEN, RESERVE, CANCEL } from '../../src/config/url';
 
 function mockStore(getState, expectedActions, done) {
   if (!Array.isArray(expectedActions)) {
-    throw new Error('expectedActions should be an array of expected actions.')
+    throw new Error('expectedActions should be an array of expected actions.');
   }
   if (typeof done !== 'undefined' && typeof done !== 'function') {
-    throw new Error('done should either be undefined or function.')
+    throw new Error('done should either be undefined or function.');
   }
 
   function mockStoreWithoutMiddleware() {
@@ -21,68 +23,281 @@ function mockStore(getState, expectedActions, done) {
           getState() :
           getState;
       },
+
       dispatch(action) {
-        const expectedAction = expectedActions.shift()
-        expect(action).toEqual(expectedAction)
+        const expectedAction = expectedActions.shift();
+        expect(action).toEqual(expectedAction);
         if (done && !expectedActions.length) {
-          done()
+          done();
         }
-        return action
+        return action;
       }
-    }
+    };
   }
   const mockStoreWithMiddleware = applyMiddleware(
     ...middlewares
-  )(mockStoreWithoutMiddleware)
+  )(mockStoreWithoutMiddleware);
 
-  return mockStoreWithMiddleware()
+  return mockStoreWithMiddleware();
 }
+
+describe('fetchReservations', () => {
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  it('fetch SUCCESS', (done) => {
+    nock(DOMAIN_NAME)
+      .post(REQUEST_RESERVATIONS)
+      .reply(200, [
+        {flight_at: '2015-12-29 09:00:00'},
+        {flight_at: '2015-12-29 09:20:00'}
+      ]);
+
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.REQUEST_RESERVATIONS
+      }, {
+        type: types.REQUEST_RESERVATIONS_SUCCESS,
+        data: [
+          {flight_at: '2015-12-29 09:00:00'},
+          {flight_at: '2015-12-29 09:20:00'}
+        ]
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.fetchReservations());
+  });
+
+  it('fetch FAIL', (done) => {
+    nock(DOMAIN_NAME)
+      .post(REQUEST_RESERVATIONS)
+      .replyWithError('something happened');
+
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.REQUEST_RESERVATIONS
+      }, {
+        type: types.REQUEST_RESERVATIONS_FAIL
+      }, {
+        type: types.ADD_MESSAGE,
+        msg: {type: 'error', msg: '予約情報の取得に失敗しました'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.fetchReservations());
+  });
+});
 
 describe('fetchTestToken', () => {
   afterEach(() => {
     nock.cleanAll();
   });
 
-  function storageMock() {
-    var storage = {};
+  it('fetch SUCCESS and return success', (done) => {
+    nock(DOMAIN_NAME)
+      .post(REQUEST_TEST_TOKEN)
+      .reply(200, {jwt: 'jwtToken', msg: {type: 'success', msg: 'message'}});
 
-    return {
-      setItem: function(key, value) {
-        storage[key] = value || '';
-      },
-      getItem: function(key) {
-        return storage[key] || null;
-      },
-      removeItem: function(key) {
-        delete storage[key];
-      },
-      get length() {
-        return Object.keys(storage).length;
-      },
-      key: function(i) {
-        var keys = Object.keys(storage);
-        return keys[i] || null;
-      }
-    };
-  }
-
-  Object.defineProperty(window, 'localStorage', { value: storageMock });
-
-  it('return success', (done) => {
-    nock('http://l.com/')
-      .post('/api/getTestToken')
-      .reply(200, {jwt: 'jwt', msg: {type: "success", msg: "msg"}});
-
-    const request = {id: "123"};
-    const state = {
-      user: Object
-    };
+    const request = {id: '123'};
+    const state = {user: {}};
     const expectedActions = [
       {
+        type: types.SET_TEST_TOKEN,
+        value: 'jwtToken'
+      }, {
         type: types.MODAL_ON
       }
     ];
     const store = mockStore(state, expectedActions, done);
     store.dispatch(actions.fetchTestToken(request));
+  });
+
+  it('fetch SUCCESS but return error', (done) => {
+    nock(DOMAIN_NAME)
+      .post(REQUEST_TEST_TOKEN)
+      .reply(200, {jwt: '', msg: {type: 'error', msg: 'error message'}});
+
+    const request = {id: '123'};
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.ADD_MESSAGE,
+        msg: {type: 'error', msg: 'error message'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.fetchTestToken(request));
+  });
+
+  it('fetch FAIL', (done) => {
+    nock(DOMAIN_NAME)
+      .post(REQUEST_TEST_TOKEN)
+      .replyWithError('something happened');
+
+    const request = {id: '123'};
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.ADD_MESSAGE,
+        msg: { type: 'error', msg: '接続テストを実行できませんでした'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.fetchTestToken(request));
+  });
+});
+
+describe('reserve', () => {
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  it('reserve SUCCESS and return success', (done) => {
+    nock(DOMAIN_NAME)
+      .post(RESERVE)
+      .reply(200, {
+        jwt: {'id': '123', 'token': 'jwtToken'},
+        msg: {'type': 'success', 'msg': 'message'},
+        reservations: '1'
+      });
+
+    const request = {token: 'jwtTestToken'};
+    const key = '1_1_0';
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.DELETE_TEST_TOKEN
+      }, {
+        type: types.SET_CONF_TOKEN,
+        key: '123',
+        value: 'jwtToken'
+      }, {
+        type: types.UPDATE_USERINFO_RESERVATION,
+        num: '1'
+      }, {
+        type: types.TIMETABLE_IS_OLD,
+        key: key
+      }, {
+        type: types.ADD_MESSAGE,
+        msg: {'type': 'success', 'msg': 'message'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.reserve(request, key));
+  });
+
+  it('reserve SUCCESS but return error', (done) => {
+    nock(DOMAIN_NAME)
+      .post(RESERVE)
+      .reply(200, {
+        jwt: {'id': '123', 'token': 'jwtToken'},
+        msg: {'type': 'error', 'msg': 'error message'},
+        reservations: '1'
+      });
+
+    const request = {token: 'jwtTestToken'};
+    const key = '1_1_0';
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.ADD_MESSAGE,
+        msg: {type: 'error', msg: 'error message'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.reserve(request, key));
+  });
+
+  it('reserve FAIL', (done) => {
+    nock(DOMAIN_NAME)
+      .post(RESERVE)
+      .replyWithError('something happened');
+
+    const request = {token: 'jwtTestToken'};
+    const key = '1_1_0';
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.ADD_MESSAGE,
+        msg: {type: 'error', msg: '予約に失敗しました'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.reserve(request, key));
+  });
+});
+
+describe('cancel', () => {
+  afterEach(() => {
+    nock.cleanAll();
+  });
+
+  it('cancel SUCCESS and return success', (done) => {
+    nock(DOMAIN_NAME)
+      .post(CANCEL)
+      .reply(200, {
+        msg: {type: 'success', msg: 'message'},
+        reservations: '0',
+        data: [{flight_at: '2015-12-29 09:00:00'}, {flight_at: '2015-12-29 09:20:00'}]
+      });
+
+    const request = {id: '123'};
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.DELETE_CONF_TOKEN,
+        key: '123'
+      }, {
+        type: types.REQUEST_RESERVATIONS_SUCCESS,
+        data: [{flight_at: '2015-12-29 09:00:00'}, {flight_at: '2015-12-29 09:20:00'}]
+      }, {
+        type: types.UPDATE_USERINFO_RESERVATION,
+        num: '0'
+      }, {
+        type: types.ADD_MESSAGE,
+        msg: {type: 'success', msg: 'message'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.cancel(request));
+  });
+
+  it('cancel SUCCESS but return error', (done) => {
+    nock(DOMAIN_NAME)
+      .post(CANCEL)
+      .reply(200, {
+        msg: {type: 'error', msg: 'error message'},
+      });
+
+    const request = {id: '123'};
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.ADD_MESSAGE,
+        msg: {type: 'error', msg: 'error message'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.cancel(request));
+  });
+
+  it('cancel FAIL', (done) => {
+    nock(DOMAIN_NAME)
+      .post(CANCEL)
+      .replyWithError('something happened');
+
+    const request = {id: '123'};
+    const state = {user: {}};
+    const expectedActions = [
+      {
+        type: types.ADD_MESSAGE,
+        msg: { type: 'error', msg: '予約のキャンセルに失敗しました'}
+      }
+    ];
+    const store = mockStore(state, expectedActions, done);
+    store.dispatch(actions.cancel(request));
   });
 });

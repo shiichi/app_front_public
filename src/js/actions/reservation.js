@@ -1,23 +1,50 @@
 import * as types from '../constants/ActionTypes';
 import { fetchWithJson } from '../utils/fetchUtils';
-import { REQUEST_TEST_TOKEN, RESERVE, REQUEST_RESERVATION_LIST, CANCEL } from '../../config/url';
-import { setLocal, delLocal } from '../utils/WebStrageUtils';
+import { REQUEST_TEST_TOKEN, RESERVE, REQUEST_RESERVATIONS, CANCEL } from '../../config/url';
 
-export function addMessage(msg) {
+function addMessage(msg) {
   return {
     type: types.ADD_MESSAGE,
     msg: msg
   };
 }
 
-export function timetableIsOld(key) {
+function setTestToken(value) {
+  return {
+    type: types.SET_TEST_TOKEN,
+    value: value
+  };
+}
+
+function deleteTestToken() {
+  return {
+    type: types.DELETE_TEST_TOKEN
+  };
+}
+
+function setConfToken(key, value) {
+  return {
+    type: types.SET_CONF_TOKEN,
+    key: key,
+    value: value
+  };
+}
+
+function deleteConfToken(key) {
+  return {
+    type: types.DELETE_CONF_TOKEN,
+    key: key
+  };
+}
+
+function timetableIsOld(key) {
   return {
     type: types.TIMETABLE_IS_OLD,
     key: key
   };
 }
 
-export function modalOn() {
+function modalOn() {
   return {
     type: types.MODAL_ON
   };
@@ -29,17 +56,46 @@ export function modalOff() {
   };
 }
 
-function updateReservation(num) {
+function updateUserInfoReservations(num) {
   return {
     type: types.UPDATE_USERINFO_RESERVATION,
     num: num
   };
 }
 
-export function setReservation(rsvs) {
+function RequestReservations() {
   return {
-    type: types.SET_RESERVATION,
-    rsvs: rsvs
+    type: types.REQUEST_RESERVATIONS
+  };
+}
+
+function RequestReservationsSuccess(data) {
+  return {
+    type: types.REQUEST_RESERVATIONS_SUCCESS,
+    data: data
+  };
+}
+
+function RequestReservationsFail() {
+  return {
+    type: types.REQUEST_RESERVATIONS_FAIL
+  };
+}
+
+export function fetchReservations() {
+  return dispatch => {
+    dispatch(RequestReservations());
+    fetchWithJson(REQUEST_RESERVATIONS)
+      .then(response => response.json())
+      .then(result => dispatch(RequestReservationsSuccess(result)))
+      .catch(ex => {
+        dispatch(RequestReservationsFail());
+        const msg = {
+          type: 'error',
+          msg: '予約情報の取得に失敗しました'
+        };
+        dispatch(addMessage(msg));
+      });
   };
 }
 
@@ -52,14 +108,14 @@ export function fetchTestToken(request) {
           dispatch(addMessage(result.msg));
         }
         if (result.msg.type === 'success') {
-          setLocal('testConnection', result.jwt);
+          dispatch(setTestToken(result.jwt));
           dispatch(modalOn());
         }
       })
       .catch(ex => {
         const msg = {
           type: 'error',
-          msg: '接続テストを実行できませんでした' + ex
+          msg: '接続テストを実行できませんでした'
         };
         dispatch(addMessage(msg));
       });
@@ -75,36 +131,20 @@ export function reserve(request, key) {
           dispatch(addMessage(result.msg));
         }
         if (result.msg.type === 'success') {
-          delLocal('testConnectionResult');
-          const tokenId = 'flight' + result.jwt.id;
-          setLocal(tokenId, result.jwt.token);
-          dispatch(addMessage(result.msg));
-          dispatch(updateReservation(result.reservations));
+          dispatch(deleteTestToken());
+          dispatch(setConfToken(result.jwt.id, result.jwt.token));
+          dispatch(updateUserInfoReservations(result.reservations));
           dispatch(timetableIsOld(key));
+          dispatch(addMessage(result.msg));
         }
       })
       .catch(ex => {
         const msg = {
           type: 'error',
-          msg: '予約に失敗しました' + ex
+          msg: '予約に失敗しました'
         };
         dispatch(addMessage(msg));
       }); };
-}
-
-export function getDefaultRsv() {
-  return dispatch => {
-    fetchWithJson(REQUEST_RESERVATION_LIST)
-      .then(response => response.json())
-      .then(result => dispatch(setReservation(result)))
-      .catch(ex => {
-        const msg = {
-          type: 'error',
-          msg: '予約情報の取得に失敗しました' + ex
-        };
-        dispatch(addMessage(msg));
-      });
-  };
 }
 
 export function cancel(request) {
@@ -116,19 +156,16 @@ export function cancel(request) {
           dispatch(addMessage(result.msg));
         }
         if (result.msg.type === 'success') {
-          const tokenId = 'flight' + request.id;
-          delLocal(tokenId);
-          localStorage.removeItem(tokenId);
-
+          dispatch(deleteConfToken(request.id));
+          dispatch(RequestReservationsSuccess(result.data));
+          dispatch(updateUserInfoReservations(result.reservations));
           dispatch(addMessage(result.msg));
-          dispatch(getDefaultRsv());
-          dispatch(updateReservation(result.reservations));
         }
       })
       .catch(ex => {
         const msg = {
           type: 'error',
-          msg: '予約のキャンセルに失敗しました' + ex
+          msg: '予約のキャンセルに失敗しました'
         };
         dispatch(addMessage(msg));
       });

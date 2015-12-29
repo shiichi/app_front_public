@@ -5,6 +5,8 @@ import * as types from '../../src/js/constants/ActionTypes';
 import nock from 'nock';
 import thunk from 'redux-thunk';
 const middlewares = [ thunk ];
+import { DOMAIN_NAME } from '../../src/config/env';
+import { REQUEST_TIMETABLE } from '../../src/config/url';
 
 function mockStore(getState, expectedActions, done) {
   if (!Array.isArray(expectedActions)) {
@@ -26,8 +28,8 @@ function mockStore(getState, expectedActions, done) {
         const expectedAction = expectedActions.shift();
         expect(action).toEqual(expectedAction);
         if (done && !expectedActions.length) {
-            done();
-          }
+          done();
+        }
         return action;
       }
     };
@@ -62,9 +64,9 @@ describe('fetchTimetableIfNeeded', () => {
     nock.cleanAll();
   });
 
-  it('should fetch and fetch SUCCESS', (done) => {
-    nock('http://l.com/')
-      .post('/api/getTimetable')
+  it('should fetch and return SUCCESS', (done) => {
+    nock(DOMAIN_NAME)
+      .post(REQUEST_TIMETABLE)
       .reply(200, ['date', 'timetable']);
 
     const key = '1_1_0';
@@ -88,9 +90,9 @@ describe('fetchTimetableIfNeeded', () => {
     store.dispatch(actions.fetchTimetableIfNeeded(key, request));
   });
 
-  it('should fetch and fetch FAIL', (done) => {
-    nock('http://l.com/')
-        .post('/api/timetable')
+  it('should fetch and return FAIL', (done) => {
+    nock(DOMAIN_NAME)
+        .post(REQUEST_TIMETABLE)
         .replyWithError('something happened');
 
     const key = '1_1_0';

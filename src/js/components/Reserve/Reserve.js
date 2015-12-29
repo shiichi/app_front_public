@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as TimetableActions from '../../actions/timetable';
 import * as ReservationActions from '../../actions/reservation';
-import { getLocal } from '../../utils/WebStrageUtils';
+import { getLocal, delLocal } from '../../utils/WebStrageUtils';
 //components
 import Header from './Header';
 import MainSection from './MainSection';
@@ -24,8 +24,8 @@ class Reserve extends Component {
         const token = getLocal('testConnectionResult');
         if (token) {
           modalOff();
-          const request = {token: token};
-          reserve(request, timetableKey);
+          reserve({ token }, timetableKey);
+          delLocal('testConnectionResult');
           return clearInterval(loadResult);
         }
       }, [3000, 500]);

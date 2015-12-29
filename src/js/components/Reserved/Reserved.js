@@ -7,8 +7,9 @@ import Header from './Header';
 import MainSection from './MainSection';
 
 class Reserve extends Component {
-  componentWillMount() {
-    this.props.actions.getDefaultRsv();
+  componentDidMount() {
+    const { fetchReservations } = this.props.actions;
+    fetchReservations();
   }
 
   render() {
@@ -31,7 +32,7 @@ Reserve.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { reservation} = state;
+  const { reservation } = state;
   return {
     reservation
   };
