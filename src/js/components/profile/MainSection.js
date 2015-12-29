@@ -5,7 +5,7 @@ import UserProf from './UserProf';
 
 class MainSection extends Component {
   render() {
-    const { user, actions: {fetchUpdateUserProf, postChangePassword} } = this.props;
+    const { user, actions: {UpdateUserProf, postChangePassword} } = this.props;
 
     return (
       <div className="content-boody">
@@ -20,7 +20,7 @@ class MainSection extends Component {
           <h4>プロフィール</h4>
           {user.didInvalidate && <p>ユーザー情報の更新に失敗しました</p>}
           <div className="wrap-white">
-            <UserProf user={user} fetchUpdateUserProf={fetchUpdateUserProf}/>
+            <UserProf user={user} UpdateUserProf={UpdateUserProf}/>
           </div>
         </div>}
       </div>

@@ -111,8 +111,14 @@ export function fetchDefaultStatus() {
       .then(result => {
         const { types, places, plans } = result.selector;
         const { key, data } = result.timetable;
-        const minTypeId = Math.min.apply({}, plans.map(p => p.type_id ));
+        const minTypeId = Math.min.apply({}, plans.map(p => Number(p.type_id)));
+        //console.log('Numberなし',plans.map(p => p.type_id))
+        //console.log('Numberあり',plans.map(p => Number(p.type_id)))
+        //console.log('Math.min',minTypeId)
+
         const minPlaceId = Math.min.apply({}, plans.map(p => Number(p.type_id) === minTypeId ? p.place_id : 100000));
+        //console.log('Math.min',minPlaceId)
+
         //timetableに登録
         dispatch(setPlans(plans));
         dispatch(requestTimetableSuccess(key, data));
@@ -122,6 +128,6 @@ export function fetchDefaultStatus() {
         dispatch(setPlaceStatus( places ));
         dispatch(changePlaceChecked( minPlaceId ));
       })
-      .catch(ex => dispatch(requestTimetableFail(key)));
+      .catch(ex => console.log(ex));
   };
 }

@@ -22,24 +22,23 @@ export function requestUserInfoSuccess(data) {
   };
 }
 
-export function requestUserInfoFail(ex) {
+export function requestUserInfoFail() {
   return {
-    type: types.REQUEST_USERINFO_FAIL,
-    ex: ex
+    type: types.REQUEST_USERINFO_FAIL
   };
 }
 
-export function fetchUserInfo(key, request) {
+export function fetchUserInfo() {
   return dispatch => {
     dispatch(requestUserInfo());
-    fetchWithJson(REQUEST_USER_INFO, request)
+    fetchWithJson(REQUEST_USER_INFO)
     .then(response => response.json())
     .then(result => dispatch(requestUserInfoSuccess(result)))
-    .catch(ex => dispatch(requestUserInfoFail(ex)));
+    .catch(ex => dispatch(requestUserInfoFail()));
   };
 }
 
-export function fetchUpdateUserProf(request) {
+export function UpdateUserProf(request) {
   return dispatch => {
     dispatch(requestUserInfo());
     fetchWithJson(UPDATE_USER_PROF, request)
@@ -65,19 +64,18 @@ function changePassword() {
   };
 }
 
-export function changePasswordFail(ex) {
-  return {
-    type: types.CHANGE_PASS_FAIL,
-    ex: ex
-  };
-}
-
 export function postChangePassword(request) {
   return dispatch => {
     dispatch(changePassword());
     fetchWithJson(CHANGE_PASSWORD, request)
       .then(response => response.json())
       .then(result => dispatch(addMessage(result)))
-      .catch(ex => dispatch(changePasswordFail(ex)));
+      .catch(ex => {
+        const msg = {
+          type: 'error',
+          msg: 'パスワードの更新に失敗しました'
+        };
+        dispatch(addMessage(msg));
+      });
   };
 }

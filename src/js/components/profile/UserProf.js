@@ -78,7 +78,7 @@ class UserProf extends Component {
       building: building.value
     };
 
-    this.props.fetchUpdateUserProf(request);
+    this.props.UpdateUserProf(request);
   }
 
   handleChange(e) {
@@ -299,7 +299,7 @@ class UserProf extends Component {
 
 UserProf.propTypes = {
   user: PropTypes.object.isRequired,
-  fetchUpdateUserProf: PropTypes.func.isRequired
+  UpdateUserProf: PropTypes.func.isRequired
 };
 
 export default UserProf;
