@@ -1,12 +1,18 @@
 import * as types from '../constants/ActionTypes';
 import { fetchWithJson } from '../utils/fetchUtils';
 import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../config/url';
-import { setSession } from '../utils/WebStrageUtils';
 
 export function changeWeek(week) {
   return {
     type: types.CHANGE_WEEK,
     week: week
+  };
+}
+
+export function setPlans(plans) {
+  return {
+    type: types.SET_PLANS,
+    plans: plans
   };
 }
 
@@ -107,18 +113,15 @@ export function fetchDefaultStatus() {
         const { key, data } = result.timetable;
         const minTypeId = Math.min.apply({}, plans.map(p => p.type_id ));
         const minPlaceId = Math.min.apply({}, plans.map(p => Number(p.type_id) === minTypeId ? p.place_id : 100000));
-
-        setSession('base', result.selector);
-
+        //timetableに登録
+        dispatch(setPlans(plans));
         dispatch(requestTimetableSuccess(key, data));
-
-        //TypeSelectBoxに登録
+        //selectorに登録
         dispatch(setTypeStatus( types ));
         dispatch(changeTypeChecked( minTypeId ));
-        //PlaceSelectBoxに登録
         dispatch(setPlaceStatus( places ));
         dispatch(changePlaceChecked( minPlaceId ));
       })
-      .catch(ex => console.log(ex));
+      .catch(ex => dispatch(requestTimetableFail(key)));
   };
 }

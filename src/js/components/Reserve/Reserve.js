@@ -33,11 +33,12 @@ class Reserve extends Component {
   }
 
   render() {
-    const { selector, isFetching, didInvalidate, isOld, data, actions, modal } = this.props;
+    const { plans, selector, isFetching, didInvalidate, isOld, data, actions, modal } = this.props;
     return (
       <div>
         <Header/>
         <MainSection
+          plans = {plans}
           selector = {selector}
           isFetching = {isFetching}
           didInvalidate = {didInvalidate}
@@ -64,7 +65,7 @@ Reserve.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { timetable, selector, modal} = state;
+  const { timetable, selector, modal } = state;
   const { flightTypes, places, week } = selector;
   const f = flightTypes.map(t => t.checked ? t.id : 0).reduce((x, y) => Number(x) + Number(y));
   const p = places.map(t => t.checked ? t.id : 0).reduce((x, y) => Number(x) + Number(y));
@@ -79,7 +80,8 @@ function mapStateToProps(state) {
     lastUpdated,
     data,
     timetableKey,
-    modal
+    modal,
+    plans: timetable.plans
   };
 }
 

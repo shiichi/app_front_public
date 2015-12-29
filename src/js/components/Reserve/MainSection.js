@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import SelectBox from './SelectBox';
 import ReservationBox from './ReservationBox';
-import { getSession } from '../../utils/WebStrageUtils';
 
 class MainSection extends Component {
   //typeが変更された時、選択先のtype_idとplaceの状態配列とplanの組合わせ配列より、異動先のplace_idを返す
@@ -17,14 +16,13 @@ class MainSection extends Component {
   }
 
   handleType(type_id) {
-    const { places, week } = this.props.selector;
-    const plans = getSession('base').plans;
+    const { plans, selector: {places, week}} = this.props;
     const place_id = this.getPlaceId(type_id, places, plans);
 
     const status = {
       flightType: type_id,
       place: place_id,
-      week: week,
+      week: week
     };
 
     this.changeSelectorStatus(status);
@@ -70,10 +68,10 @@ class MainSection extends Component {
   }
 
   changeSelectorStatus(status) {
-    const { changeTypeChecked, changePlaceChecked, changePlaceActive, changeWeek } = this.props.actions;
+    const { plans, actions: {changeTypeChecked, changePlaceChecked, changePlaceActive, changeWeek}} = this.props;
     const placeStatus = [];
 
-    for (let i of getSession('base').plans) {
+    for (let i of plans) {
       if (Number(i.type_id) === status.flightType) placeStatus.push(Number(i.place_id));
     }
 

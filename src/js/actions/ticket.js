@@ -9,7 +9,7 @@ export function addMessage(msg) {
   };
 }
 
-function updateTickets(num) {
+function updateUserInfoTickets(num) {
   return {
     type: types.UPDATE_USERINFO_TICKETS,
     num: num
@@ -22,17 +22,15 @@ function requestTicket() {
   };
 }
 
-export function requestTicketSuccess(data) {
+export function requestTicketSuccess() {
   return {
-    type: types.REQUEST_TICKET_SUCCESS,
-    data: data
+    type: types.REQUEST_TICKET_SUCCESS
   };
 }
 
-export function requestTicketFail(ex) {
+export function requestTicketFail() {
   return {
-    type: types.REQUEST_TICKET_FAIL,
-    ex: ex
+    type: types.REQUEST_TICKET_FAIL
   };
 }
 
@@ -42,8 +40,8 @@ export function fetchWebpay(request) {
     fetchWithJson(WEBPAY, request)
       .then(response => response.json())
       .then(result => {
-        dispatch(requestTicketSuccess(result));
-        dispatch(updateTickets(result.tickets));
+        dispatch(requestTicketSuccess());
+        dispatch(updateUserInfoTickets(result.tickets));
         dispatch(addMessage(result.msg));
       })
       .catch(ex => {
@@ -64,7 +62,7 @@ export function fetchPin(pin) {
       .then(response => response.json())
       .then(result => {
         dispatch(requestTicketSuccess(result));
-        dispatch(updateTickets(result.tickets));
+        dispatch(updateUserInfoTickets(result.tickets));
         dispatch(addMessage(result.msg));
       })
       .catch(ex => {

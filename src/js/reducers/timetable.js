@@ -2,7 +2,8 @@ import {
   REQUEST_TIMETABLE,
   REQUEST_TIMETABLE_SUCCESS,
   REQUEST_TIMETABLE_FAIL,
-  TIMETABLE_IS_OLD
+  TIMETABLE_IS_OLD,
+  SET_PLANS
 } from '../constants/ActionTypes';
 
 function change(state = {
@@ -54,6 +55,8 @@ export default function timetable(state = {}, action) {
       [action.key]: change(state[action.key], action)
     });
 
+  case SET_PLANS:
+    return Object.assign({}, state, {plans: action.plans});
   default:
     return state;
   }

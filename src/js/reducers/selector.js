@@ -26,17 +26,17 @@ export default function selector(state = initialState, action) {
   switch (action.type) {
   case SET_TYPE_STATUS:
     return {
-      flightTypes: action.status.map(p => Object.assign({}, p, { checked: false })),
+      flightTypes: action.status.map(t => Object.assign({}, t, { checked: false })),
       places: [...state.places],
       week: state.week
     };
 
   case CHANGE_TYPE_CHECKED:
     return {
-      flightTypes: state.flightTypes.map(p =>
-          Number(p.id) === action.id ?
-          Object.assign({}, p, { checked: true }) :
-          Object.assign({}, p, { checked: false })
+      flightTypes: state.flightTypes.map(t =>
+          Number(t.id) === action.id ?
+          Object.assign({}, t, { checked: true }) :
+          Object.assign({}, t, { checked: false })
         ),
       places: [...state.places],
       week: state.week
