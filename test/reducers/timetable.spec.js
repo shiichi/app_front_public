@@ -1,5 +1,5 @@
 import expect from 'expect';
-import todos from '../../src/js/reducers/timetable';
+import todos from '../../src/js/reducers/timetables';
 import * as types from '../../src/js/constants/ActionTypes';
 
 describe('timetable reducer', () => {

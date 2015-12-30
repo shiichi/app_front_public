@@ -1,5 +1,5 @@
 export user from './user';
-export timetable from './timetable';
+export timetables from './timetables';
 export selector from './selector';
 export message from './message';
 export modal from './modal';

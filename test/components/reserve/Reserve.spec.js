@@ -14,12 +14,11 @@ function setup(actionsOverrides, stateOverrides) {
   }, actionsOverrides);
 
   const state = Object.assign({
-    timetable: {},
     selector: {
       flightTypes: [
-        {id: 1, name: '自由操縦', en: 'free', checked: true},
-        {id: 2, name: 'プログラミング', en: 'program', checked: false},
-        {id: 3, name: 'ゲーム', en: 'game', checked: false}
+        {id: 1, name: 'type1', en: 'en1', checked: true},
+        {id: 2, name: 'type2', en: 'en2', checked: false},
+        {id: 3, name: 'type3', en: 'en3', checked: false}
       ],
       places: [
         {id: 1, path: '/path1', active: true, checked: true},
@@ -39,6 +38,7 @@ function setup(actionsOverrides, stateOverrides) {
     dispatch: function() {},
   };
 
+
   const renderer = TestUtils.createRenderer();
 
   renderer.render(
@@ -56,31 +56,25 @@ function setup(actionsOverrides, stateOverrides) {
 
 describe('components', () => {
   describe('Reserve', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should render SelectBox wrap correctly', () => {
-      nock('http://l.com/')
-        .post('/api/timetable')
-        .reply(200, {
-          selector: {},
-          timetable: {key: '1_1_0', data: {}}
-        });
-
       const { output, state, renderer } = setup({}, {
-        timetable: {
+        modal: 'modal',
+        plans: 'plans',
+        timetables: {
           '1_1_0': {
             isFetching: false,
             didInvalidate: false,
+            isOld: false,
             lastUpdated: '12345678',
             data: 'data'
-          }
+          },
+          plans:{}
+
         }
       });
 
-      renderer.componentDidMount();
-      expect(output).toBe(state.selector);
+      //renderer.componentDidMount();
+      expect(output.props).toBe(state);
 
     });
 

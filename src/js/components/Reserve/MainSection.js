@@ -5,14 +5,13 @@ import ReservationBox from './ReservationBox';
 class MainSection extends Component {
   //typeが変更された時、選択先のtype_idとplaceの状態配列とplanの組合わせ配列より、異動先のplace_idを返す
   getPlaceId(type_id, places, plans) {
-    let checked_id = places.map(p => p.checked ? p.id : 0).reduce((x, y) => Number(x) + Number(y));
-    let active_ids = plans.map(p => Number(p.type_id) === type_id ? Number(p.place_id) : 10000);
+    const ids = plans[type_id];
+    const checkedId = (p => {
+      for (const i of p) if (i.checked) return i.id;
+    })(places);
 
-    if ( active_ids.indexOf(checked_id) >= 0 ) {
-      return checked_id;
-    }
-
-    return Number(Math.min.apply({}, active_ids));
+    if ( ids.indexOf(checkedId) >= 0 ) return checkedId;
+    else return Math.min.ids;
   }
 
   handleType(type_id) {
@@ -68,16 +67,16 @@ class MainSection extends Component {
   }
 
   changeSelectorStatus(status) {
-    const { plans, actions: {changeTypeChecked, changePlaceChecked, changePlaceActive, changeWeek}} = this.props;
-    const placeStatus = [];
+    const { plans, actions: {changeTypeChecked, changePlaceChecked, changeActivePlace, changeWeek}} = this.props;
+    /*const placeStatus = [];
 
     for (let i of plans) {
       if (Number(i.type_id) === status.flightType) placeStatus.push(Number(i.place_id));
     }
-
+*/
     changeTypeChecked(status.flightType);
     changePlaceChecked(status.place);
-    changePlaceActive(placeStatus);
+    changeActivePlace(plans[status.flightType]);
     changeWeek(status.week);
   }
 
@@ -88,7 +87,7 @@ class MainSection extends Component {
   }
 
   render() {
-    const { selector, isFetching, didInvalidate, isOld, data, fetchTestToken} = this.props;
+    const { selector, isFetching, didInvalidate, isOld, data, actions: {fetchTestToken}} = this.props;
     return (
       <div>
         <SelectBox
@@ -97,10 +96,10 @@ class MainSection extends Component {
           handleType= {this.handleType.bind(this)}
           handlePlace= {this.handlePlace.bind(this)} />
         <ReservationBox
+          data = {data}
           isFetching = {isFetching}
           didInvalidate = {didInvalidate}
           isOld = {isOld}
-          data = {data}
           handleWeek = {this.handleWeek.bind(this)}
           fetchTimetableAgain = {this.fetchTimetableAgain.bind(this)}
           fetchTestToken = {fetchTestToken} />

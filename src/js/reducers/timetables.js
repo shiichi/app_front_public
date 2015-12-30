@@ -45,7 +45,7 @@ function change(state = {
   }
 }
 
-export default function timetable(state = {}, action) {
+export default function timetables(state = {}, action) {
   switch (action.type) {
   case REQUEST_TIMETABLE:
   case REQUEST_TIMETABLE_SUCCESS:

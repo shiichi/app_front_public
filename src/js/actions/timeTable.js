@@ -37,7 +37,7 @@ export function setPlaceStatus(status) {
   };
 }
 
-export function changePlaceActive(ids) {
+export function changeActivePlace(ids) {
   return {
     type: types.CHANGE_PLACE_ACTIVE,
     ids: ids
@@ -54,11 +54,11 @@ export function changePlaceChecked(id) {
 function requestTimetable(key) {
   return {
     type: types.REQUEST_TIMETABLE,
-    key: key,
+    key: key
   };
 }
 
-export function requestTimetableSuccess(key, data) {
+function requestTimetableSuccess(key, data) {
   return {
     type: types.REQUEST_TIMETABLE_SUCCESS,
     key: key,
@@ -67,7 +67,7 @@ export function requestTimetableSuccess(key, data) {
   };
 }
 
-export function requestTimetableFail(key) {
+function requestTimetableFail(key) {
   return {
     type: types.REQUEST_TIMETABLE_FAIL,
     key: key
@@ -85,7 +85,7 @@ export function fetchTimetable(key, request) {
 }
 
 function shouldFetchTimetable(state, key) {
-  const timetable = state.timetable[key];
+  const timetable = state.timetables[key];
   if (!timetable) {
     return true;
   }
@@ -104,6 +104,18 @@ export function fetchTimetableIfNeeded(key, request) {
   };
 }
 
+function convertPlans(plans) {
+  return plans.reduce((converted, plan) => {
+    let { type_id, place_id } = plan;
+    if (!converted[type_id]) {
+      converted[type_id] = [Number(place_id)];
+    } else {
+      converted[type_id].push(Number(place_id));
+    }
+    return converted
+  }, {});
+}
+
 export function fetchDefaultStatus() {
   return dispatch => {
     fetchWithJson(REQUEST_DEFAULT_STATUS)
@@ -112,21 +124,17 @@ export function fetchDefaultStatus() {
         const { types, places, plans } = result.selector;
         const { key, data } = result.timetable;
         const minTypeId = Math.min.apply({}, plans.map(p => Number(p.type_id)));
-        //console.log('Numberなし',plans.map(p => p.type_id))
-        //console.log('Numberあり',plans.map(p => Number(p.type_id)))
-        //console.log('Math.min',minTypeId)
-
         const minPlaceId = Math.min.apply({}, plans.map(p => Number(p.type_id) === minTypeId ? p.place_id : 100000));
-        //console.log('Math.min',minPlaceId)
 
         //timetableに登録
-        dispatch(setPlans(plans));
+        dispatch(setPlans(convertPlans(plans)));
         dispatch(requestTimetableSuccess(key, data));
         //selectorに登録
-        dispatch(setTypeStatus( types ));
-        dispatch(changeTypeChecked( minTypeId ));
-        dispatch(setPlaceStatus( places ));
-        dispatch(changePlaceChecked( minPlaceId ));
+        dispatch(setTypeStatus(types));
+        dispatch(changeTypeChecked(minTypeId));
+        dispatch(setPlaceStatus(places));
+        dispatch(changeActivePlace(convertPlans(plans)[minTypeId]));
+        dispatch(changePlaceChecked(minPlaceId));
       })
       .catch(ex => console.log(ex));
   };

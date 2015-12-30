@@ -73,7 +73,7 @@ describe('fetchTimetableIfNeeded', () => {
     const request = { flightType: 1, place: 1, week: 0 };
     const state = {
       user: Object,
-      timetable: {},
+      timetables: {},
       selector: Object
     };
     const expectedActions = [
@@ -99,7 +99,7 @@ describe('fetchTimetableIfNeeded', () => {
     const request = { flightType: 1, place: 1, week: 0 };
     const state = {
       user: Object,
-      timetable: {},
+      timetables: {},
       selector: Object
     };
     const expectedActions = [
@@ -119,7 +119,7 @@ describe('fetchTimetableIfNeeded', () => {
     const request = { flightType: 1, place: 1, week: 0 };
     const state = {
       user: Object,
-      timetable: {'1_1_0': Object},
+      timetables: {'1_1_0': Object},
       selector: Object
     };
     const expectedAction = undefined;

@@ -17,7 +17,7 @@ class Reserve extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { modal } = nextProps;
-    const { timetableKey, rsvActions: {modalOff, reserve} } = this.props;
+    const { timetableKey, actions: {modalOff, reserve} } = this.props;
 
     if (modal) {
       const loadResult = setInterval(function() {
@@ -44,8 +44,7 @@ class Reserve extends Component {
           didInvalidate = {didInvalidate}
           isOld = {isOld}
           data = {data}
-          actions = {actions}
-          fetchTestToken = {this.props.rsvActions.fetchTestToken} />
+          actions = {actions} />
         {modal && <ConnectionTest/>}
       </div>
     );
@@ -53,6 +52,7 @@ class Reserve extends Component {
 }
 
 Reserve.propTypes = {
+  plans: PropTypes.object.isRequired,
   selector: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool,
@@ -65,30 +65,30 @@ Reserve.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { timetable, selector, modal } = state;
+  const { timetables, selector, modal } = state;
   const { flightTypes, places, week } = selector;
   const f = flightTypes.map(t => t.checked ? t.id : 0).reduce((x, y) => Number(x) + Number(y));
   const p = places.map(t => t.checked ? t.id : 0).reduce((x, y) => Number(x) + Number(y));
   const timetableKey = f + '_' + p + '_' + week;
-  const {isFetching, didInvalidate, isOld, lastUpdated, data} = timetable[timetableKey] || {isFetching: true};
+  const {isFetching, didInvalidate, isOld, lastUpdated, data} = timetables[timetableKey] || {isFetching: true};
 
   return {
+    plans: timetables.plans,
     selector,
+    data,
+    timetableKey,
     isFetching,
     didInvalidate,
     isOld,
     lastUpdated,
-    data,
-    timetableKey,
-    modal,
-    plans: timetable.plans
+    modal
   };
 }
 
 function mapDispatchToProps(dispatch) {
+  const actions = Object.assign(TimetableActions, ReservationActions);
   return {
-    actions: bindActionCreators(TimetableActions, dispatch),
-    rsvActions: bindActionCreators(ReservationActions, dispatch)
+    actions: bindActionCreators(actions, dispatch)
   };
 }
 
