@@ -2,20 +2,12 @@ import React, { PropTypes, Component } from 'react';
 
 class SelectDate extends Component {
   handleClicked(e) {
-    const { isFetching, handleWeek } = this.props;
-
-    let n;
-    switch (e.target.className) {
-    case 'btn-buck': n = -1;
-      break;
-    case 'btn-next': n = 1;
-      break;
-    default: n = 0;
-      break;
-    }
+    const { isFetching, handleSelector } = this.props;
+    const { className } = e.target;
 
     if (!isFetching) {
-      handleWeek(n);
+      if (className === 'btn-buck') handleSelector(null, null, -1);
+      if (className === 'btn-next') handleSelector(null, null, 1);
     }
   }
 
@@ -31,7 +23,7 @@ class SelectDate extends Component {
 
 SelectDate.propTypes = {
   isFetching: PropTypes.bool.isRequired,
-  handleWeek: PropTypes.func.isRequired
+  handleSelector: PropTypes.func.isRequired
 };
 
 export default SelectDate;

@@ -2,52 +2,61 @@ import * as types from '../constants/ActionTypes';
 import { fetchWithJson } from '../utils/fetchUtils';
 import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../config/url';
 
-export function changeWeek(week) {
-  return {
-    type: types.CHANGE_WEEK,
-    week: week
-  };
-}
-
-export function setPlans(plans) {
+function setPlans(plans) {
   return {
     type: types.SET_PLANS,
     plans: plans
   };
 }
 
-export function setTypeStatus(status) {
+function setTypeStatus(status) {
   return {
     type: types.SET_TYPE_STATUS,
     status: status
   };
 }
 
-export function changeTypeChecked(id) {
-  return {
-    type: types.CHANGE_TYPE_CHECKED,
-    id: id
-  };
-}
-
-export function setPlaceStatus(status) {
+function setPlaceStatus(status) {
   return {
     type: types.SET_PLACE_STATUS,
     status: status
   };
 }
 
-export function changeActivePlace(ids) {
+export function changeSelectorStatus(typeId, placeIds, placeId, n) {
+  return dispatch => {
+    dispatch(changeTypeChecked(typeId));
+    dispatch(changeActivePlace(placeIds));
+    dispatch(changePlaceChecked(placeId));
+    dispatch(changeWeek(n))
+  }
+}
+
+function changeTypeChecked(id) {
+  return {
+    type: types.CHANGE_TYPE_CHECKED,
+    id: id
+  };
+}
+
+function changeActivePlace(ids) {
   return {
     type: types.CHANGE_PLACE_ACTIVE,
     ids: ids
   };
 }
 
-export function changePlaceChecked(id) {
+function changePlaceChecked(id) {
   return {
     type: types.CHANGE_PLACE_CHECKED,
     id: id
+  };
+}
+
+function changeWeek(n) {
+  return {
+    type: types.CHANGE_WEEK,
+    week: n
   };
 }
 
