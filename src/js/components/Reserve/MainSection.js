@@ -23,7 +23,7 @@ class MainSection extends Component {
           delLocal('testConnectionResult');
           return clearInterval(loadResult);
         }
-      }, [1000, 500]);
+      }, [3000, 500]);
     }
   }
 
