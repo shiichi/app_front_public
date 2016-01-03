@@ -7,9 +7,9 @@ import TimetableColumns from './TimetableColumns';
 
 class TimetableBox extends Component {
   componentDidUpdate() {
-    const { fetchTimetableAgain, isOld } = this.props;
+    const { fetchTimetableIfNeeded, isOld } = this.props;
     if (isOld) {
-      fetchTimetableAgain();
+      fetchTimetableIfNeeded();
     }
   }
 
@@ -18,14 +18,14 @@ class TimetableBox extends Component {
   }
 
   handleClick() {
-    const { fetchTimetableAgain } = this.props;
-    fetchTimetableAgain();
+    const { fetchTimetableIfNeeded } = this.props;
+    fetchTimetableIfNeeded();
   }
 
   renderDate() {
     const { date } = this.props.data;
     return date.map((d, i) =>
-      <Date className={d.c} dateNodes={d.d} key={i} />
+      <Date className={d.c} dateNodes={d.d} key={i}/>
     );
   }
 
@@ -91,7 +91,7 @@ TimetableBox.propTypes = {
   didInvalidate: PropTypes.bool,
   isOld: PropTypes.bool,
   data: PropTypes.object,
-  fetchTimetableAgain: PropTypes.func,
+  fetchTimetableIfNeeded: PropTypes.func.isRequired,
   fetchTestToken: PropTypes.func.isRequired
 };
 

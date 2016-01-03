@@ -4,18 +4,18 @@ import TimetableBox from './TimetableBox';
 
 class ReservationBox extends Component {
   render() {
-    const { isFetching, didInvalidate, isOld, data, handleSelector, fetchTimetableAgain, fetchTestToken } = this.props;
+    const { isFetching, didInvalidate, isOld, data, fetchTimetableIfNeeded, fetchTestToken } = this.props;
     return (
       <div className="timetable-box">
         <SelectDate
           isFetching = {isFetching}
-          handleSelector = {handleSelector} />
+          fetchTimetableIfNeeded = {fetchTimetableIfNeeded} />
         <TimetableBox
           isFetching = {isFetching}
           didInvalidate = {didInvalidate}
           isOld = {isOld}
           data = {data}
-          fetchTimetableAgain = {fetchTimetableAgain}
+          fetchTimetableIfNeeded = {fetchTimetableIfNeeded}
           fetchTestToken = {fetchTestToken} />
       </div>
     );
@@ -28,7 +28,7 @@ ReservationBox.propTypes = {
   isOld: PropTypes.bool,
   data: PropTypes.object,
   handleWeek: PropTypes.func,
-  fetchTimetableAgain: PropTypes.func,
+  fetchTimetableIfNeeded: PropTypes.func.isRequired,
   fetchTestToken: PropTypes.func.isRequired
 };
 

@@ -2,13 +2,12 @@ import React, { PropTypes, Component } from 'react';
 import Icon from 'react-fa';
 
 class SelectBox extends Component {
-
   handleChanged(e) {
-    const { isFetching, handleSelector } = this.props;
+    const { isFetching, fetchTimetableIfNeeded } = this.props;
     const { checked, name, value } = e.target;
     if (!isFetching && checked ) {
-      if (name === 'type') handleSelector(Number(value), null, 0);
-      if (name === 'place') handleSelector(null, Number(value), 0);
+      if (name === 'type') fetchTimetableIfNeeded(Number(value), null);
+      if (name === 'place') fetchTimetableIfNeeded(null, Number(value));
     }
   }
 
@@ -76,8 +75,7 @@ class SelectBox extends Component {
 SelectBox.propTypes = {
   selector: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  handleType: PropTypes.func.isRequired,
-  handlePlace: PropTypes.func.isRequired,
+  fetchTimetableIfNeeded: PropTypes.func.isRequired
 };
 
 export default SelectBox;

@@ -10,7 +10,8 @@ function setup(propOverrides) {
       {c: '1', id: '222', t: 'time'},
       {c: '2', id: '333', t: 'time'},
       {c: '3', id: '444', t: 'time'}
-    ]
+    ],
+    fetchTestToken: expect.createSpy()
   }, propOverrides);
 
   const renderer = TestUtils.createRenderer();
@@ -30,59 +31,36 @@ function setup(propOverrides) {
 
 describe('components', () => {
   describe('TimetableColumns', () => {
-    it('should render close button correctly', () => {
-      const { output } = setup();
-
-      const div = output.props.children[0];
-      expect(div.type).toBe('div');
-      expect(div.props.className).toBe('rsv rsv-close');
-      const p = div.props.children
-      expect(p.type).toBe('p');
-      expect(p.props.children).toBe('ー');
-    });
-
-    it('should render reserved button correctly', () => {
-      const { output } = setup();
-
-      const div = output.props.children[1];
-      expect(div.type).toBe('div');
-      expect(div.props.className).toBe('rsv rsv-reserved');
-      const p = div.props.children
-      expect(p.type).toBe('p');
-      expect(p.props.children).toBe('予約済み');
-    });
-
-    it('should render myReservation button correctly', () => {
-      const { output } = setup();
-
-      const div = output.props.children[2];
-      expect(div.type).toBe('div');
-      expect(div.props.className).toBe('rsv rsv-myreservation');
-      const p = div.props.children
-      expect(p.type).toBe('p');
-      expect(p.props.children).toBe('自分の予約');
-
-    });
-
-    it('should render open button correctly', () => {
+    it('should render components correctly', () => {
       const { output, props } = setup();
+      let expectedElement = (
+        <div className="time-table-colmuns">
+          <div className="rsv rsv-close">
+            <p>ー</p>
+          </div>
+          <div className="rsv rsv-reserved">
+            <p>予約済み</p>
+          </div>
+          <div className="rsv rsv-myreservation">
+            <p>自分の予約</p>
+          </div>
+          <form onSubmit={function noRefCheck() {}}>
+            <input name="id" type="hidden" value="444"/>
+            <input className="rsv rsv-open" type="submit" value="time"/>
+          </form>
+        </div>
+      );
+      expect(output).toEqualJSX(expectedElement);
+    });
 
-      const form = output.props.children[3];
-      expect(form.type).toBe('form');
-      expect(form.props.action).toBe('/determine');
-
-      const Token = form.props.children[0]
-      expect(Token.type).toBe('input');
-      expect(Token.props.type).toBe('hidden');
-      expect(Token.props.name).toBe('_token');
-      expect(Token.props.value).toBe('testToken');
-
-      const id = form.props.children[1]
-      expect(id.type).toBe('input');
-      expect(id.props.type).toBe('hidden');
-      expect(id.props.name).toBe('id');
-      expect(id.props.value).toBe(props.columns[3].id);
-
+    it('should call fetchTestToken correctly', () => {
+      const { output, props } = setup();
+      output.props.children['3'].props.onSubmit({
+        target: [{ value: '1'}, { value: '2'}],
+        preventDefault: expect.createSpy()
+      });
+      //expect(output.props.children['3'].props.onSubmit).toEqual("expectedElement");
+      expect(props.fetchTestToken).toHaveBeenCalledWith({id: '1'});
     });
   });
 });

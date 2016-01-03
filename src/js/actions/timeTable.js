@@ -23,15 +23,6 @@ function setPlaceStatus(status) {
   };
 }
 
-export function changeSelectorStatus(typeId, placeIds, placeId, n) {
-  return dispatch => {
-    dispatch(changeTypeChecked(typeId));
-    dispatch(changeActivePlace(placeIds));
-    dispatch(changePlaceChecked(placeId));
-    dispatch(changeWeek(n))
-  }
-}
-
 function changeTypeChecked(id) {
   return {
     type: types.CHANGE_TYPE_CHECKED,
@@ -93,8 +84,7 @@ export function fetchTimetable(key, request) {
   };
 }
 
-function shouldFetchTimetable(state, key) {
-  const timetable = state.timetables[key];
+function shouldFetchTimetable(timetable) {
   if (!timetable) {
     return true;
   }
@@ -105,9 +95,35 @@ function shouldFetchTimetable(state, key) {
   //return timetable.didInvalidate;
 }
 
-export function fetchTimetableIfNeeded(key, request) {
+function getCheckedId(status) {
+  for (const i of status) if (i.checked) return i.id;
+}
+
+function getCheckedPlaceId(plans, places, typeId) {
+  const ids = plans[typeId];
+  const checkedId = getCheckedId(places);
+
+  if ( ids.indexOf(checkedId) >= 0 ) return checkedId;
+  return Math.min.apply(null, ids);
+}
+
+export function fetchTimetableIfNeeded(t, p, w = 0) {
   return (dispatch, getState) => {
-    if (shouldFetchTimetable(getState(), key)) {
+    const { timetables: {plans}, selector: {flightTypes, places, week}} = getState();
+    const request = {
+      flightType: t || getCheckedId(flightTypes),
+      place: p || getCheckedPlaceId(plans, places, t || getCheckedId(flightTypes)),
+      week: week + w
+    };
+    const key = request.flightType + '_' + request.place + '_' + request.week;
+    const timetable = getState().timetables[key];
+
+    dispatch(changeTypeChecked(request.flightType));
+    dispatch(changeActivePlace(plans[request.flightType]));
+    dispatch(changePlaceChecked(request.place));
+    dispatch(changeWeek(request.week));
+
+    if (shouldFetchTimetable(timetable)) {
       return dispatch(fetchTimetable(key, request));
     }
   };
@@ -121,7 +137,7 @@ function convertPlans(plans) {
     } else {
       converted[type_id].push(Number(place_id));
     }
-    return converted
+    return converted;
   }, {});
 }
 
@@ -140,8 +156,8 @@ export function fetchDefaultStatus() {
         dispatch(requestTimetableSuccess(key, data));
         //selectorに登録
         dispatch(setTypeStatus(types));
-        dispatch(changeTypeChecked(minTypeId));
         dispatch(setPlaceStatus(places));
+        dispatch(changeTypeChecked(minTypeId));
         dispatch(changeActivePlace(convertPlans(plans)[minTypeId]));
         dispatch(changePlaceChecked(minPlaceId));
       })

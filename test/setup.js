@@ -6,3 +6,11 @@ global.document = jsdom('<!doctype html><body>' +
   '</body></html>');
 global.window = document.defaultView;
 global.navigator = global.window.navigator;
+global.localStorage = {
+	setItem: function (key, value){},
+	getItem: function (key){
+		const token = 'token';
+		return JSON.stringify(token);
+	},
+	removeItem: function (key){}
+}

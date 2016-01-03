@@ -2,12 +2,12 @@ import React, { PropTypes, Component } from 'react';
 
 class SelectDate extends Component {
   handleClicked(e) {
-    const { isFetching, handleSelector } = this.props;
+    const { isFetching, fetchTimetableIfNeeded } = this.props;
     const { className } = e.target;
 
     if (!isFetching) {
-      if (className === 'btn-buck') handleSelector(null, null, -1);
-      if (className === 'btn-next') handleSelector(null, null, 1);
+      if (className === 'btn-buck') fetchTimetableIfNeeded(null, null, -1);
+      if (className === 'btn-next') fetchTimetableIfNeeded(null, null, 1);
     }
   }
 
@@ -23,7 +23,7 @@ class SelectDate extends Component {
 
 SelectDate.propTypes = {
   isFetching: PropTypes.bool.isRequired,
-  handleSelector: PropTypes.func.isRequired
+  fetchTimetableIfNeeded: PropTypes.func.isRequired
 };
 
 export default SelectDate;

@@ -19,6 +19,7 @@ describe('timetable reducer', () => {
       '1_1_0': {
         isFetching: true,
         didInvalidate: false,
+        isOld: false,
         lastUpdated: '',
         data: {}
       }
@@ -29,6 +30,7 @@ describe('timetable reducer', () => {
         '1_1_0': {
           isFetching: true,
           didInvalidate: false,
+          isOld: false,
           lastUpdated: '',
           data: {}
         }
@@ -40,12 +42,14 @@ describe('timetable reducer', () => {
       '1_1_0': {
         isFetching: true,
         didInvalidate: false,
+        isOld: false,
         lastUpdated: '',
         data: {}
       },
       '1_1_1': {
         isFetching: true,
         didInvalidate: false,
+        isOld: false,
         lastUpdated: '',
         data: {}
       }
@@ -56,12 +60,14 @@ describe('timetable reducer', () => {
         '1_1_0': {
           isFetching: true,
           didInvalidate: false,
+          isOld: false,
           lastUpdated: '',
           data: {}
         },
         '1_1_1': {
           isFetching: true,
           didInvalidate: false,
+          isOld: false,
           lastUpdated: '',
           data: {}
         }
@@ -73,18 +79,21 @@ describe('timetable reducer', () => {
       '1_1_0': {
         isFetching: true,
         didInvalidate: false,
+        isOld: false,
         lastUpdated: '',
         data: {}
       },
       '1_1_1': {
         isFetching: true,
         didInvalidate: false,
+        isOld: false,
         lastUpdated: '',
         data: {}
       },
       '1_1_2': {
         isFetching: true,
         didInvalidate: false,
+        isOld: false,
         lastUpdated: '',
         data: {}
       }
@@ -97,12 +106,14 @@ describe('timetable reducer', () => {
         '1_1_0': {
           isFetching: true,
           didInvalidate: false,
+          isOld: false,
           lastUpdated: '',
           data: {}
         },
         '1_1_1': {
           isFetching: true,
           didInvalidate: false,
+          isOld: false,
           lastUpdated: '',
           data: {}
         }
@@ -116,13 +127,14 @@ describe('timetable reducer', () => {
       '1_1_0': {
         isFetching: false,
         didInvalidate: false,
-        'isOld': false,
+        isOld: false,
         lastUpdated: '12345678',
         data: {obj: 'object'}
       },
       '1_1_1': {
         isFetching: true,
         didInvalidate: false,
+        isOld: false,
         lastUpdated: '',
         data: {}
       }
@@ -135,12 +147,14 @@ describe('timetable reducer', () => {
         '1_1_0': {
           isFetching: true,
           didInvalidate: false,
+          isOld: false,
           lastUpdated: '',
           data: {}
         },
         '1_1_1': {
           isFetching: true,
           didInvalidate: false,
+          isOld: false,
           lastUpdated: '',
           data: {}
         }
@@ -152,15 +166,67 @@ describe('timetable reducer', () => {
       '1_1_0': {
         isFetching: false,
         didInvalidate: true,
+        isOld: false,
         lastUpdated: '',
         data: {}
       },
       '1_1_1': {
         isFetching: true,
         didInvalidate: false,
+        isOld: false,
         lastUpdated: '',
         data: {}
       }
+    });
+  });
+
+  it('should handle TIMETABLE_IS_OLD', () => {
+    expect(
+      todos({
+        '1_1_0': {
+          isFetching: false,
+          didInvalidate: false,
+          isOld: false,
+          lastUpdated: '',
+          data: {}
+        },
+        '1_1_1': {
+          isFetching: false,
+          didInvalidate: false,
+          isOld: false,
+          lastUpdated: '',
+          data: {}
+        }
+      }, {
+        type: types.TIMETABLE_IS_OLD,
+        key: '1_1_0'
+      })
+    ).toEqual({
+      '1_1_0': {
+        isFetching: false,
+        didInvalidate: false,
+        isOld: true,
+        lastUpdated: '',
+        data: {}
+      },
+      '1_1_1': {
+        isFetching: false,
+        didInvalidate: false,
+        isOld: false,
+        lastUpdated: '',
+        data: {}
+      }
+    });
+  });
+
+  it('should handle SET_PLANS', () => {
+    expect(
+      todos({}, {
+        type: types.SET_PLANS,
+        plans: {1: [1, 2, 3, 4]}
+      })
+    ).toEqual({
+      plans: {1: [1, 2, 3, 4]}
     });
   });
 });

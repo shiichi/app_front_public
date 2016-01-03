@@ -14,20 +14,8 @@ function setup(actionsOverrides, stateOverrides) {
   }, actionsOverrides);
 
   const state = Object.assign({
-    selector: {
-      flightTypes: [
-        {id: 1, name: 'type1', en: 'en1', checked: true},
-        {id: 2, name: 'type2', en: 'en2', checked: false},
-        {id: 3, name: 'type3', en: 'en3', checked: false}
-      ],
-      places: [
-        {id: 1, path: '/path1', active: true, checked: true},
-        {id: 2, path: '/path2', active: true, checked: false},
-        {id: 3, path: '/path3', active: false, checked: false},
-        {id: 4, path: '/path4', active: false, checked: false}
-      ],
-      week: 0
-    }
+    modal: false,
+    plans: {some: 'object'}
   }, stateOverrides);
 
   const store = {
@@ -35,14 +23,13 @@ function setup(actionsOverrides, stateOverrides) {
       return state;
     },
     subscribe: function() {},
-    dispatch: function() {},
+    dispatch: function() {}
   };
-
 
   const renderer = TestUtils.createRenderer();
 
   renderer.render(
-    <Reserve store={store} actions={actions}/>
+    <Reserve store={store}/>
   );
 
   const output = renderer.getRenderOutput();
@@ -56,62 +43,128 @@ function setup(actionsOverrides, stateOverrides) {
 
 describe('components', () => {
   describe('Reserve', () => {
-    it('should render SelectBox wrap correctly', () => {
-      const { output, state, renderer } = setup({}, {
-        modal: 'modal',
-        plans: 'plans',
+    it('should set props correctly part1', () => {
+      const { output, state } = setup({}, {
         timetables: {
           '1_1_0': {
             isFetching: false,
             didInvalidate: false,
             isOld: false,
             lastUpdated: '12345678',
-            data: 'data'
+            data: {some: 'data'}
           },
           plans:{}
-
+        },
+        selector: {
+          flightTypes: [
+            {id: 1, name: 'type1', en: 'en1', checked: true},
+            {id: 2, name: 'type2', en: 'en2', checked: false},
+            {id: 3, name: 'type3', en: 'en3', checked: false}
+          ],
+          places: [
+            {id: 1, path: '/path1', active: true, checked: true},
+            {id: 2, path: '/path2', active: true, checked: false},
+            {id: 3, path: '/path3', active: false, checked: false},
+            {id: 4, path: '/path4', active: false, checked: false}
+          ],
+          week: 0
         }
       });
+      const timetableKey = '1_1_0';
 
-      //renderer.componentDidMount();
-      expect(output.props).toBe(state);
-
+      expect(output.props.selector).toBe(state.selector);
+      expect(output.props.timetableKey).toBe(timetableKey);
+      expect(output.props.data).toBe(state.timetables[timetableKey].data);
+      expect(output.props.isFetching).toBe(state.timetables[timetableKey].isFetching);
+      expect(output.props.didInvalidate).toBe(state.timetables[timetableKey].didInvalidate);
+      expect(output.props.isOld).toBe(state.timetables[timetableKey].isOld);
+      expect(output.props.lastUpdated).toBe(state.timetables[timetableKey].lastUpdated);
+      expect(output.props.modal).toBe(state.modal);
     });
 
-    it('should render SelectBox wrap correctly', () => {
+    it('should set props correctly part2', () => {
       const { output, state } = setup({}, {
-        timetable: {
+        timetables: {
+          '1_1_0': {
+            isFetching: true,
+            didInvalidate: true,
+            isOld: true,
+            lastUpdated: '12345678',
+            data: {some: 'data'}
+          },
+          '3_4_3': {
+            isFetching: false,
+            didInvalidate: false,
+            isOld: false,
+            lastUpdated: '87654321',
+            data: {some: 'data'}
+          },
+          plans:{}
+        },
+        selector: {
+          flightTypes: [
+            {id: 1, name: 'type1', en: 'en1', checked: false},
+            {id: 2, name: 'type2', en: 'en2', checked: false},
+            {id: 3, name: 'type3', en: 'en3', checked: true}
+          ],
+          places: [
+            {id: 1, path: '/path1', active: true, checked: false},
+            {id: 2, path: '/path2', active: true, checked: false},
+            {id: 3, path: '/path3', active: false, checked: false},
+            {id: 4, path: '/path4', active: false, checked: true}
+          ],
+          week: 3
+        }
+      });
+      const timetableKey = '3_4_3';
+
+      expect(output.props.selector).toBe(state.selector);
+      expect(output.props.timetableKey).toBe(timetableKey);
+      expect(output.props.data).toBe(state.timetables[timetableKey].data);
+      expect(output.props.isFetching).toBe(state.timetables[timetableKey].isFetching);
+      expect(output.props.didInvalidate).toBe(state.timetables[timetableKey].didInvalidate);
+      expect(output.props.isOld).toBe(state.timetables[timetableKey].isOld);
+      expect(output.props.lastUpdated).toBe(state.timetables[timetableKey].lastUpdated);
+      expect(output.props.modal).toBe(state.modal);
+    });
+
+    it('should set props correctly part3', () => {
+      const { output, state } = setup({}, {
+        timetables: {
           '1_1_0': {
             isFetching: false,
             didInvalidate: false,
+            isOld: false,
             lastUpdated: '12345678',
-            data: 'data'
-          }
+            data: {some: 'data'}
+          },
+          plans:{}
+        },
+        selector: {
+          flightTypes: [
+            {id: 1, name: 'type1', en: 'en1', checked: false},
+            {id: 2, name: 'type2', en: 'en2', checked: true},
+            {id: 3, name: 'type3', en: 'en3', checked: false}
+          ],
+          places: [
+            {id: 1, path: '/path1', active: true, checked: true},
+            {id: 2, path: '/path2', active: true, checked: false},
+            {id: 3, path: '/path3', active: false, checked: false},
+            {id: 4, path: '/path4', active: false, checked: false}
+          ],
+          week: 0
         }
       });
+      const timetableKey = '2_1_0';
 
       expect(output.props.selector).toBe(state.selector);
-      expect(output.props.isFetching).toEqual(false);
-      expect(output.props.lastUpdated).toBe('12345678');
-      expect(output.props.data).toBe('data');
-    });
-
-    it('should render SelectBox wrap correctly', () => {
-      const { output, state } = setup({}, {
-        timetable: {
-          '1_1_1': {
-            isFetching: false,
-            didInvalidate: false,
-            lastUpdated: '12345678',
-            data: 'data'
-          }
-        }
-      });
-
-      expect(output.props.selector).toBe(state.selector);
-      expect(output.props.isFetching).toEqual(true);
-      expect(output.props.lastUpdated).toBe(undefined);
+      expect(output.props.timetableKey).toBe(timetableKey);
       expect(output.props.data).toBe(undefined);
+      expect(output.props.isFetching).toBe(true);
+      expect(output.props.didInvalidate).toBe(undefined);
+      expect(output.props.isOld).toBe(undefined);
+      expect(output.props.lastUpdated).toBe(undefined);
+      expect(output.props.modal).toBe(state.modal);
     });
   });
 });

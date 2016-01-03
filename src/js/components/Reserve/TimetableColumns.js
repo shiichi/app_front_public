@@ -1,11 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 
-class TimetableColmuns extends Component {
-
+class TimetableColumns extends Component {
   handleSubmit(e) {
     e.preventDefault();
-    const request = {id: e.target[0].value};
-    this.props.fetchTestToken(request);
+    const { fetchTestToken } = this.props;
+    fetchTestToken({id: e.target[0].value});
   }
 
   renderClose() {
@@ -66,9 +65,9 @@ class TimetableColmuns extends Component {
   }
 }
 
-TimetableColmuns.propTypes = {
+TimetableColumns.propTypes = {
   columns: PropTypes.array.isRequired,
   fetchTestToken: PropTypes.func.isRequired
 };
 
-export default TimetableColmuns;
+export default TimetableColumns;
