@@ -1,6 +1,6 @@
 import expect from 'expect';
-import * as types from '../../src/js/constants/ActionTypes';
-import * as actions from '../../src/js/actions/message';
+import * as types from '../../../src/js/constants/ActionTypes';
+import * as actions from '../../../src/js/actions/message';
 
 describe('message actions', () => {
   it('deleteMessage should create DELETE_MESSAGE action', () => {

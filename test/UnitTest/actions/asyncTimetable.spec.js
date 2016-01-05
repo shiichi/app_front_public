@@ -1,12 +1,12 @@
 import expect from 'expect';
 import { applyMiddleware } from 'redux';
-import * as actions from '../../src/js/actions/timetable';
-import * as types from '../../src/js/constants/ActionTypes';
 import nock from 'nock';
 import thunk from 'redux-thunk';
 const middlewares = [ thunk ];
-import { DOMAIN_NAME } from '../../src/config/env';
-import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../src/config/url';
+import * as actions from '../../../src/js/actions/timetable';
+import * as types from '../../../src/js/constants/ActionTypes';
+import { DOMAIN_NAME } from '../../../src/config/env';
+import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../../src/config/url';
 
 function mockStore(getState, expectedActions, done) {
   if (!Array.isArray(expectedActions)) {

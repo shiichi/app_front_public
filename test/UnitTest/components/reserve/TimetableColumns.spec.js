@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import TimetableColumns from '../../../src/js/components/Reserve/TimetableColumns';
+import TimetableColumns from '../../../../src/js/components/Reserve/TimetableColumns';
 
 function setup(propOverrides) {
   const props = Object.assign({

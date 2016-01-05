@@ -7,59 +7,28 @@ class TimetableColumns extends Component {
     fetchTestToken({id: e.target[0].value});
   }
 
-  renderClose() {
-    return (
-      <div className="rsv rsv-close" ><p>ー</p></div>
-    );
-  }
-
-  renderReserved() {
-    return (
-      <div className="rsv rsv-reserved" ><p>予約済み</p></div>
-    );
-  }
-
-  renderMyReservation() {
-    return (
-      <div className="rsv rsv-myreservation" ><p>自分の予約</p></div>
-    );
-  }
-
-  renderOpen(id, time) {
-    return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <input type="hidden" name="id" value={ id } />
-        <input type="submit" value={ time } className="rsv rsv-open" />
-      </form>
-    );
-  }
-
   render() {
     const { columns } = this.props;
-    const renderTimetableNodes = [];
-
-    for (let i of columns) {
-      switch (i.c) {
-      case '0':
-        renderTimetableNodes.push( this.renderClose(i.t) );
-        break;
-      case '1':
-        renderTimetableNodes.push( this.renderReserved(i.t) );
-        break;
-      case '2':
-        renderTimetableNodes.push( this.renderMyReservation(i.t) );
-        break;
-      case '3':
-        renderTimetableNodes.push( this.renderOpen(i.id, i.t) );
-        break;
-      default:
-        break;
+    const renderColumns = columns.map((t, i) => {
+      if (t.c === '0'){
+        return <div className="rsv rsv-close"><p>ー</p></div>
+      } else if (t.c === '1') {
+        return <div className="rsv rsv-reserved"><p>予約済み</p></div>
+      } else if (t.c === '2') {
+        return <div className="rsv rsv-myreservation"><p>自分の予約</p></div>
+      } else if (t.c === '3') {
+        return (
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <input type="hidden" name="id" value={ t.id } />
+            <input type="submit" value={ t.t } className="rsv rsv-open"/>
+          </form>
+        )
       }
-    }
+    })
 
     return (
       <div className="time-table-colmuns">
-        {renderTimetableNodes}
+        {renderColumns}
       </div>
     );
   }

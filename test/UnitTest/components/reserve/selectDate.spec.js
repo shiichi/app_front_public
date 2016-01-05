@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
-import SelectDate from '../../../src/js/components/Reserve/SelectDate';
+import SelectDate from '../../../../src/js/components/Reserve/SelectDate';
 
 function setup(propOverrides) {
   const props = Object.assign({
@@ -29,7 +29,7 @@ describe('components', () => {
       const { output, props } = setup();
       let expectedElement = (
         <div className="page-nation clearfix" onClick={function noRefCheck() {}}>
-          <div className="btn-buck" id="btn-loop"/>
+          <div className="btn-buck"/>
           <div className="btn-next" />
         </div>
       );

@@ -1,6 +1,6 @@
 import expect from 'expect';
-import todos from '../../src/js/reducers/timetables';
-import * as types from '../../src/js/constants/ActionTypes';
+import todos from '../../../src/js/reducers/timetables';
+import * as types from '../../../src/js/constants/ActionTypes';
 
 describe('timetable reducer', () => {
   it('should handle initial state', () => {

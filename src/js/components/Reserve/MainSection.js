@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { getLocal, delLocal } from '../../utils/WebStrageUtils';
 //components
 import SelectBox from './SelectBox';
-import ReservationBox from './ReservationBox';
+import SelectDate from './SelectDate';
+import TimetableBox from './TimetableBox';
 
 class MainSection extends Component {
   componentDidMount() {
@@ -35,13 +36,18 @@ class MainSection extends Component {
           selector = {selector}
           isFetching = {isFetching}
           fetchTimetableIfNeeded = {fetchTimetableIfNeeded}/>
-        <ReservationBox
-          data = {data}
-          isFetching = {isFetching}
-          didInvalidate = {didInvalidate}
-          isOld = {isOld}
-          fetchTimetableIfNeeded = {fetchTimetableIfNeeded}
-          fetchTestToken = {fetchTestToken}/>
+        <div className="timetable-box">
+          <SelectDate
+            isFetching = {isFetching}
+            fetchTimetableIfNeeded = {fetchTimetableIfNeeded}/>
+          <TimetableBox
+            isFetching = {isFetching}
+            didInvalidate = {didInvalidate}
+            isOld = {isOld}
+            data = {data}
+            fetchTimetableIfNeeded = {fetchTimetableIfNeeded}
+            fetchTestToken = {fetchTestToken}/>
+        </div>
       </div>
     );
   }

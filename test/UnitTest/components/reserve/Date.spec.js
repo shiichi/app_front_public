@@ -1,7 +1,7 @@
 import expect from 'expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
-import Date from '../../../src/js/components/Reserve/Date';
+import Date from '../../../../src/js/components/Reserve/Date';
 
 function setup(propOverrides) {
   const props = Object.assign({

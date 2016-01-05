@@ -2,14 +2,15 @@ import expect from 'expect';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 //components
-import TimetableBox from '../../../src/js/components/Reserve/TimetableBox';
-import TimetableColumns from '../../../src/js/components/Reserve/TimetableColumns';
+import TimetableBox from '../../../../src/js/components/Reserve/TimetableBox';
+import TimetableColumns from '../../../../src/js/components/Reserve/TimetableColumns';
 
 function setup(propOverrides) {
   const props = Object.assign({
     isFetching: false,
     didInvalidate: false,
-    fetchTimetableAgain: expect.createSpy(),
+    fetchTestToken: expect.createSpy(),
+    fetchTimetableIfNeeded: expect.createSpy(),
     data: {
       date: [
         {c: 'className', d: 'date'},

@@ -3,10 +3,10 @@ import { applyMiddleware } from 'redux';
 import nock from 'nock';
 import thunk from 'redux-thunk';
 const middlewares = [ thunk ];
-import * as actions from '../../src/js/actions/reservation';
-import * as types from '../../src/js/constants/ActionTypes';
-import { DOMAIN_NAME } from '../../src/config/env';
-import { REQUEST_RESERVATIONS, REQUEST_TEST_TOKEN, RESERVE, CANCEL } from '../../src/config/url';
+import * as actions from '../../../src/js/actions/reservation';
+import * as types from '../../../src/js/constants/ActionTypes';
+import { DOMAIN_NAME } from '../../../src/config/env';
+import { REQUEST_RESERVATIONS, REQUEST_TEST_TOKEN, RESERVE, CANCEL } from '../../../src/config/url';
 
 function mockStore(getState, expectedActions, done) {
   if (!Array.isArray(expectedActions)) {

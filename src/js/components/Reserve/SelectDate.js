@@ -14,7 +14,7 @@ class SelectDate extends Component {
   render() {
     return (
       <div className="page-nation clearfix" onClick={this.handleClicked.bind(this)}>
-        <div className="btn-buck" id="btn-loop"></div>
+        <div className="btn-buck"></div>
         <div className="btn-next"></div>
       </div>
     );

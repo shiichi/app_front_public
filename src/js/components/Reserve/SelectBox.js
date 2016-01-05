@@ -14,8 +14,8 @@ class SelectBox extends Component {
   renderType() {
     const { flightTypes } = this.props.selector;
     if (flightTypes) {
-      return flightTypes.map(t =>
-        <div>
+      return flightTypes.map((t, i) =>
+        <div key={i}>
           <input type="radio" id={t.en} name="type" value={t.id} checked={t.checked} />
           <label htmlFor={t.en} >{t.name}</label>
         </div>
@@ -45,9 +45,9 @@ class SelectBox extends Component {
       for (let p of places) {
         const { nblock, block } = style(p.path);
         if (p.active) {
-          renderPlace.push( <input type="radio" style={nblock} name="place" value={p.id} key={p.id} checked={p.checked} /> );
+          renderPlace.push( <input type="radio" style={nblock} name="place" key={p.id} value={p.id} checked={p.checked} /> );
         } else {
-          renderPlace.push( <input type="radio" style={block} name="place" value={p.id} key={p.id} checked={p.checked} /> );
+          renderPlace.push( <input type="radio" style={block} name="place" key={p.id} value={p.id} checked={p.checked} /> );
         }
       }
       return renderPlace;

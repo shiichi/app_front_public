@@ -5,7 +5,7 @@ import expectJSX from 'expect-jsx';
 expect.extend(expectJSX);
 import Icon from 'react-fa';
 //components
-import SelectBox from '../../../src/js/components/Reserve/SelectBox';
+import SelectBox from '../../../../src/js/components/Reserve/SelectBox';
 
 function setup(propOverrides) {
   const props = Object.assign({

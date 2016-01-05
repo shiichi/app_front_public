@@ -4,9 +4,10 @@ import TestUtils from 'react-addons-test-utils';
 import expectJSX from 'expect-jsx';
 expect.extend(expectJSX);
 //components
-import MainSection from '../../../src/js/components/Reserve/MainSection';
-import SelectBox from '../../../src/js/components/Reserve/SelectBox';
-import ReservationBox from '../../../src/js/components/Reserve/ReservationBox';
+import MainSection from '../../../../src/js/components/Reserve/MainSection';
+import SelectBox from '../../../../src/js/components/Reserve/SelectBox';
+import SelectDate from '../../../../src/js/components/Reserve/SelectDate';
+import TimetableBox from '../../../../src/js/components/Reserve/TimetableBox';
 
 function setup(propOverrides) {
   const props = Object.assign({
@@ -57,7 +58,32 @@ function callComponentWillReceiveProps(props = {}, nextProps = {}) {
 
 describe('components', () => {
   describe('MainSection', () => {
-    it('componentDidMount', () => {
+    it('should render components correctly', () => {
+      const { output, props } = setup();
+      let expectedElement = (
+      <div>
+        <SelectBox
+          selector = {props.selector}
+          isFetching = {props.isFetching}
+          fetchTimetableIfNeeded = {function noRefCheck() {}}/>
+        <div className="timetable-box">
+          <SelectDate
+            isFetching = {props.isFetching}
+            fetchTimetableIfNeeded = {function noRefCheck() {}}/>
+          <TimetableBox
+            isFetching = {props.isFetching}
+            didInvalidate = {props.didInvalidate}
+            isOld = {props.isOld}
+            data = {props.data}
+            fetchTimetableIfNeeded = {function noRefCheck() {}}
+            fetchTestToken = {function noRefCheck() {}}/>
+        </div>
+      </div>
+      );
+      expect(output).toEqualJSX(expectedElement);
+    });
+
+    it('should call fetchDefaultStatus at componentDidMount', () => {
       const props = {
         selector: {
           flightTypes: [{id: 1, name: 'type1', en: 'en1', checked: true}],
@@ -70,6 +96,7 @@ describe('components', () => {
         actions: {
           fetchDefaultStatus: expect.createSpy(),
           fetchTestToken: expect.createSpy(),
+          fetchTimetableIfNeeded: expect.createSpy(),
           reserve: expect.createSpy(),
           modalOff: expect.createSpy(),
         },
@@ -79,7 +106,7 @@ describe('components', () => {
       expect(props.actions.fetchDefaultStatus).toHaveBeenCalledWith();
     });
 
-    it('ComponentWillReceiveProps', (doen) => {
+    it('should call modalOff and reserve at ComponentWillReceiveProps', (doen) => {
       const props = {
         selector: {
           flightTypes: [{id: 1, name: 'type1', en: 'en1', checked: true}],
@@ -92,6 +119,7 @@ describe('components', () => {
         actions: {
           fetchDefaultStatus: expect.createSpy(),
           fetchTestToken: expect.createSpy(),
+          fetchTimetableIfNeeded: expect.createSpy(),
           reserve: expect.createSpy(),
           modalOff: expect.createSpy(),
         },
@@ -108,33 +136,6 @@ describe('components', () => {
         expect(nextProps.actions.reserve).toHaveBeenCalledWith({token: 'token'}, '1_1_0');
         doen();
       }, 1500);
-    });
-
-    it('should render components correctly', () => {
-      const { output, props } = setup();
-      let expectedElement = (
-      <div>
-        <SelectBox
-          selector = {props.selector}
-          isFetching = {props.isFetching}
-          fetchTimetableIfNeeded = {function noRefCheck() {}}/>
-        <ReservationBox
-          data = {props.data}
-          isFetching = {props.isFetching}
-          didInvalidate = {props.didInvalidate}
-          isOld = {props.isOld}
-          fetchTimetableIfNeeded = {function noRefCheck() {}}
-          fetchTestToken = {function noRefCheck() {}}/>
-      </div>
-      );
-      expect(output).toEqualJSX(expectedElement);
-    });
-
-    it('should call fetchTestToken correctly', () => {
-      const { output, props } = setup();
-      const request = {id: '123'};
-      output.props.children['1'].props.fetchTestToken(request);
-      expect(props.actions.fetchTestToken).toHaveBeenCalledWith(request);
     });
   });
 });

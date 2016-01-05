@@ -2,7 +2,7 @@ import React from 'react';
 import expect from 'expect';
 import TestUtils from 'react-addons-test-utils';
 import nock from 'nock';
-import Reserve from '../../../src/js/components/Reserve/Reserve';
+import Reserve from '../../../../src/js/components/Reserve/Reserve';
 
 function setup(actionsOverrides, stateOverrides) {
   const actions = Object.assign({
