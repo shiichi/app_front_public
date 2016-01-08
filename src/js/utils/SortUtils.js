@@ -17,16 +17,6 @@ export function sortLogs(logs, page, orderBy, asc) {
   }
 }
 
-export function filterLogsByMethod(logs, method) {
-  return logs.filter(l => l.method = method)
-}
-
-export function filterLogsByAction(logs, action) {
-  if(action = 'buy') {
-    return logs.filter(l => l.action > 0)
-  } else if(action = 'buy') {
-    return logs.filter(l => l.action < 0)    
-  } else {
-    return log
-  }
+export function filterLogs(logs, method) {
+  return　logs.filter(l => method.indexOf(l) > 0)
 }

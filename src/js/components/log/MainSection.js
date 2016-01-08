@@ -1,17 +1,17 @@
 import React, { PropTypes, Component } from 'react';
 import { Table, Pagination } from 'react-bootstrap';
-import { sortLogs, filterLogsByMethod, filterLogsByAction } from '../../utils/SortUtils';
+import { sortLogs } from '../../utils/SortUtils';
 
 class MainSection extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       activePage: 1,
-      items: 1,
+      items: props.logs.length / 3,
       orderBy: 'created_at',
       asc: true,
       method: ['webpay', 'pin', 'paypal', 'led', 'vege', 'fish'],
-      logs: props.logs || null
+      logs: sortLogs(props.logs, 1, 'created_at', true) || null
     };
   }
 
@@ -23,40 +23,47 @@ class MainSection extends Component {
   componentWillReceiveProps(nextProps) {
     const { logs } = nextProps;
     const { orderBy, asc } = this.state;
+
     this.state = {
-      logs: sortLogs(logs, 1, orderBy, asc),
-      items: logs.length / 3
+      activePage: 1,
+      items: logs.length / 3,
+      orderBy: orderBy,
+      asc: asc,
+      method: ['webpay', 'pin', 'paypal', 'led', 'vege', 'fish'],
+      logs: sortLogs(logs, 1, orderBy, asc) || null
     };
   }
 
   handlePage(e, selectedEvent) {
     const page = selectedEvent.eventKey;
-    const { logs } = this.props;
-    const { orderBy, asc } = this.state;
+    const { orderBy, asc, method } = this.state;
+    const logs = this.props.logs.filter(l => method.indexOf(l.method) > -1)
 
     this.setState({
       activePage: page,
-      logs: sortLogs(logs, page, orderBy, asc)
+      logs: sortLogs(logs, page, orderBy, asc),
+      items: logs.length / 3
     });
   }
 
   handleFilter(e) {
     const { checked, value } = e.target;
-    const { logs } = this.props;
-    const { method } = this.state;
-    console.log(this.state)
+    const { activePage, orderBy, asc } = this.state;
+    let method;
 
     if(checked) {
-      const a = method.slice().push(value);
-      //const a = method.concat([value]);
+      method = this.state.method.slice();
+      method.push(value);
     } else {
-      const a = method.filter(m => m != value);
+      method = this.state.method.filter(m => m != value);
     }
 
-    filterLogsByMethod()
-
+    const logs = this.props.logs.filter(l => method.indexOf(l.method) > -1)
+    
     this.setState({
-      method: ['webpay', 'pin', 'payoal'],
+      method: method,
+      logs: sortLogs(logs, activePage, orderBy, asc),
+      items: logs.length / 3
     });
   }
 
@@ -79,24 +86,24 @@ class MainSection extends Component {
         <div className="center-block" style={{width: '400px'}} onChange={this.handleFilter.bind(this)}>
           <div>
             <label className="checkbox-inline">
-              <input type="checkbox" name="method" value="credit"/>クレジットカード
+              <input type="checkbox" name="method" value="webpay" defaultChecked/>クレジットカード
             </label>
             <label className="checkbox-inline">
-              <input type="checkbox" name="method" value="paypal"/>PayPal
+              <input type="checkbox" name="method" value="paypal" defaultChecked/>PayPal
             </label>
             <label className="checkbox-inline">
-              <input type="checkbox" name="method" value="pin" disabled=""/>PINコード
+              <input type="checkbox" name="method" value="pin" defaultChecked/>PINコード
             </label>
           </div>
           <div>
             <label className="checkbox-inline">
-              <input type="checkbox" name="method" value="led"/>LEDチカチカ
+              <input type="checkbox" name="method" value="led" defaultChecked/>LEDチカチカ
             </label>
             <label className="checkbox-inline">
-              <input type="checkbox" name="method" value="vege"/>植物育成
+              <input type="checkbox" name="method" value="vege" defaultChecked/>植物育成
             </label>
             <label className="checkbox-inline">
-              <input type="checkbox" name="method" value="fish" disabled=""/>魚鑑賞
+              <input type="checkbox" name="method" value="fish" defaultChecked/>魚鑑賞
             </label>
           </div>
         </div>
