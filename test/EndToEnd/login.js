@@ -42,16 +42,21 @@ export default class LoginObject {
     await this.typePassword(password);
 
     let submit = await $('.btn-primary');
-    return submit.click();
+    return await submit.click();
   }
 
-  async addTicket() {
+  async clickAddTicket() {
     let button = await $('.btn-add');
-    return button.click();
+    return await button.click();
   }
 
-  async grtNum() {
-    var input = element(by.css('.input-area')).$$('input')
+  async clickSubTicket() {
+    let button = await $('.btn-sub');
+    return await button.click();
+  }
+
+  async getPayment() {
+    var input = element(by.css('.payment')).$$('output')
     return await input.getAttribute('value');
   }
 
@@ -59,6 +64,18 @@ export default class LoginObject {
     let ticket = await $('.ticket');
     return await ticket.click();
   }
+
+  async clickInputCardInfo() {
+    //var button = element.all(by.css('#WP_checkoutBox input')).first();
+    let button = element(by.css('#WP_checkoutBox')).$$('input');
+    return await button.click();
+  }
+
+  async InputCardInfo() {
+    let button = element(by.css('#webpay-checkout'));
+    return await button.click();
+  }
 }
+
 
 

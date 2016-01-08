@@ -50,6 +50,8 @@ export const REQUEST_TICKET_FAIL = 'REQUEST_TICKET_FAIL';
 export const REQUEST_LOG = 'REQUEST_LOG';
 export const REQUEST_LOG_SUCCESS = 'REQUEST_LOG_SUCCESS';
 export const REQUEST_LOG_FAIL = 'REQUEST_LOG_FAIL';
+export const SET_LOG_PAGE = 'SET_LOG_PAGE';
+export const CLEAR_LOG = 'CLEAR_LOG';
 
 //jwt token
 export const SET_TEST_TOKEN = 'SET_TEST_TOKEN';

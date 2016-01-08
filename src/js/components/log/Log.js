@@ -7,32 +7,34 @@ import Header from './Header';
 import MainSection from './MainSection';
 
 class Log extends Component {
-  componentWillMount() {
-    this.props.actions.fetchLog();
-  }
-
   render() {
-    const { log } = this.props;
-
+    const { logs, isFetching, didInvalidate, actions } = this.props;
     return (
       <div>
         <Header/>
-        <MainSection log={log}/>
+        <MainSection
+          logs={logs}
+          isFetching={isFetching}
+          didInvalidate={didInvalidate}
+          actions={actions}/>
       </div>
     );
   }
 }
 
 Log.propTypes = {
-  message: PropTypes.array,
-  log: PropTypes.array,
+  logs: PropTypes.array,
+  isFetching: PropTypes.bool.isRequired,
+  didInvalidate: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
-  const { log} = state;
+  const { logs } = state;
   return {
-    log
+    logs: logs.data,
+    isFetching: logs.isFetching,
+    didInvalidate: logs.didInvalidate
   };
 }
 

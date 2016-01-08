@@ -9,37 +9,54 @@ function addMessage(msg) {
   };
 }
 
-function requestLog() {
+export function clearLog() {
   return {
-    type: types.REQUEST_LOG
+    type: types.CLEAR_LOG
   };
 }
 
-function requestLogSuccess(data) {
+function setLogPage(page) {
+  return {
+    type: types.SET_LOG_PAGE,
+    page: page
+  };
+}
+
+function requestLog(page) {
+  return {
+    type: types.REQUEST_LOG,
+    page: page
+  };
+}
+
+function requestLogSuccess(data, page) {
   return {
     type: types.REQUEST_LOG_SUCCESS,
-    data: data
+    data: data,
+    page: page
   };
 }
 
-function requestLogFail() {
+function requestLogFail(page) {
   return {
-    type: types.REQUEST_LOG_FAIL
+    type: types.REQUEST_LOG_FAIL,
+    page: page
   };
 }
 
-export function fetchLog(request) {
+export function fetchLog(page) {
   return dispatch => {
-    dispatch(requestLog());
-    fetchWithJson(REQUEST_LOG, request)
+    dispatch(requestLog(page));
+    fetchWithJson(REQUEST_LOG)
       .then(response => response.json())
-      .then(result => dispatch(requestLogSuccess(result)))
+      .then(result => dispatch(requestLogSuccess(result, page)))
       .catch(ex => {
-        dispatch(requestLogFail());
+        dispatch(requestLogFail(page));
         const msg = {
           type: 'error',
           msg: 'ログの取得に失敗しました'
         };
+        dispatch(setLogPage(page));
         dispatch(addMessage(msg));
       });
   };
