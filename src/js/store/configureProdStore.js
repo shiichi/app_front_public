@@ -14,7 +14,7 @@ const rootReducer = combineReducers(allReducers);
 
 const createStoreWithMiddleware = compose(
   applyMiddleware(thunk, promise),
-  persistState(['user','jwtToken'])
+  persistState(['jwtToken'])
 )(createStore);
 
 export default function configureProdStore(initialState) {

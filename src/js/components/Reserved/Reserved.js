@@ -13,12 +13,13 @@ class Reserve extends Component {
   }
 
   render() {
-    const { reservation, actions: {cancel} } = this.props;
+    const { reservation, actions: {cancel, getJwtIfNeeded} } = this.props;
     return (
       <div>
         <Header/>
         <MainSection
           reservation = {reservation}
+          getJwtIfNeeded={getJwtIfNeeded}
           cancel = {cancel} />
       </div>
     );

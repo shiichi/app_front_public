@@ -2,9 +2,16 @@ import React, { PropTypes, Component } from 'react';
 
 class Panel extends Component {
   handleClick(e) {
-    const request = {id: e.target.title};
-    this.props.cancel(request);
+    window.open('/mypage/flight', '', 'width=500,height=400');
+    const { getJwtIfNeeded, status } = this.props;
+    getJwtIfNeeded(status.pivot.id);
   }
+
+  handleCancel(e) {
+    const { cancel, status } = this.props;
+    this.props.cancel({id: status.pivot.id});
+  }
+
   render() {
     const { status } = this.props;
 
@@ -12,8 +19,8 @@ class Panel extends Component {
       <div className="panel panel-default reservation">
         <div className="panel-heading">
           <h5 className="panel-title">{ status.flight_at}</h5>
-          <button type="button" className="btn btn-info btn-sm">
-            <a href="/mypage/flight">フライト画面へ</a>
+          <button type="button" className="btn btn-info btn-sm" onClick={this.handleClick.bind(this)}>
+              フライト画面へ
           </button>
         </div>
         <div className="panel-body">
@@ -90,7 +97,7 @@ class Panel extends Component {
             </div>
           </div>
           <div className="row cancel">
-            <p title={status.pivot.id} onClick={this.handleClick.bind(this)}>キャンセル</p>
+            <p onClick={this.handleCancel.bind(this)}>キャンセル</p>
           </div>
         </div>
       </div>

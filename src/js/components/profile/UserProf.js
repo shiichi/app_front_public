@@ -55,7 +55,14 @@ class UserProf extends Component {
               street: {value: result.street, err: false}
             })
           )
-          .catch(ex => ex);
+          .catch(ex => 
+            set({
+              post1: {value: post1, err: '郵便番号が正しくありません'},
+              state: {value: null, err: false},
+              city: {value: null, err: false},
+              street: {value: null, err: false}
+            })
+          );
       })(this.setState.bind(this));
     } else {
       console.log('郵便番号がおかしい');

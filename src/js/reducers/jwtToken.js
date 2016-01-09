@@ -5,7 +5,7 @@ import {
   DELETE_CONF_TOKEN
 } from '../constants/ActionTypes';
 
-const initialState = {testToken: null};
+const initialState = {};
 
 export default function jwtToken(state = initialState, action) {
   switch (action.type) {
@@ -20,12 +20,9 @@ export default function jwtToken(state = initialState, action) {
     });
 
   case SET_CONF_TOKEN:
-    let obj = {};
-    obj[action.key] = action.value;
-    return Object.assign({}, state, obj);
+    return Object.assign({}, state, action.token);
 
   case DELETE_CONF_TOKEN:
-    delete state[action.key];
     return state;
 
   default:

@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import { fetchWithJson } from '../utils/fetchUtils';
-import { REQUEST_TEST_TOKEN, RESERVE, REQUEST_RESERVATIONS, CANCEL } from '../../config/url';
+import { REQUEST_TEST_TOKEN, RESERVE, REQUEST_RESERVATIONS, GETJWT, CANCEL } from '../../config/url';
 
 function addMessage(msg) {
   return {
@@ -22,11 +22,10 @@ function deleteTestToken() {
   };
 }
 
-function setConfToken(key, value) {
+function setConfToken(token) {
   return {
     type: types.SET_CONF_TOKEN,
-    key: key,
-    value: value
+    token: token
   };
 }
 
@@ -132,7 +131,7 @@ export function reserve(request, key) {
         }
         if (result.msg.type === 'success') {
           dispatch(deleteTestToken());
-          dispatch(setConfToken(result.jwt.id, result.jwt.token));
+          dispatch(setConfToken(result.jwt));
           dispatch(updateUserInfoReservations(result.reservations));
           dispatch(timetableIsOld(key));
           dispatch(addMessage(result.msg));
@@ -145,6 +144,29 @@ export function reserve(request, key) {
         };
         dispatch(addMessage(msg));
       }); };
+}
+
+export function getJwtIfNeeded(id) {
+  return (dispatch, getState) => {
+    if (!getState().jwtToken[id]) {
+      return dispatch(getJwt());
+    }
+  };
+}
+
+function getJwt() {
+  return dispatch => {
+    fetchWithJson(GETJWT)
+      .then(response => response.json())
+      .then(result => dispatch(setConfToken(result)))
+      .catch(ex => {
+        const msg = {
+          type: 'error',
+          msg: '予約トークンを取得できません'
+        };
+        dispatch(addMessage(msg));
+      });
+  };
 }
 
 export function cancel(request) {
