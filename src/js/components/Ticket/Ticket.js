@@ -21,6 +21,7 @@ class Ticket extends Component {
 }
 
 Ticket.propTypes = {
+  ticketPanel: PropTypes.string.isRequired,
   actions: PropTypes.object.isRequired
 };
 

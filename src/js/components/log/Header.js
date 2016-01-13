@@ -4,8 +4,8 @@ class Header extends Component {
   render() {
     return (
       <div className="content-head">
-        <h3>チケットログ</h3>
-        <p>チケットの利用履歴を確認できます</p>
+        <h3>イベントログ</h3>
+        <p>各種ログを確認できます</p>
       </div>
     );
   }

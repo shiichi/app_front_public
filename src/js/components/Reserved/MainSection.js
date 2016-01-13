@@ -1,4 +1,6 @@
 import React, { PropTypes, Component } from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+//components
 import Panel from './Panel';
 
 class MainSection extends Component {
@@ -10,14 +12,21 @@ class MainSection extends Component {
 
     return (
       <div>
+      <ReactCSSTransitionGroup
+        component="div"
+        transitionName="example"
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}>
         { renderPanel }
+      </ReactCSSTransitionGroup>  
       </div>
     );
   }
 }
 
 MainSection.propTypes = {
-  reservation: PropTypes.array.isRequired,
+  reservation: PropTypes.object,
+  getJwtIfNeeded: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired
 };
 

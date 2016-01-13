@@ -55,7 +55,6 @@ class MainSection extends Component {
 }
 
 MainSection.propTypes = {
-  ticketPanel: PropTypes.string.isRequired,
   actions: PropTypes.object.isRequired
 };
 

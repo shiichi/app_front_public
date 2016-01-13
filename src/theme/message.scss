@@ -87,13 +87,13 @@
 }
 
 @keyframes slidein {
-from {
-position: fixed;
-right: -400px;
-}
-to {
-position: fixed;
-  right: 10px;
+  from {
+    position: fixed;
+    right: -400px;
+  }
+  to {
+    position: fixed;
+    right: 10px;
   }
 }
 

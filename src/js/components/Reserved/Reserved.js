@@ -6,7 +6,7 @@ import * as ReservationActions from '../../actions/reservation';
 import Header from './Header';
 import MainSection from './MainSection';
 
-class Reserve extends Component {
+class Reserved extends Component {
   componentDidMount() {
     const { fetchReservations } = this.props.actions;
     fetchReservations();
@@ -26,9 +26,9 @@ class Reserve extends Component {
   }
 }
 
-Reserve.propTypes = {
+Reserved.propTypes = {
   message: PropTypes.array,
-  reservation: PropTypes.array.isRequired,
+  reservation: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
@@ -45,4 +45,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(Reserve);
+export default connect( mapStateToProps, mapDispatchToProps)(Reserved);

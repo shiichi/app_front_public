@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 import { fetchWithJson } from '../utils/fetchUtils';
-import { REQUEST_USER_INFO, UPDATE_USER_PROF, CHANGE_PASSWORD } from '../../config/url';
+import { REQUEST_USER_INFO, UPDATE_USER_PROF, CHANGE_PASSWORD, DEACTIVE_USER } from '../../config/url';
 
 export function addMessage(msg) {
   return {
@@ -79,3 +79,20 @@ export function postChangePassword(request) {
       });
   };
 }
+/*
+export function deactiveUser() {
+  return dispatch => {
+    dispatch(changePassword());
+    fetchWithJson(DEACTIVE_USER)
+      .then(response => response.json())
+      .then(result => dispatch(addMessage(result)))
+      .catch(ex => {
+        const msg = {
+          type: 'error',
+          msg: 'アカウントの削除に失敗しました'
+        };
+        dispatch(addMessage(msg));
+      });
+  };
+}
+*/
