@@ -3,8 +3,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import Root from './js/containers/Root';
 //css
-import 'admin-lte';
-//import { AdminLTE, Skin } from 'admin-lte';
+import './theme/AdminLTE/dist/css/AdminLTE.min.css';
+import './theme/AdminLTE/dist/css/skins/skin-black.min.css';
 
 render(
   <Root/>,
