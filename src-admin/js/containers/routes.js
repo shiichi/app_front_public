@@ -1,11 +1,16 @@
-export const Header = {
-  path: 'header',
+export const Dashboard = {
+  path: 'dashboard',
   getComponent(location, cb) {
-    cb(null, require('../components/Modals/Header.js'));
+    cb(null, require('../components/Dashboard/Dashboard'));
   }
 };
 
-
+export const AllUser = {
+  path: 'dashboard',
+  getComponent(location, cb) {
+    cb(null, require('../components/Dashboard/Dashboard'));
+  }
+};
 
 export const Reserved = {
   path: 'reserved',

@@ -1,7 +1,28 @@
+//change language
+export const CANGE_LANG = 'CANGE_LANG';
+
 //request user infomation
 export const REQUEST_USERINFO = 'REQUEST_USERINFO';
 export const REQUEST_USERINFO_SUCCESS = 'REQUEST_USERINFO_SUCCESS';
 export const REQUEST_USERINFO_FAIL = 'REQUEST_USERINFO_FAIL';
+
+//change page status
+export const SIDEVAR_ON = 'SIDEVAR_ON';
+export const SIDEVAR_OFF = 'SIDEVAR_OFF';
+export const CHANGE_SIDEVAR = 'CHANGE_SIDEVAR';
+
+//alert
+export const ADD_ACCESS_ALERT = 'ADD_ACCESS_ALERT';
+export const DELETE_ACCESS_ALERT = 'DELETE_ACCESS_ALERT';
+
+
+//Access user
+export const REQUEST_USERS = 'REQUEST_USERS';
+export const REQUEST_USERS_SUCCESS = 'REQUEST_USERS_SUCCESS';
+export const REQUEST_USERS_FAIL = 'REQUEST_USERS_FAIL';
+export const DO_ASYNC_ACTION = 'DO_ASYNC_ACTION';
+export const DONE_ASYNC_ACTION = 'DONE_ASYNC_ACTION';
+
 
 export const UPDATE_USERINFO_TICKETS = 'UPDATE_USERINFO_TICKETS';
 export const UPDATE_USERINFO_RESERVATION = 'UPDATE_USERINFO_RESERVATION';

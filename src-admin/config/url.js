@@ -1,3 +1,10 @@
+export const url_REQUEST_USERS = '/admin/single/access/users';
+export const url_MARK_USER = '/admin/single/access/user/mark';
+export const url_DELETE_USER = '/admin/single/access/user/delete';
+export const url_RESTORE_USER = '/admin/single/access/user/restore';
+export const url_PERMANENTLY_DELETE_USER = '/admin/single/access/user/permanentlyDelete';
+
+
 export const REQUEST_TIMETABLE = '/api/getTimetable';
 export const REQUEST_DEFAULT_STATUS = '/api/getDefaultStatus';
 export const REQUEST_USER_INFO = '/api/getUserInfo';

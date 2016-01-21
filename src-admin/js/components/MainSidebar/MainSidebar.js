@@ -10,8 +10,8 @@ class MainSidebar extends Component {
   }
 
   render() {
-    const { name, status:{reservations, remainingTickets} } = this.props.user;
-    console.log(this.props.user)
+    const { name, status:{reservations, remainingTickets} } = this.props.myProfile;
+    //console.log(this.props.user)
     return (
       <aside className="main-sidebar">
         <section className="sidebar">
@@ -40,7 +40,7 @@ class MainSidebar extends Component {
 }
 
 MainSidebar.propTypes = {
-  user: PropTypes.object.isRequired,
+  myProfile: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 

@@ -1,47 +1,39 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
+import Icon from 'react-fa';
 //components
 
 class SidebarMenu extends Component {
   render() {
     return (
       <ul className="sidebar-menu">
-        <li className="header">MAIN NAVIGATION</li>
-        <li className="active treeview">
-          <a href="#">
-            <i className="fa fa-dashboard"></i> <span>Dashboard</span> <i className="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul className="treeview-menu">
-            <li className="active"><a href="index.html"><i className="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="index2.html"><i className="fa fa-circle-o"></i> Dashboard v2</a></li>
-          </ul>
+        <li className="header">General</li>
+        <li className="link dashboard">
+          <Link to="/dashboard" activeClassName="active" ><Icon name="calendar" /> Dashboard</Link>
         </li>
-        <li className="treeview">
+        <li className="link reserved">
+          <Link to="/access/users" activeClassName="active" ><Icon name="calendar" /> Access Management</Link>
+        </li>
+        <li className="link flight">
+          <Link to="/flight" activeClassName="active" ><Icon name="calendar" /> Flight Management</Link>
+        </li>
+        <li className="link pin">
+          <Link to="/pin" activeClassName="active" ><Icon name="calendar" /> PinCode Management</Link>
+        </li>
+        <li className=" treeview">
           <a href="#">
-            <i className="fa fa-share"></i> <span>Multilevel</span>
-            <i className="fa fa-angle-left pull-right"></i>
+            <span>Log Viewer</span>
+            <i className="fa fa-angle-left pull-right" />
           </a>
-          <ul className="treeview-menu">
-            <li><a href="#"><i className="fa fa-circle-o"></i> Level One</a></li>
-            <li>
-              <a href="#"><i className="fa fa-circle-o"></i> Level One <i className="fa fa-angle-left pull-right"></i></a>
-              <ul className="treeview-menu">
-                <li><a href="#"><i className="fa fa-circle-o"></i> Level Two</a></li>
-                <li>
-                  <a href="#"><i className="fa fa-circle-o"></i> Level Two <i className="fa fa-angle-left pull-right"></i></a>
-                  <ul className="treeview-menu">
-                    <li><a href="#"><i className="fa fa-circle-o"></i> Level Three</a></li>
-                    <li><a href="#"><i className="fa fa-circle-o"></i> Level Three</a></li>
-                  </ul>
-                </li>
-              </ul>
+          <ul className="treeview-menu " style={{display: 'none'}}>
+            <li className>
+              <a href="http://l.com/admin/log-viewer">Dashboard</a>
             </li>
-            <li><a href="#"><i className="fa fa-circle-o"></i> Level One</a></li>
+            <li className>
+              <a href="http://l.com/admin/log-viewer/logs">Logs</a>
+            </li>
           </ul>
         </li>
-        <li className="header">LABELS</li>
-        <li><a href="#"><i className="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i className="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i className="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
       </ul>
     );
   }
