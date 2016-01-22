@@ -27,9 +27,7 @@ class AssociatedRoles extends Component {
 }
 
 AssociatedRoles.propTypes = {
-  message: PropTypes.array,
-  reservation: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+
 };
 
 export default AssociatedRoles;

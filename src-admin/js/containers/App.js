@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 //actions
 import * as UserinfoActions from '../actions/userinfo';
 import * as PageStatusActions from '../actions/pageStatus';
+import * as AlertActions from '../actions/alert';
 //components
 import MainHeader from '../components/MainHeader/MainHeader';
 import MainSidebar from '../components/MainSidebar/MainSidebar';
@@ -37,7 +38,10 @@ class App extends Component {
   }
 
   render() {
-    const { myProfile, alert, routing, actions, children, actions: {changeSidebar} } = this.props;
+    const { lang, myProfile, alert, routing, actions, children, actions: {
+      changeSidebar, deleteAccessAlert}
+    } = this.props;
+
     return (
       <div className={this.state.sidebar}>
         <div id="dashboard-container">
@@ -50,8 +54,10 @@ class App extends Component {
               <ContentHeader routing={routing}/>
               <section className="content">
                 <Alert
+                  lang={lang}
                   alert={alert}
-                  path={routing.path}/>
+                  path={routing.path}
+                  deleteAccessAlert={deleteAccessAlert}/>
                 {children}
               </section>
             </div>
@@ -63,6 +69,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+  lang: PropTypes.string.isRequired,
   myProfile: PropTypes.object.isRequired,
   pageStatus: PropTypes.object.isRequired,
   alert: PropTypes.object,
@@ -72,6 +79,7 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    lang: state.lang,
     myProfile: state.myProfile,
     pageStatus: state.pageStatus,
     alert: state.alert,
@@ -80,7 +88,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign(UserinfoActions, PageStatusActions);
+  const actions = Object.assign(UserinfoActions, PageStatusActions, AlertActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };

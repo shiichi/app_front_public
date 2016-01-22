@@ -10,7 +10,7 @@ class OtherPermissions extends Component {
         <div className="col-xs-10">
           <div className="alert alert-info">
             <i className="fa fa-info-circle" />
-            {trans('en','alertMessage.access.users.permissionCheck')}
+            {trans('en','alert.access.users.permissionCheck')}
           </div>
 
           <div className="col-lg-4 col-md-6 col-xs-12">
@@ -77,9 +77,7 @@ class OtherPermissions extends Component {
 }
 
 OtherPermissions.propTypes = {
-  message: PropTypes.array,
-  reservation: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+
 };
 
 export default OtherPermissions;

@@ -18,7 +18,7 @@ class MainSection extends Component {
         transitionEnterTimeout={500}
         transitionLeaveTimeout={500}>
         { renderPanel }
-      </ReactCSSTransitionGroup>  
+      </ReactCSSTransitionGroup>
       </div>
     );
   }

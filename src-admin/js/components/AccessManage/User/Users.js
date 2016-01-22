@@ -86,7 +86,6 @@ class Users extends Component {
         </table>
         {!didInvalidate && isFetching && <Loading/>}
         {didInvalidate && <MessageInTable/>}
-        <Loading/>
         <div className="pull-right">
           <Pagination
             first

@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 //components
+import Language from './Language';
 import Message from './Message';
 import Notification from './Notification';
 import Task from './Task';
@@ -19,6 +20,7 @@ class Navigation extends Component {
           </div>
           <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
+              <Language/>
               <Message/>
               <Notification/>
               <Task/>

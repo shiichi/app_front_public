@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
 import { ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class BoxHeader extends Component {
   render() {
@@ -11,45 +11,45 @@ class BoxHeader extends Component {
           <div className="pull-right" style={{marginBottom: 10}}>
             <ButtonGroup>
               <DropdownButton bsStyle="primary" bsSize="small" title="Users">
-                <MenuItem eventKey="1">
-                  <Link to="/access/users" activeClassName="active" >All User</Link>
-                </MenuItem>
-                <MenuItem eventKey="2">
-                  <Link to="/access/users/active" activeClassName="active" >Active User</Link>
-                </MenuItem>
-                <MenuItem eventKey="3">
-                  <Link to="/access/users/deactivated" activeClassName="active" >Deactivated User</Link>
-                </MenuItem>
+                <LinkContainer to={{ pathname: '/access/users'}}>
+                  <MenuItem eventKey="1">All User</MenuItem>
+                </LinkContainer>
+                <LinkContainer to={{ pathname: '/access/users/active'}}>
+                  <MenuItem eventKey="2">Active User</MenuItem>
+                </LinkContainer>
+                <LinkContainer to={{ pathname: '/access/users/deactivated'}}>
+                  <MenuItem eventKey="3">Deactivated User</MenuItem>
+                </LinkContainer>
                 <MenuItem divider />
-                <MenuItem eventKey="4">
-                  <Link to="/access/user/create" activeClassName="active" >Create User</Link>
-                </MenuItem>
+                <LinkContainer to={{ pathname: '/access/user/create'}}>
+                  <MenuItem eventKey="4">Create User</MenuItem>
+                </LinkContainer>
                 <MenuItem divider />
-                <MenuItem eventKey="5">
-                  <Link to="/access/users/deleted" activeClassName="active" >Deleted Users</Link>
-                </MenuItem>
+                <LinkContainer to={{ pathname: '/access/users/deleted'}}>
+                  <MenuItem eventKey="5">Deleted Users</MenuItem>
+                </LinkContainer>
               </DropdownButton>
               <DropdownButton bsStyle="primary" bsSize="small" title="Roles">
-                <MenuItem eventKey="1">
-                  <Link to="/access/roles" activeClassName="active" >All Roles</Link>
-                </MenuItem>
-                <MenuItem eventKey="1">
-                  <Link to="/access/roles/create" activeClassName="active" >Create Role</Link>
-                </MenuItem>
+                <LinkContainer to={{ pathname: '/access/roles'}}>
+                  <MenuItem eventKey="1">All Roles</MenuItem>
+                </LinkContainer>
+                <LinkContainer to={{ pathname: '/access/roles/create'}}>
+                  <MenuItem eventKey="2">Create Role</MenuItem>
+                </LinkContainer>
               </DropdownButton>
               <DropdownButton bsStyle="primary" bsSize="small" title="Permissions">
-                <MenuItem eventKey="1">
-                  <Link to="/access/permissions" activeClassName="active" >All Groups</Link>
-                </MenuItem>
-                <MenuItem eventKey="1">
-                  <Link to="/access/permissions" activeClassName="active" >All Permissions</Link>
-                </MenuItem>
-                <MenuItem eventKey="1">
-                  <Link to="/access/permissions" activeClassName="active" >Create Group</Link>
-                </MenuItem>
-                <MenuItem eventKey="1">
-                  <Link to="/access/permissions" activeClassName="active" >Create Permission</Link>
-                </MenuItem>
+                <LinkContainer to={{ pathname: '/access/permissions'}}>
+                  <MenuItem eventKey="1">All Groups</MenuItem>
+                </LinkContainer>
+                <LinkContainer to={{ pathname: '/access/permissions'}}>
+                  <MenuItem eventKey="2">All Permissions</MenuItem>
+                </LinkContainer>
+                <LinkContainer to={{ pathname: '/access/permissions'}}>
+                  <MenuItem eventKey="3">Create Group</MenuItem>
+                </LinkContainer>
+                <LinkContainer to={{ pathname: '/access/permissions'}}>
+                  <MenuItem eventKey="4">Create Permission</MenuItem>
+                </LinkContainer>
               </DropdownButton>
             </ButtonGroup>
           </div>
