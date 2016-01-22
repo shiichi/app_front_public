@@ -3,11 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Pagination } from 'react-bootstrap';
 import Icon from 'react-fa';
-import { REQUEST_ALLUSERS } from '../../../../config/url';
-//Utility
-import { fetchWithJson } from '../../../utils/fetchUtils';
 //Actions
-import * as AccessActions from '../../../actions/access';
+import * as AccessUserActions from '../../../actions/access/user';
 //Components
 import UsersTableBody from './UsersTableBody';
 import MessageInTable from '../../Common/MessageInTable';
@@ -57,8 +54,8 @@ class Users extends Component {
 
   render() {
     const { activePage, perpage, items } = this.state;
-    const { myId, users, isFetching, didInvalidate, asyncStatus, actions } = this.props;
-
+    const { myId, myRoles, myPermissions, users, isFetching, didInvalidate, asyncStatus, actions } = this.props;
+    console.log(myRoles, myPermissions)
     return (
       <div className="table-responsive">
         <table className="table table-striped table-bordered table-hover">
@@ -69,7 +66,6 @@ class Users extends Component {
               <th>E-mail</th>
               <th>Confirmed</th>
               <th>Roles</th>
-              <th>Other Permissions</th>
               <th className="visible-lg">Created</th>
               <th className="visible-lg">Last Updated</th>
               <th>Actions</th>
@@ -78,6 +74,8 @@ class Users extends Component {
           {!didInvalidate && !isFetching && users && 
             <UsersTableBody
               myId={myId}
+              myRoles={myRoles}
+              myPermissions={myPermissions}
               users={users}
               asyncStatus={asyncStatus}
               activePage={activePage}
@@ -103,6 +101,8 @@ class Users extends Component {
 
 Users.propTypes = {
   myId: PropTypes.number.isRequired,
+  myRoles: PropTypes.array.isRequired,
+  myPermissions: PropTypes.array.isRequired,
   total: PropTypes.number.isRequired,
   users: PropTypes.string.isRequired,
   isFetching: PropTypes.bool.isRequired,
@@ -115,6 +115,8 @@ Users.propTypes = {
 function mapStateToProps(state) {
   return {
     myId: state.myProfile.id,
+    myRoles: state.myProfile.roles,
+    myPermissions: state.myProfile.permissions,
     total: state.users.total,
     users: state.users.users,
     isFetching: state.users.isFetching,
@@ -126,7 +128,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(AccessActions, dispatch)
+    actions: bindActionCreators(AccessUserActions, dispatch)
   };
 }
 

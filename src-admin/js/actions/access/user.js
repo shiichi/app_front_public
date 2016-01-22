@@ -1,6 +1,6 @@
-import * as types from '../constants/ActionTypes';
-import { fetchWithJson } from '../utils/fetchUtils';
-import { url_REQUEST_USERS, url_MARK_USER, url_DELETE_USER, url_RESTORE_USER, url_PERMANENTLY_DELETE_USER } from '../../config/url';
+import * as types from '../../constants/ActionTypes';
+import { fetchWithJson } from '../../utils/fetchUtils';
+import { url_REQUEST_USERS, url_MARK_USER, url_DELETE_USER, url_RESTORE_USER, url_PERMANENTLY_DELETE_USER } from '../../../config/url';
 
 function addAccessAlert(status, msg) {
   return {
@@ -221,6 +221,48 @@ export function permanentlyDeleteUser(id, activePage, perpage) {
       .catch(ex => {
         dispatch(doneAsyncAction(id));
         dispatch(addAccessAlert('fail', 'server.faildToAccess'));
+      });
+  };
+}
+
+
+
+function requestCreateUsers() {
+  return {
+    type: types.REQUEST_USERS,
+  };
+}
+
+function createUsersSuccess(total, users) {
+  return {
+    type: types.REQUEST_USERS_SUCCESS,
+    total,
+    users
+  };
+}
+
+function createUsersFail() {
+  return {
+    type: types.REQUEST_USERS_FAIL,
+  };
+}
+
+export function createUsers(activePage, perpage) {
+  return (dispatch, getState) => {
+    dispatch(requestUsers());
+    fetchWithJson(url_CREATE_USERS, {
+      filter: getFilterFromPath(getState().routing.path),
+      skip: (activePage - 1) * perpage,
+      take: perpage
+    })
+      .then(response => response.json())
+      .then(result => {
+        if (!result.msg) {
+        }
+        if (result.msg) {
+        }
+      })
+      .catch(ex => {
       });
   };
 }

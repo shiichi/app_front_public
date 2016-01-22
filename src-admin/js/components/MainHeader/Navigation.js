@@ -20,14 +20,11 @@ class Navigation extends Component {
           </div>
           <div className="navbar-custom-menu">
             <ul className="nav navbar-nav">
-              <Language/>
               <Message/>
               <Notification/>
               <Task/>
               <User/>
-              <li>
-                <a href="#" data-toggle="control-sidebar"><i className="fa fa-gears"></i></a>
-              </li>
+              <Language/>
             </ul>
           </div>
         </nav>

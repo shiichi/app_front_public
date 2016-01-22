@@ -25,7 +25,15 @@ export default function users(state = initialState, action) {
   case REQUEST_USERS_SUCCESS:
     return Object.assign({}, state, {
       total: action.total,
-      users: action.users,
+      users: action.users.map(user => 
+        Object.assign({}, user, {
+          roles: user.roles.map(role => role.name),
+          permissions: user.roles.map(role =>
+            role.permissions.map(permission => 
+              permission.name)).toString().split(',').filter((x, i, self) => 
+                self.indexOf(x) === i)
+        })
+      ),
       isFetching: false
     });
 

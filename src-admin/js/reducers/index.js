@@ -8,18 +8,17 @@ import pageStatus from './pageStatus';
 import alert from './alert';
 import users from './users';
 
-import timetables from './timetables';
-import selector from './selector';
-import message from './message';
-import modal from './modal';
-import reservation from './reservation';
-import logs from './logs';
-import jwtToken from './jwtToken';
+// import timetables from './timetables';
+// import selector from './selector';
+// import message from './message';
+// import modal from './modal';
+// import reservation from './reservation';
+// import logs from './logs';
+// import jwtToken from './jwtToken';
 
 //reducers/index.jsから全てのreducerを取得しformReducer,routeReducerとcombine
 const rootReducer = combineReducers(Object.assign({
     lang, myProfile, pageStatus, alert, users,
-    timetables, selector, message, modal, reservation, logs, jwtToken
   }, {
     form: formReducer,
     routing: routeReducer

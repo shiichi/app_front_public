@@ -1,18 +1,16 @@
 import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
 import { NavDropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import Icon from 'react-fa';
 //components
 
 class Language extends Component {
   render() {
     const { changeSidebar } = this.props;
     return (
-      <NavDropdown bsStyle="primary" bsSize="small" title="Users">
-        <LinkContainer to={{ pathname: '/foo', query: { bar: 'baz' } }}>
-          <MenuItem eventKey="1">Japanese</MenuItem>
-        </LinkContainer>
-        <MenuItem eventKey="2">English</MenuItem>
+      <NavDropdown noCaret title={<Icon name="globe" style={{fontSize: 18}}/>}>
+        <MenuItem eventKey="1">Japanese</MenuItem>
+        <MenuItem eventKey="1">English</MenuItem>
       </NavDropdown>
     );
   }

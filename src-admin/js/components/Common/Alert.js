@@ -7,11 +7,11 @@ import { trans } from '../../utils/TransUtils';
 
 class Alert extends Component {
   componentDidMount() {
-    setInterval(() => {
-      const { alert: {access}, deleteAccessAlert } = this.props;
-      const shouldDelete = Object.keys(access).filter(key => key < Date.now() - 3000);
-      deleteAccessAlert(shouldDelete)
-    }, 5000);
+    // setInterval(() => {
+    //   const { alert: {access}, deleteAccessAlert } = this.props;
+    //   const shouldDelete = Object.keys(access).filter(key => key < Date.now() - 3000);
+    //   deleteAccessAlert(shouldDelete)
+    // }, 5000);
   }
 
   handleClick(key) {
@@ -86,7 +86,7 @@ class Alert extends Component {
               const {data: {status, msg}, ...style} = alerts[key];
               return (
                 <div className="callout callout-info custom-alert" style={style} key={key}>
-                  <h4>{trans(lang, msg)}</h4>
+                  <p>{trans(lang, msg)}</p>
                   <span className="btn-close" title={key} onClick={this.handleClick.bind(this, key)}>×</span>
                 </div>
               );

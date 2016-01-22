@@ -38,6 +38,12 @@ export default function myProfile(state = initialState, action) {
     return Object.assign({}, state, action.data, {
       isFetching: false,
       didInvalidate: false
+    }, {
+      roles: action.data.roles.map(role => role.name),
+      permissions: action.data.roles.map(role =>
+        role.permissions.map(permission => 
+          permission.name)).toString().split(',').filter((x, i, self) => 
+            self.indexOf(x) === i)      
     });
 
   case REQUEST_USERINFO_FAIL:

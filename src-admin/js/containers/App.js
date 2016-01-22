@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //actions
-import * as UserinfoActions from '../actions/userinfo';
+import * as UserInfoActions from '../actions/userinfo';
 import * as PageStatusActions from '../actions/pageStatus';
 import * as AlertActions from '../actions/alert';
 //components
@@ -88,7 +88,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign(UserinfoActions, PageStatusActions, AlertActions);
+  const actions = Object.assign(UserInfoActions, PageStatusActions, AlertActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };
