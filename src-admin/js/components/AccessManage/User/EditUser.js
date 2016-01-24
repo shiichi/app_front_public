@@ -5,8 +5,6 @@ import { Input } from 'react-bootstrap';
 //actions
 import * as AccessUserActions from '../../../actions/access/user';
 //components
-import Options from './Options';
-import AssociatedRoles from './AssociatedRoles';
 import OtherPermissions from './OtherPermissions';
 
 class EditUser extends Component {
@@ -21,8 +19,52 @@ class EditUser extends Component {
           <Input type="text" label="E-mail" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
           <Input type="password" label="Password" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
           <Input type="password" label="Password Confirmation" labelClassName="col-xs-2" wrapperClassName="col-xs-10" />
-          <Options/>
-          <AssociatedRoles/>
+
+          <div className="form-group">
+            <label className="col-xs-2 control-label">Options</label>
+            <div className="col-xs-10">
+              <div className="checkbox">
+                <label className>
+                  <input type="checkbox" className /><span>Active</span>
+                </label>
+              </div>
+              <span className="help-block">hoge hoge</span>
+            </div>
+            <div className="col-xs-offset-2 col-xs-10">
+              <div className="checkbox">
+                <label className>
+                  <input type="checkbox" className/><span>Confirmed</span>
+                </label>
+              </div>
+              <span className="help-block">hoge hoge</span>
+            </div>
+            <div className="col-xs-offset-2 col-xs-10">
+              <div className="checkbox">
+                <label className>
+                  <input type="checkbox" className/><span>Send Confirmation Mail</span>
+                </label>
+              </div>
+              <span className="help-block">If confirmed is off</span>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="col-xs-2 control-label">Associated Roles</label>
+            <div className="col-xs-10">
+              <div className="checkbox">
+                <label className>
+                  <input type="checkbox" className /><span><strong>Administrator</strong></span>
+                </label>
+              </div>
+            </div>
+            <div className="col-xs-offset-2 col-xs-10">
+              <div className="checkbox">
+                <label className>
+                  <input type="checkbox" className/><span><strong>User</strong></span>
+                </label>
+              </div>
+            </div>
+          </div>          
           <OtherPermissions/>
         </form>
       </div>

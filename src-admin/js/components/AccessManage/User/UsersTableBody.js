@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import Icon from 'react-fa';
 //Utility
@@ -59,7 +60,7 @@ class UsersTableBody extends Component {
           {hasPermission(myRoles, myPermissions, 'edit-users') && !u.deleted_at &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Edit</Tooltip>)}>
             <Button bsStyle="primary" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'edit'})}>
-              <Icon name="pencil"/>
+              <Link to={'/access/user/edit/' + u.id}><Icon name="pencil"/></Link>
             </Button>
           </OverlayTrigger>}
           {hasPermission(myRoles, myPermissions, 'change-user-password') && !u.deleted_at &&

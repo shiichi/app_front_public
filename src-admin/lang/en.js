@@ -1,3 +1,5 @@
+//used by reducer and validationUtils
+
 export const alert = {
   access: {
     users: {
@@ -8,6 +10,8 @@ export const alert = {
       deleteSuccess: 'The user was successfully deleted.',
       restoreSuccess: 'The user was successfully restored.',
       permanentlyDeleteSuccess: 'The user was successfully permanently deleted.',
+      updatedSuccess: 'The user was successfully updated.',
+      storeSuccess: 'The user was successfully created.',
       cantDeactivateSelf: 'You can not do that to yourself.',
       cantDeleteSelf: 'You can not delete yourself.',
       createError: 'There was a problem creating this user. Please try again.',
@@ -32,3 +36,27 @@ export const alert = {
 export const server = {
   faildToAccess: 'Oops! Faild to accsss server.'
 };
+
+export const validation = {
+  someError: 'Please check the input.',
+  userId: {
+    alreadyExists: 'This userId has already been taken.',
+    required: 'The userId field is required.'
+  },
+  email: {
+    notValid: 'The email must be a valid email address.',
+    alreadyExists: 'This email has already been taken.',
+    required: 'The email field is required.'
+  },
+  password: {
+    notValid: 'Password must be between 6 and 20.',
+    required: 'The password field is required.',
+    mustOver6: 'The password field must over 6.',
+    mustUnder20: 'The password field must under 20',
+  },
+  passwordConfomation: {
+    notValid: 'Password and Password Confomation do not match.',
+    required: 'The password confirmation field is required.'
+  },
+};
+

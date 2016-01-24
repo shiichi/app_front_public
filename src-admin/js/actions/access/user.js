@@ -1,11 +1,26 @@
 import * as types from '../../constants/ActionTypes';
 import { fetchWithJson } from '../../utils/fetchUtils';
-import { url_REQUEST_USERS, url_MARK_USER, url_DELETE_USER, url_RESTORE_USER, url_PERMANENTLY_DELETE_USER } from '../../../config/url';
+import {
+  url_REQUEST_USERS,
+  url_MARK_USER,
+  url_DELETE_USER,
+  url_RESTORE_USER,
+  url_PERMANENTLY_DELETE_USER,
+  url_CREATE_USERS,
+  url_GET_ADDRESS
+} from '../../../config/url';
 
-function addAccessAlert(status, msg) {
+export function addAccessAlert(status, msg) {
   return {
     type: types.ADD_ACCESS_ALERT,
     status,
+    msg
+  };
+}
+
+function addValidationAlert(msg) {
+  return {
+    type: types.ADD_VARIDATION_ALERT,
     msg
   };
 }
@@ -62,12 +77,12 @@ export function fetchUsers(activePage, perpage) {
         }
         if (result.msg) {
           dispatch(requestUsersFail());
-          dispatch(addAccessAlert('fail', result.msg));
+          dispatch(addAccessAlert('warning', result.msg));
         }
       })
       .catch(ex => {
         dispatch(requestUsersFail());
-        dispatch(addAccessAlert('fail', 'server.faildToAccess'));
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
       });
   };
 }
@@ -106,12 +121,12 @@ export function deactivateUser(id, activePage, perpage) {
           dispatch(addAccessAlert('success', 'alert.access.users.deactivateSuccess'));
         }
         if (result.msg) {
-          dispatch(addAccessAlert('fail', result.msg));
+          dispatch(addAccessAlert('warning', result.msg));
         }
       })
       .catch(ex => {
         dispatch(doneAsyncAction(id));
-        dispatch(addAccessAlert('fail', 'server.faildToAccess'));
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
       });
   };
 }
@@ -134,12 +149,12 @@ export function activateUser(id, activePage, perpage) {
           dispatch(addAccessAlert('success', 'alert.access.users.activateSuccess'));
         }
         if (result.msg) {
-          dispatch(addAccessAlert('fail', result.msg));
+          dispatch(addAccessAlert('warning', result.msg));
         }
       })
       .catch(ex => {
         dispatch(doneAsyncAction(id));
-        dispatch(addAccessAlert('fail', 'server.faildToAccess'));
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
       });
   };
 }
@@ -161,12 +176,12 @@ export function deleteUser(id, activePage, perpage) {
           dispatch(addAccessAlert('success', 'alert.access.users.deleteSuccess'));
         }
         if (result.msg) {
-          dispatch(addAccessAlert('fail', result.msg));
+          dispatch(addAccessAlert('warning', result.msg));
         }
       })
       .catch(ex => {
         dispatch(doneAsyncAction(id));
-        dispatch(addAccessAlert('fail', 'server.faildToAccess'));
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
       });
   };
 }
@@ -188,12 +203,12 @@ export function restoreUser(id, activePage, perpage) {
           dispatch(addAccessAlert('success', 'alert.access.users.restoreSuccess'));
         }
         if (result.msg) {
-          dispatch(addAccessAlert('fail', result.msg));
+          dispatch(addAccessAlert('warning', result.msg));
         }
       })
       .catch(ex => {
         dispatch(doneAsyncAction(id));
-        dispatch(addAccessAlert('fail', 'server.faildToAccess'));
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
       });
   };
 }
@@ -215,54 +230,80 @@ export function permanentlyDeleteUser(id, activePage, perpage) {
           dispatch(addAccessAlert('success', 'alert.access.users.permanentlyDeleteSuccess'));
         }
         if (result.msg) {
-          dispatch(addAccessAlert('fail', result.msg));
+          dispatch(addAccessAlert('warning', result.msg));
         }
       })
       .catch(ex => {
         dispatch(doneAsyncAction(id));
-        dispatch(addAccessAlert('fail', 'server.faildToAccess'));
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
       });
   };
 }
 
-
+//用修正
 
 function requestCreateUsers() {
   return {
-    type: types.REQUEST_USERS,
+    type: types.REQUEST_CREATE_USERS,
   };
 }
 
-function createUsersSuccess(total, users) {
+function createUsersSuccess() {
   return {
-    type: types.REQUEST_USERS_SUCCESS,
-    total,
-    users
+    type: types.CREATE_USERS_SUCCESS,
   };
 }
 
 function createUsersFail() {
   return {
-    type: types.REQUEST_USERS_FAIL,
+    type: types.CREATE_USERS_FAIL,
   };
 }
 
-export function createUsers(activePage, perpage) {
-  return (dispatch, getState) => {
-    dispatch(requestUsers());
-    fetchWithJson(url_CREATE_USERS, {
-      filter: getFilterFromPath(getState().routing.path),
-      skip: (activePage - 1) * perpage,
-      take: perpage
-    })
+export function createUser(request) {
+  return (dispatch) => {
+    dispatch(requestCreateUsers());
+    fetchWithJson(url_CREATE_USERS, request)
       .then(response => response.json())
       .then(result => {
-        if (!result.msg) {
+        if (result.success) {
+          dispatch(addAccessAlert('success', result.success));
         }
         if (result.msg) {
+          dispatch(addAccessAlert('warning', result.msg));
+        }
+        if (result.email) {
+          dispatch(addAccessAlert('warning', 'validation.someError'));
+          dispatch(addValidationAlert('validation.email.alreadyExists'));
         }
       })
       .catch(ex => {
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
       });
   };
 }
+
+
+function addAddress(address) {
+  return {
+    type: types.ADD_ADDRESS,
+    address
+  };
+}
+
+function dividePostalCode(code) {
+  return {
+    post1: code.slice(0, 3),
+    post2: code.slice(3, 7)
+  };
+}
+
+export function fetchAddress(code) {
+  return (dispatch) => {
+    fetchWithJson(url_GET_ADDRESS, dividePostalCode(code))
+      .then(response => response.json())
+      .then(result => dispatch(addAddress(result)))
+      .catch(ex => dispatch(addAccessAlert('danger', 'server.faildToAccess')));
+  }
+}
+

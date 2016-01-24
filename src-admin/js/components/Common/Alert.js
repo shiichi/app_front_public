@@ -85,7 +85,7 @@ class Alert extends Component {
             {Object.keys(alerts).map((key, i) => {
               const {data: {status, msg}, ...style} = alerts[key];
               return (
-                <div className="callout callout-info custom-alert" style={style} key={key}>
+                <div className={'callout custom-alert callout-' + status} style={style} key={key}>
                   <p>{trans(lang, msg)}</p>
                   <span className="btn-close" title={key} onClick={this.handleClick.bind(this, key)}>×</span>
                 </div>
