@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import Icon from 'react-fa';
 //Utility
 import { hasPermission } from '../../../utils/PermissionUtils';
@@ -45,7 +46,7 @@ class UsersTableBody extends Component {
     return users.map((u, i) =>
       <tr key={i} className="tr-disabled-aaa">
         <td>{u.id}</td>
-        <td>{u.name}</td>
+        <td>{u.userId}</td>
         <td><a href="mailto:admin@admin.com">{u.email}</a></td>
         <td>
           {u.confirmed == 1 ?
@@ -53,22 +54,24 @@ class UsersTableBody extends Component {
             <label className="label label-danger">No</label>
           }
         </td>
-        <td>{u.roles.length ? u.roles.toString('<br>') : 'None'}</td>
-        <td className="visible-lg">{u.created_at}</td>
-        <td className="visible-lg">{u.updated_at}</td>
+        <td>{u.assigneesRoles.length ? u.assigneesRoles.toString() : 'None'}</td>
+        <td className="visible-lg">{u.createdAt}</td>
+        <td className="visible-lg">{u.updatedAt}</td>
         <td>
-          {hasPermission(myRoles, myPermissions, 'edit-users') && !u.deleted_at &&
-          <OverlayTrigger placement="top" overlay={(<Tooltip>Edit</Tooltip>)}>
-            <Button bsStyle="primary" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'edit'})}>
-              <Link to={'/access/user/edit/' + u.id}><Icon name="pencil"/></Link>
-            </Button>
-          </OverlayTrigger>}
+          {hasPermission(myRoles, myPermissions, 'edit-users') && !u.deletedAt &&
+          <LinkContainer to={{ pathname: '/access/user/edit/' + u.id}}>
+            <OverlayTrigger placement="top" overlay={(<Tooltip>Edit</Tooltip>)}>
+              <Button bsStyle="primary" bsSize="xsmall"><Icon name="pencil"/></Button>
+            </OverlayTrigger>
+          </LinkContainer>}
           {hasPermission(myRoles, myPermissions, 'change-user-password') && !u.deleted_at &&
-          <OverlayTrigger placement="top" overlay={(<Tooltip>Change Password</Tooltip>)}>
-            <Button bsStyle="info" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'changePassword'})}>
-              <Icon name="refresh"/>
-            </Button>
-          </OverlayTrigger>}
+          <LinkContainer to={{ pathname: '/access/user/change/password/' + u.id}}>
+            <OverlayTrigger placement="top" overlay={(<Tooltip>Change Password</Tooltip>)}>
+              <Button bsStyle="info" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'changePassword'})}>
+                <Icon name="refresh"/>
+              </Button>
+            </OverlayTrigger>
+          </LinkContainer>}
           {hasPermission(myRoles, myPermissions, 'deactivate-users') && !u.deleted_at && u.status == 1 && u.id != myId &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Deactivate</Tooltip>)}>
             <Button bsStyle="warning" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'deactivate'})}>

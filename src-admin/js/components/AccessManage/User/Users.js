@@ -115,8 +115,8 @@ Users.propTypes = {
 function mapStateToProps(state) {
   return {
     myId: state.myProfile.id,
-    myRoles: state.myProfile.roles,
-    myPermissions: state.myProfile.permissions,
+    myRoles: state.myProfile.assigneesRoles,
+    myPermissions: state.myProfile.assigneesPermissions,
     total: state.users.total,
     users: state.users.users,
     isFetching: state.users.isFetching,

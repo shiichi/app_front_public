@@ -7,7 +7,7 @@ export function validat(type, value1, value2) {
     return validatEmail(value1);
 
   case 'password':
-    return validatPassword(value1);
+    return validatPassword(value1, value2);
 
   case 'passwordConfirmation':
     return validatPasswordConf(value1, value2);
@@ -19,18 +19,24 @@ export function validat(type, value1, value2) {
     return validatPostalCode(value1);
 
   default:
-    return {status: '', message: ''};
+    return {
+      value: value1,
+      status: '',
+      message: ''
+    };
   }
 }
 
 function validatUserId(userId) {
   if (userId.length === 0) {
     return {
+      value: userId,
       status: 'error',
       message: 'validation.userId.required'
     };
   } else if (userId.length > 0) {
     return {
+      value: userId,
       status: '',
       message: ''
     };
@@ -40,17 +46,20 @@ function validatUserId(userId) {
 function validatEmail(email) {
   if (email.length === 0) {
     return {
+      value: email,
       status: 'error',
       message: 'validation.email.required'
     };
   }
   if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(email)) {
     return {
+      value: email,
       status: '',
       message: ''
     };
   } else {
     return {
+      value: email,
       status: 'error',
       message: 'validation.email.notMatch'
     };
@@ -60,22 +69,26 @@ function validatEmail(email) {
 function validatPassword(pass) {
   if (pass.length === 0) {
     return {
+      value: pass,
       status: 'error',
       message: 'validation.password.required'
     };
   }
   if (pass.match(/^[a-z\d]{6,20}$/)) {
     return  {
+      value: pass,
       status: '',
       message: ''
     };
   } else if (pass.match(/^[a-z\d]{1,5}$/)) {
     return  {
+      value: pass,
       status: 'error',
       message: 'validation.password.mustOver6'
     };
   } else {
     return {
+      value: pass,
       status: 'error',
       message: 'validation.password.mustUnder20'
     };
@@ -85,54 +98,68 @@ function validatPassword(pass) {
 function validatPasswordConf(passConf, pass) {
   if (passConf.length === 0) {
     return {
+      value: passConf,
       status: 'error',
       message: 'validation.passwordConfomation.required'
     };
   }
   if (pass === passConf) {
     return {
+      value: passConf,
       status: '',
       message: ''
     };
   } else {
     return {
+      value: passConf,
       status: 'error',
       message: 'validation.passwordConfomation.notMatch'
     };
   }
 }
 
-function validatAge(code) {
-  if (code.length === 0) {
-    return {status: '', message: ''};
-  }
-  if (/^[\d]{1,3}$/i.test(code)) {
+function validatAge(age) {
+  if (age.length === 0) {
     return {
+      value: age,
+      status: '',
+      message: ''
+    };
+  }
+  if (/^[\d]{1,3}$/i.test(age)) {
+    return {
+      value: age,
       status: '',
       message: ''
     };
   } else {
     return {
+      value: age,
       status: 'error',
-      message: 'validation.passwordConfomation.notMatch'
+      message: 'validation.age.notValid'
     };
   }
 }
 
 function validatPostalCode(code) {
   if (code.length === 0) {
-    return {status: '', message: ''};
+    return {
+      value: code,
+      status: '',
+      message: ''
+    };
   }
   if (/^\d{7}$/i.test(code)) {
     return {
+      value: code,
       status: '',
       message: ''
     };
   } else {
     return {
+      value: code,
       status: 'error',
-      message: 'validation.passwordConfomation.notMatch'
+      message: 'validation.postalCode.notValid'
     };
   }
 }
-

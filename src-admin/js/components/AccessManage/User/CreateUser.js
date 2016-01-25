@@ -8,31 +8,26 @@ import { validat } from '../../../utils/ValidationUtils';
 //Actions
 import * as AccessUserActions from '../../../actions/access/user';
 import * as AccessRoleActions from '../../../actions/access/role';
-//Components
-import OtherPermissions from './OtherPermissions';
+import * as InitializeActions from '../../../actions/initialize';
 
 class CreateUser extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      userId: {value: '', status: '', message: ''},
-      email: {value: '', status: '', message: ''},
-      password: {value: '', status: '', message: ''},
-      passwordConfirmation: {value: '', status: '', message: ''},
-      firstName: {value: '', status: '', message: ''},
-      lastName: '',
-      sex: '',
-      age: {value: '', status: '', message: ''},
-      postalCode: {value: '', status: '', message: ''},
-      state: {value: '', status: '', message: ''},
-      city: {value: '', status: '', message: ''},
-      street: {value: '', status: '', message: ''},
-      building: {value: '', status: '', message: ''},
-      status: '0',
-      confirmed: '0',
-      confirmationEmail: '0',
-      assigneesRoles: []
-    };
+    const string = [
+      'userId', 'email', 'password', 'passwordConfirmation',
+      'firstName', 'lastName', 'sex', 'age', 'postalCode', 'state', 'city', 'street', 'building',
+      'status', 'confirmed', 'confirmationEmail'
+    ].reduce((request, key) => {
+      request[key] = {value: '', status: '', message: ''};
+      return request;
+    }, {});
+
+    const array = [ 'assigneesRoles' ].reduce((request, key) => {
+      request[key] = {value: [], status: '', message: ''};
+      return request;
+    }, {});
+
+    this.state = Object.assign(string, array);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,45 +49,48 @@ class CreateUser extends Component {
     };
   }
 
+  componentWillMount() {
+    const { clearValidationAlert, clearAddress } = this.props.actions;
+    clearValidationAlert();
+    clearAddress();
+  }
+
   componentDidMount() {
     const { fetchRoles } = this.props.actions;
     fetchRoles();
   }
 
   validat(name, value, checked) {
-    //password変更時にpasswordConfirmationも評価
-    switch (name) {
-    case 'passwordConfirmation':
-      const pass = this.state.password.value;
-      this.setState({[name]: {
-        value,
-        status: validat(name, value, pass).status,
-        message: validat(name, value, pass).message
-      }});
-      break;
+    const pass = this.state.password.value;
+    const passConf = this.state.passwordConfirmation.value;
 
-    case 'lastName':
-    case 'sex':
-      this.setState({[name]: value});
+    switch (name) {
+    case 'assigneesRoles':
+      this.setState({[name]: {value:[value]}});
       break;
 
     case 'status':
     case 'confirmed':
     case 'confirmationEmail':
-      this.setState({[name]: checked ? '1' : '0'});
+      this.setState({[name]: {value: checked ? '1' : '0'}});
       break;
 
-    case 'assigneesRoles':
-      this.setState({[name]: [value]});
+    case 'password':
+      this.setState({
+        password: validat(name, value),
+        passwordConfirmation: validat('passwordConfirmation', passConf, value)
+      });
+      break;
+
+    case 'passwordConfirmation':
+      this.setState({
+        [name]: validat(name, value, pass)
+      });
       break;
 
     default:
-      this.setState({[name]: {
-        value,
-        status: validat(name, value).status,
-        message: validat(name, value).message
-      }});
-    };    
+      this.setState({[name]: validat(name, value)});
+    }
   }
 
   handleChange(e) {
@@ -110,30 +108,16 @@ class CreateUser extends Component {
 
   handleSubmit() {
     const { createUser } = this.props.actions;
-    const hasError = Object.keys(this.state).some(key => 
+    const Keys = Object.keys(this.state);
+    const hasError = Keys.some(key => 
       this.state[key].status === 'error'
     );
 
     if (!hasError) {
-      createUser({
-        name: this.state.userId.value,
-        email: this.state.email.value,
-        password: this.state.password.value,
-        password_confirmation: this.state.passwordConfirmation.value,
-        first_name: this.state.firstName.value,
-        last_name: this.state.lastName,
-        sex: this.state.sex,
-        age: this.state.age.value,
-        postal_code: this.state.postalCode.value,
-        state: this.state.state.value,
-        city: this.state.city.value,
-        street: this.state.street.value,
-        building: this.state.building.value,
-        status: this.state.status,
-        confirmed: this.state.confirmed,
-        confirmation_email: this.state.confirmationEmail,
-        assignees_roles: this.state.assigneesRoles
-      });
+      createUser(Keys.reduce((request, key) => {
+        request[key] = this.state[key].value;
+        return request;
+      }, {}));
     };
   }
 
@@ -162,7 +146,7 @@ class CreateUser extends Component {
   render() {
     const {
       userId, email, password, passwordConfirmation,
-      firstName, lastNameage, sex, age, postalCode, state, city, street, building,
+      firstName, lastName, sex, age, postalCode, state, city, street, building,
       status, confirmed, confirmationEmail
     } = this.state;
     const hasError = Object.keys(this.state).some(key => 
@@ -369,7 +353,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign(AccessUserActions, AccessRoleActions);
+  const actions = Object.assign(AccessUserActions, AccessRoleActions, InitializeActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };

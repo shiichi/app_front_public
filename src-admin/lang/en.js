@@ -12,6 +12,7 @@ export const alert = {
       permanentlyDeleteSuccess: 'The user was successfully permanently deleted.',
       updatedSuccess: 'The user was successfully updated.',
       storeSuccess: 'The user was successfully created.',
+      changePasswordSuccess: 'The user\'s password was successfully updated.',
       cantDeactivateSelf: 'You can not do that to yourself.',
       cantDeleteSelf: 'You can not delete yourself.',
       createError: 'There was a problem creating this user. Please try again.',
@@ -49,14 +50,21 @@ export const validation = {
     required: 'The email field is required.'
   },
   password: {
-    notValid: 'Password must be between 6 and 20.',
+    notValid: 'The password must be a valid password.',
     required: 'The password field is required.',
-    mustOver6: 'The password field must over 6.',
-    mustUnder20: 'The password field must under 20',
+    mustOver6: 'The password must be at least 6 characters.',
+    mustUnder20: 'The password must be at most 20 characters.',
   },
   passwordConfomation: {
-    notValid: 'Password and Password Confomation do not match.',
+    notMuch: 'Password and Password Confomation do not match.',
+    required: 'The password confirmation field is required.'
+  },
+  age: {
+    notValid: 'The age must be a valid age.',
+    required: 'The password confirmation field is required.'
+  },
+  postalCode: {
+    notValid: 'The Postal Code must be a valid Postal Code.',
     required: 'The password confirmation field is required.'
   },
 };
-

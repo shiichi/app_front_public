@@ -1,13 +1,17 @@
 import * as types from '../../constants/ActionTypes';
 import { fetchWithJson } from '../../utils/fetchUtils';
+import { keyToCamel, keyToSnake } from '../../utils/ChangeCaseUtils';
 import {
   url_REQUEST_USERS,
+  url_REQUEST_USER,
   url_MARK_USER,
   url_DELETE_USER,
   url_RESTORE_USER,
   url_PERMANENTLY_DELETE_USER,
   url_CREATE_USERS,
-  url_GET_ADDRESS
+  url_GET_ADDRESS,
+  url_CHANGE_PASSWORD,
+  url_UPDATE_USER
 } from '../../../config/url';
 
 export function addAccessAlert(status, msg) {
@@ -20,7 +24,7 @@ export function addAccessAlert(status, msg) {
 
 function addValidationAlert(msg) {
   return {
-    type: types.ADD_VARIDATION_ALERT,
+    type: types.ADD_VALIDATION_ALERT,
     msg
   };
 }
@@ -73,7 +77,10 @@ export function fetchUsers(activePage, perpage) {
       .then(response => response.json())
       .then(result => {
         if (!result.msg) {
-          dispatch(requestUsersSuccess(result.total, result.users));
+          dispatch(requestUsersSuccess(
+            result.total,
+            result.users.map(user => keyToCamel(user))
+          ));
         }
         if (result.msg) {
           dispatch(requestUsersFail());
@@ -86,6 +93,52 @@ export function fetchUsers(activePage, perpage) {
       });
   };
 }
+
+function requestUser() {
+  return {
+    type: types.REQUEST_USER,
+  };
+}
+
+function requestUserSuccess(user) {
+  return {
+    type: types.REQUEST_USER_SUCCESS,
+    user
+  };
+}
+
+function requestUserFail() {
+  return {
+    type: types.REQUEST_USER_FAIL,
+  };
+}
+
+export function fetchUser(id) {
+  return (dispatch, getState) => {
+    dispatch(requestUser());
+    fetchWithJson(url_REQUEST_USER, id)
+      .then(response => response.json())
+      .then(result => {
+        if (!result.msg) {
+          dispatch(requestUserSuccess(keyToCamel(result)));
+        }
+        if (result.msg) {
+          dispatch(requestUserFail());
+          dispatch(addAccessAlert('warning', result.msg));
+        }
+      })
+      .catch(ex => {
+        dispatch(requestUserFail());
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
+      });
+  };
+}
+
+
+
+
+
+
 
 
 function doAsyncAction(id, action) {
@@ -263,11 +316,11 @@ function createUsersFail() {
 export function createUser(request) {
   return (dispatch) => {
     dispatch(requestCreateUsers());
-    fetchWithJson(url_CREATE_USERS, request)
+    fetchWithJson(url_CREATE_USERS, keyToSnake(request))
       .then(response => response.json())
       .then(result => {
-        if (result.success) {
-          dispatch(addAccessAlert('success', result.success));
+        if (result === 'success') {
+          dispatch(addAccessAlert('success', 'alert.access.users.storeSuccess'));
         }
         if (result.msg) {
           dispatch(addAccessAlert('warning', result.msg));
@@ -307,3 +360,39 @@ export function fetchAddress(code) {
   }
 }
 
+export function changePassword(request) {
+  return (dispatch) => {
+    fetchWithJson(url_CHANGE_PASSWORD, keyToSnake(request))
+      .then(response => response.json())
+      .then(result => {
+        if (result === 'success') {
+          dispatch(addAccessAlert('success', 'alert.access.users.changePasswordSuccess'));
+        } else if (result.msg) {
+          dispatch(addAccessAlert('warning', result.msg));
+        } else {
+          dispatch(addAccessAlert('warning', 'validation.someError'));
+          dispatch(addValidationAlert('validation.email.alreadyExists'));
+        }
+      })
+      .catch(ex => dispatch(addAccessAlert('danger', 'server.faildToAccess')));
+  }
+}
+
+
+
+export function updateUser(request) {
+  return (dispatch) => {
+    fetchWithJson(url_UPDATE_USER, keyToSnake(request))
+      .then(response => response.json())
+      .then(result => {
+        if (result === 'success') {
+          dispatch(addAccessAlert('success', 'alert.access.users.updatedSuccess'));
+        } else if (result.msg) {
+          dispatch(addAccessAlert('warning', result.msg));
+        } else {
+          dispatch(addAccessAlert('warning', 'validation.someError'));
+        }
+      })
+      .catch(ex => dispatch(addAccessAlert('danger', 'server.faildToAccess')));
+  }
+}

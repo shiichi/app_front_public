@@ -5,13 +5,13 @@ import SidebarMenu from './SidebarMenu';
 
 class MainSidebar extends Component {
   componentDidMount() {
-    const { fetchUserInfo } = this.props.actions;
-    fetchUserInfo();
+    const { fetchMyProfile } = this.props.actions;
+    fetchMyProfile();
   }
 
   render() {
-    const { name, status:{reservations, remainingTickets} } = this.props.myProfile;
-    //console.log(this.props.user)
+    const { userId } = this.props.myProfile;
+
     return (
       <aside className="main-sidebar">
         <section className="sidebar">
@@ -20,7 +20,7 @@ class MainSidebar extends Component {
               <img src="dist/img/user2-160x160.jpg" className="img-circle" alt="User Image"/>
             </div>
             <div className="pull-left info">
-              <p>{name}</p>
+              <p>{userId}</p>
               <a href="#"><Icon spin name="circle" className="text-success"/> Online</a>
             </div>
           </div>

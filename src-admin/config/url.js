@@ -1,9 +1,15 @@
+export const url_REQUEST_MY_PROFILE = '/api/getUserInfo';
+
 export const url_REQUEST_USERS = '/admin/single/access/users';
+export const url_REQUEST_USER = '/admin/single/access/user';
+
 export const url_MARK_USER = '/admin/single/access/user/mark';
 export const url_DELETE_USER = '/admin/single/access/user/delete';
 export const url_RESTORE_USER = '/admin/single/access/user/restore';
 export const url_PERMANENTLY_DELETE_USER = '/admin/single/access/user/permanentlyDelete';
 export const url_CREATE_USERS = '/admin/single/access/user/store';
+export const url_CHANGE_PASSWORD = '/admin/single/access/user/change/password';
+export const url_UPDATE_USER = '/admin/single/access/user/update';
 
 export const url_ALL_ROLES = '/admin/single/access/allRoles';
 export const url_GET_ADDRESS = '/api/getAddress';

@@ -13,6 +13,7 @@ import AccessManage from '../components/AccessManage/AccessManage';
 import Users from '../components/AccessManage/User/Users';
 import CreateUser from '../components/AccessManage/User/CreateUser';
 import EditUser from '../components/AccessManage/User/EditUser';
+import ChangePassword from '../components/AccessManage/User/ChangePassword';
 import Roles from '../components/AccessManage/Role/Roles';
 import CreateRoles from '../components/AccessManage/Role/CreateRoles';
 import Permissions from '../components/AccessManage/Permission/Permissions';
@@ -38,6 +39,7 @@ export default class Root extends Component {
                 <Route path="users/deleted" component={Users}/>
                 <Route path="user/create" component={CreateUser}/>
                 <Route path="user/edit/:id" component={EditUser}/>
+                <Route path="user/change/password/:id" component={ChangePassword}/>
                 <Route path="roles" component={Roles}/>
                 <Route path="roles/create" component={CreateRoles}/>
                 <Route path="roles/edit:id" component={CreateRoles}/>
