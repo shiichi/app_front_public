@@ -1,11 +1,9 @@
-import React, { Component, PropTypes } from 'react'
-import { Provider } from 'react-redux'
-import { Router, Route, Link, Redirect, IndexRoute } from 'react-router'
-import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react'
-import DiffMonitor from 'redux-devtools-diff-monitor'
-import { syncReduxAndRouter } from 'redux-simple-router';
-import { createHistory, useBasename } from 'history';
-import configureStore from '../store/configureStore'
+import React, { Component, PropTypes } from 'react';
+import { Provider } from 'react-redux';
+import { Router, Route, Link, Redirect, IndexRoute, browserHistory } from 'react-router';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
+import DiffMonitor from 'redux-devtools-diff-monitor';
+import configureStore from '../store/configureStore';
 // Components
 import App from './App';
 import Dashboard from '../components/Dashboard/Dashboard';
@@ -17,20 +15,18 @@ import ChangePassword from '../components/AccessManage/User/ChangePassword';
 import Roles from '../components/AccessManage/Role/Roles';
 import CreateRoles from '../components/AccessManage/Role/CreateRoles';
 import Permissions from '../components/AccessManage/Permission/Permissions';
+//Config
+import { _ADMIN_DOMAIN_NAME } from '../../config/env';
 
 const store = configureStore();
-const history = useBasename(createHistory)({
-  basename: '/admin/single'
-});
-syncReduxAndRouter(history, store);
 
 export default class Root extends Component {
   render() {
     return (
       <div>
         <Provider store={store}>
-          <Router history={history}>
-            <Route path="/" component={App}>
+          <Router history={browserHistory}>
+            <Route path={_ADMIN_DOMAIN_NAME} component={App}>
               <Route path="dashboard" component={Dashboard}/>
               <Route path="access" component={AccessManage}>
                 <Route path="users" component={Users}/>

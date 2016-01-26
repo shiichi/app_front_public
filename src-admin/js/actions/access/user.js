@@ -1,3 +1,4 @@
+import { _ADMIN_DOMAIN_NAME } from '../../../config/env';
 import * as types from '../../constants/ActionTypes';
 import { fetchWithJson } from '../../utils/fetchUtils';
 import { keyToCamel, keyToSnake } from '../../utils/ChangeCaseUtils';
@@ -33,13 +34,13 @@ function getFilterFromPath(path) {
   const p = path.split('?')['0'];
   let filter = '';
 
-  if (p === '/access/users' || p === '/access/users/') {
+  if (p === _ADMIN_DOMAIN_NAME + 'access/users' || p === _ADMIN_DOMAIN_NAME + 'access/users/') {
     filter = 'all';
-  } else if (p === '/access/users/active' || p === '/access/users/active/') {
+  } else if (p === _ADMIN_DOMAIN_NAME + 'access/users/active' || p === _ADMIN_DOMAIN_NAME + 'access/users/active/') {
     filter = '1';
-  } else if (p === '/access/users/deactivated' || p === '/access/users/deactivated/') {
+  } else if (p === _ADMIN_DOMAIN_NAME + 'access/users/deactivated' || p === _ADMIN_DOMAIN_NAME + 'access/users/deactivated/') {
     filter = '0';
-  } else if (p === '/access/users/deleted' || p === '/access/users/deleted/') {
+  } else if (p === _ADMIN_DOMAIN_NAME + 'access/users/deleted' || p === _ADMIN_DOMAIN_NAME + 'access/users/deleted/') {
     filter = 'deleted';
   }
 
@@ -70,7 +71,7 @@ export function fetchUsers(activePage, perpage) {
   return (dispatch, getState) => {
     dispatch(requestUsers());
     fetchWithJson(url_REQUEST_USERS, {
-      filter: getFilterFromPath(getState().routing.path),
+      filter: getFilterFromPath(getState().routing.location.pathname),
       skip: (activePage - 1) * perpage,
       take: perpage
     })
@@ -162,7 +163,7 @@ export function deactivateUser(id, activePage, perpage) {
     fetchWithJson(url_MARK_USER, {
       id,
       status: '0',
-      filter: getFilterFromPath(getState().routing.path),
+      filter: getFilterFromPath(getState().routing.location.pathname),
       skip: (activePage - 1) * perpage,
       take: perpage,
     })
@@ -193,7 +194,7 @@ export function activateUser(id, activePage, perpage) {
     fetchWithJson(url_MARK_USER, {
       id,
       status: '1',
-      filter: getFilterFromPath(getState().routing.path),
+      filter: getFilterFromPath(getState().routing.location.pathname),
       skip: (activePage - 1) * perpage,
       take: perpage,
     })
@@ -223,7 +224,7 @@ export function deleteUser(id, activePage, perpage) {
     dispatch(doAsyncAction(id, 'delete'));
     fetchWithJson(url_DELETE_USER, {
       id,
-      filter: getFilterFromPath(getState().routing.path),
+      filter: getFilterFromPath(getState().routing.location.pathname),
       skip: (activePage - 1) * perpage,
       take: perpage,
     })
@@ -283,7 +284,7 @@ export function permanentlyDeleteUser(id, activePage, perpage) {
     dispatch(doAsyncAction(id, 'permanentlyDelete'));
     fetchWithJson(url_PERMANENTLY_DELETE_USER, {
       id,
-      filter: getFilterFromPath(getState().routing.path),
+      filter: getFilterFromPath(getState().routing.location.pathname),
       skip: (activePage - 1) * perpage,
       take: perpage,
     })

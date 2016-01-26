@@ -6,3 +6,4 @@ export const _CSRF_TOKEN = document.querySelector('meta[name="_token"]').content
 export const _DOMAIN_NAME = document.querySelector('meta[name="domain"]').content;
 //alert message の表示時間
 export const _DELETE_ALERT_INTERBAL = 3000;
+export const _ADMIN_DOMAIN_NAME = "/admin/single/";

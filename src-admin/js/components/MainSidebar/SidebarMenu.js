@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import Icon from 'react-fa';
-//components
+//Config
+import { _ADMIN_DOMAIN_NAME } from '../../../config/env';
 
 class SidebarMenu extends Component {
   render() {
@@ -9,16 +10,16 @@ class SidebarMenu extends Component {
       <ul className="sidebar-menu">
         <li className="header">General</li>
         <li className="link dashboard">
-          <Link to="/dashboard" activeClassName="active" ><Icon name="calendar" /> Dashboard</Link>
+          <Link to={_ADMIN_DOMAIN_NAME + 'dashboard'} activeClassName="active" ><Icon name="calendar" /> Dashboard</Link>
         </li>
         <li className="link reserved">
-          <Link to="/access/users" activeClassName="active" ><Icon name="calendar" /> Access Management</Link>
+          <Link to={_ADMIN_DOMAIN_NAME + 'access/users'} activeClassName="active" ><Icon name="calendar" /> Access Management</Link>
         </li>
         <li className="link flight">
-          <Link to="/flight" activeClassName="active" ><Icon name="calendar" /> Flight Management</Link>
+          <Link to={_ADMIN_DOMAIN_NAME + 'flight'} activeClassName="active" ><Icon name="calendar" /> Flight Management</Link>
         </li>
         <li className="link pin">
-          <Link to="/pin" activeClassName="active" ><Icon name="calendar" /> PinCode Management</Link>
+          <Link to={_ADMIN_DOMAIN_NAME + 'pin'} activeClassName="active" ><Icon name="calendar" /> PinCode Management</Link>
         </li>
         <li className=" treeview">
           <a href="#">

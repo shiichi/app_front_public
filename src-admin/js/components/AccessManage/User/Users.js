@@ -122,7 +122,7 @@ function mapStateToProps(state) {
     isFetching: state.users.isFetching,
     didInvalidate: state.users.didInvalidate,
     asyncStatus: state.users.asyncStatus,
-    path: state.routing.path
+    path: state.routing.location.pathname
   };
 }
 

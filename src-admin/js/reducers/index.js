@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import {reducer as formReducer} from 'redux-form';
-import { routeReducer } from 'redux-simple-router';
-//reducers
+import { routeReducer } from 'react-router-redux'
+//my reducers
 import lang from './lang';
 import myProfile from './myProfile';
 import pageStatus from './pageStatus';

@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Icon from 'react-fa';
+//Config
+import { _ADMIN_DOMAIN_NAME } from '../../../../config/env';
 //Utility
 import { hasPermission } from '../../../utils/PermissionUtils';
 
@@ -53,13 +55,13 @@ class UsersTableBody extends Component {
         <td className="visible-lg">{u.updatedAt}</td>
         <td>
           {hasPermission(myRoles, myPermissions, 'edit-users') && !u.deletedAt &&
-          <LinkContainer to={{ pathname: '/access/user/edit/' + u.id}}>
+          <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/user/edit/' + u.id}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Edit</Tooltip>)}>
               <Button bsStyle="primary" bsSize="xsmall"><Icon name="pencil"/></Button>
             </OverlayTrigger>
           </LinkContainer>}
           {hasPermission(myRoles, myPermissions, 'change-user-password') && !u.deletedAt &&
-          <LinkContainer to={{ pathname: '/access/user/change/password/' + u.id}}>
+          <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/user/change/password/' + u.id}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Change Password</Tooltip>)}>
               <Button bsStyle="info" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'changePassword'})}>
                 <Icon name="refresh"/>
