@@ -33,7 +33,7 @@ class BoxHeader extends Component {
                 <LinkContainer to={{ pathname: '/access/roles'}}>
                   <MenuItem eventKey="1">All Roles</MenuItem>
                 </LinkContainer>
-                <LinkContainer to={{ pathname: '/access/roles/create'}}>
+                <LinkContainer to={{ pathname: '/access/role/create'}}>
                   <MenuItem eventKey="2">Create Role</MenuItem>
                 </LinkContainer>
               </DropdownButton>

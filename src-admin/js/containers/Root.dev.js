@@ -41,8 +41,8 @@ export default class Root extends Component {
                 <Route path="user/edit/:id" component={EditUser}/>
                 <Route path="user/change/password/:id" component={ChangePassword}/>
                 <Route path="roles" component={Roles}/>
-                <Route path="roles/create" component={CreateRoles}/>
-                <Route path="roles/edit:id" component={CreateRoles}/>
+                <Route path="role/create" component={CreateRoles}/>
+                <Route path="role/edit/:id" component={CreateRoles}/>
                 <Route path="permissions" component={Permissions}/>
               </Route>
             </Route>

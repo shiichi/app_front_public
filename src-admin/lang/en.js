@@ -26,6 +26,14 @@ export const alert = {
       updatePasswordError: 'There was a problem changing this users password. Please try again.',
     },
     roles: {
+      notFound: 'That role does not exist.',
+      alreadyExists: 'That role already exists. Please choose a different name.',
+      needsPermission: 'You must select at least one permission for this role.',
+      createError: 'There was a problem creating this role. Please try again.',
+      updateError: 'There was a problem updating this role. Please try again.',
+      cantDeleteAdmin: 'You can not delete the Administrator role.',
+      hasUsers: 'You can not delete a role with associated users.',
+      deleteError: 'There was a problem deleting this role. Please try again.',
       associatedPermissionsPxplanation: 'A permission marked with a (D) means that the permission has dependencies. They will be checked automatically when you select that permission. You can manage each permissions dependencies in the dependency tab of the edit permission screen.'
     },
     permissions: {

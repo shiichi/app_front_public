@@ -15,17 +15,11 @@ class UsersTableBody extends Component {
 
     if (!asyncStatus[id]) {
       switch (action){
-        case 'edit':
-          break;
-        case 'changePassword':
-          break;
         case 'deactivate':
           deactivateUser(id, activePage, perpage);
           break;
         case 'activate':
           activateUser(id, activePage, perpage);
-          break;
-        case 'resend':
           break;
         case 'delete':
           deleteUser(id, activePage, perpage);
@@ -42,9 +36,9 @@ class UsersTableBody extends Component {
 
   renderUser(){
     const { myId, myRoles, myPermissions, users, asyncStatus } = this.props;
-
-    return users.map((u, i) =>
-      <tr key={i} className="tr-disabled-aaa">
+    console.log(asyncStatus)
+    return users.map(u =>
+      <tr key={u.id} className="tr-disabled-aaa">
         <td>{u.id}</td>
         <td>{u.userId}</td>
         <td><a href="mailto:admin@admin.com">{u.email}</a></td>
@@ -64,7 +58,7 @@ class UsersTableBody extends Component {
               <Button bsStyle="primary" bsSize="xsmall"><Icon name="pencil"/></Button>
             </OverlayTrigger>
           </LinkContainer>}
-          {hasPermission(myRoles, myPermissions, 'change-user-password') && !u.deleted_at &&
+          {hasPermission(myRoles, myPermissions, 'change-user-password') && !u.deletedAt &&
           <LinkContainer to={{ pathname: '/access/user/change/password/' + u.id}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Change Password</Tooltip>)}>
               <Button bsStyle="info" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'changePassword'})}>
@@ -72,37 +66,37 @@ class UsersTableBody extends Component {
               </Button>
             </OverlayTrigger>
           </LinkContainer>}
-          {hasPermission(myRoles, myPermissions, 'deactivate-users') && !u.deleted_at && u.status == 1 && u.id != myId &&
+          {hasPermission(myRoles, myPermissions, 'deactivate-users') && !u.deletedAt && u.status == 1 && u.id != myId &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Deactivate</Tooltip>)}>
             <Button bsStyle="warning" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'deactivate'})}>
               {asyncStatus[u.id] === 'deactivate' ? <Icon spin name="pause"/> : <Icon name="pause"/>}
             </Button>
           </OverlayTrigger>}
-          {hasPermission(myRoles, myPermissions, 'reactivate-users') && !u.deleted_at && u.status == 0 &&
+          {hasPermission(myRoles, myPermissions, 'reactivate-users') && !u.deletedAt && u.status == 0 &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Activate</Tooltip>)}>
             <Button bsStyle="success" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'activate'})}>
               {asyncStatus[u.id] === 'activate' ? <Icon spin name="play"/> : <Icon name="play"/>}
             </Button>
           </OverlayTrigger>}
-          {hasPermission(myRoles, myPermissions, 'resend-user-confirmation-email') && !u.deleted_at && u.confirmed == 0 &&
+          {hasPermission(myRoles, myPermissions, 'resend-user-confirmation-email') && !u.deletedAt && u.confirmed == 0 &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Resend</Tooltip>)}>
             <Button bsStyle="success" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'resend'})}>
               {asyncStatus[u.id] === 'resend' ? <Icon spin name="refresh"/> : <Icon name="refresh"/>}
             </Button>
           </OverlayTrigger>}
-          {hasPermission(myRoles, myPermissions, 'delete-users') && !u.deleted_at && u.id != myId &&
+          {hasPermission(myRoles, myPermissions, 'delete-users') && !u.deletedAt && u.id != myId &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Delete</Tooltip>)}>
             <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'delete'})}>
               {asyncStatus[u.id] === 'delete' ? <Icon spin name="trash"/> : <Icon name="trash"/>}
             </Button>
           </OverlayTrigger>}
-          {hasPermission(myRoles, myPermissions, 'undelete-users') && u.deleted_at &&
+          {hasPermission(myRoles, myPermissions, 'undelete-users') && u.deletedAt &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Restore</Tooltip>)}>
             <Button bsStyle="success" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'restore'})}>
               {asyncStatus[u.id] === 'restore' ? <Icon spin name="refresh"/> : <Icon name="refresh"/>}
             </Button>
           </OverlayTrigger>}
-          {hasPermission(myRoles, myPermissions, 'permanently-delete-users') && u.deleted_at &&
+          {hasPermission(myRoles, myPermissions, 'permanently-delete-users') && u.deletedAt &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Delete Permanently</Tooltip>)}>
             <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'permanentlyDelete'})}>
               <Icon name="times"/>
@@ -127,7 +121,7 @@ UsersTableBody.propTypes = {
   myRoles: PropTypes.array.isRequired,
   myPermissions: PropTypes.array.isRequired,
   users: PropTypes.array.isRequired,
-  asyncStatus: PropTypes.array,
+  asyncStatus: PropTypes.object,
   activePage: PropTypes.number.isRequired,
   perpage: PropTypes.number.isRequired,
   actions: PropTypes.object.isRequired

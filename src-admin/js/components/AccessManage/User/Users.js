@@ -55,7 +55,7 @@ class Users extends Component {
   render() {
     const { activePage, perpage, items } = this.state;
     const { myId, myRoles, myPermissions, users, isFetching, didInvalidate, asyncStatus, actions } = this.props;
-    console.log(myRoles, myPermissions)
+
     return (
       <div className="table-responsive">
         <table className="table table-striped table-bordered table-hover">
@@ -107,7 +107,7 @@ Users.propTypes = {
   users: PropTypes.string.isRequired,
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
-  asyncStatus: PropTypes.array,
+  asyncStatus: PropTypes.object,
   path: PropTypes.string.isRequired,
   actions: PropTypes.object.isRequired
 };

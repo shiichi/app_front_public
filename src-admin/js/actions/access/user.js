@@ -170,7 +170,10 @@ export function deactivateUser(id, activePage, perpage) {
       .then(result => {
         dispatch(doneAsyncAction(id));
         if (!result.msg) {
-          dispatch(requestUsersSuccess(result.total, result.users));
+          dispatch(requestUsersSuccess(
+            result.total,
+            result.users.map(user => keyToCamel(user))
+          ));
           dispatch(addAccessAlert('success', 'alert.access.users.deactivateSuccess'));
         }
         if (result.msg) {
@@ -198,7 +201,10 @@ export function activateUser(id, activePage, perpage) {
       .then(result => {
         dispatch(doneAsyncAction(id));
         if (!result.msg) {
-          dispatch(requestUsersSuccess(result.total, result.users));
+          dispatch(requestUsersSuccess(
+            result.total,
+            result.users.map(user => keyToCamel(user))
+          ));
           dispatch(addAccessAlert('success', 'alert.access.users.activateSuccess'));
         }
         if (result.msg) {
@@ -225,7 +231,10 @@ export function deleteUser(id, activePage, perpage) {
       .then(result => {
         dispatch(doneAsyncAction(id));
         if (!result.msg) {
-          dispatch(requestUsersSuccess(result.total, result.users));
+          dispatch(requestUsersSuccess(
+            result.total,
+            result.users.map(user => keyToCamel(user))
+          ));
           dispatch(addAccessAlert('success', 'alert.access.users.deleteSuccess'));
         }
         if (result.msg) {
@@ -252,7 +261,10 @@ export function restoreUser(id, activePage, perpage) {
       .then(result => {
         dispatch(doneAsyncAction(id));
         if (!result.msg) {
-          dispatch(requestUsersSuccess(result.total, result.users));
+          dispatch(requestUsersSuccess(
+            result.total,
+            result.users.map(user => keyToCamel(user))
+          ));
           dispatch(addAccessAlert('success', 'alert.access.users.restoreSuccess'));
         }
         if (result.msg) {
@@ -279,7 +291,10 @@ export function permanentlyDeleteUser(id, activePage, perpage) {
       .then(result => {
         dispatch(doneAsyncAction(id));
         if (!result.msg) {
-          dispatch(requestUsersSuccess(result.total, result.users));
+          dispatch(requestUsersSuccess(
+            result.total,
+            result.users.map(user => keyToCamel(user))
+          ));
           dispatch(addAccessAlert('success', 'alert.access.users.permanentlyDeleteSuccess'));
         }
         if (result.msg) {

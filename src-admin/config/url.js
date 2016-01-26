@@ -11,7 +11,11 @@ export const url_CREATE_USERS = '/admin/single/access/user/store';
 export const url_CHANGE_PASSWORD = '/admin/single/access/user/change/password';
 export const url_UPDATE_USER = '/admin/single/access/user/update';
 
-export const url_ALL_ROLES = '/admin/single/access/allRoles';
+export const url_REQUEST_ROLES = '/admin/single/access/roles';
+export const url_DELETE_ROLE = '/admin/single/access/role/delete';
+
+export const url_REQUEST_PERMISSIONS = '/admin/single/access/permissions';
+
 export const url_GET_ADDRESS = '/api/getAddress';
 
 

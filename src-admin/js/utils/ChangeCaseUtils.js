@@ -27,3 +27,17 @@ export function keyToSnake(object) {
     return result;
   }, {});
 }
+
+export function keyToCamel2(object) {
+  return Object.keys(object).reduce((result, key) => {
+    result[camelCase(key)] = object[key];
+    return result;
+  }, {});
+}
+
+export function keyToSnake2(object) {
+  return Object.keys(object).reduce((result, key) => {
+    result[snakeCase(key)] = object[key];
+    return result;
+  }, {});
+}

@@ -131,7 +131,7 @@ class CreateUser extends Component {
 
   renderRoles() {
     const { roles } = this.props;
-    return roles.map( role =>
+    return roles.map(role =>
       <div className="col-xs-offset-2 col-xs-10" key={role.id}>
         <div className="checkbox">
           <label className>

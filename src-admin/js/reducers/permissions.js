@@ -1,44 +1,44 @@
 import {
-  REQUEST_ROLES,
-  REQUEST_ROLES_SUCCESS,
-  REQUEST_ROLES_FAIL,
-  DO_ROLE_ASYNC_ACTION,
-  DONE_ROLE_ASYNC_ACTION
+  REQUEST_PERMISSIONS,
+  REQUEST_PERMISSIONS_SUCCESS,
+  REQUEST_PERMISSIONS_FAIL,
+  DO_PERMISSION_ASYNC_ACTION,
+  DONE_PERMISSION_ASYNC_ACTION,
 } from '../constants/ActionTypes';
 
 const initialState = {
-  roles: [],
+  permissions: [],
   isFetching: false,
   didInvalidate: false,
   asyncStatus: {}
 };
 
-export default function roles(state = initialState, action) {
+export default function permissions(state = initialState, action) {
   switch (action.type) {
-  case REQUEST_ROLES:
+  case REQUEST_PERMISSIONS:
     return Object.assign({}, state, {
       isFetching: true,
       didInvalidate: false
     });
 
-  case REQUEST_ROLES_SUCCESS:
+  case REQUEST_PERMISSIONS_SUCCESS:
     return Object.assign({}, state, {
-      roles: action.roles,
+      permissions: action.permissions,
       isFetching: false
     });
 
-  case REQUEST_ROLES_FAIL:
+  case REQUEST_PERMISSIONS_FAIL:
     return Object.assign({}, state, {
       isFetching: false,
       didInvalidate: true
     });
 
-  case DO_ROLE_ASYNC_ACTION:
+  case DO_PERMISSION_ASYNC_ACTION:
     return Object.assign({}, state, {
       asyncStatus: Object.assign({}, state.asyncStatus, {[action.id]: action.action})
     });
 
-  case DONE_ROLE_ASYNC_ACTION:
+  case DONE_PERMISSION_ASYNC_ACTION:
     const copy = Object.assign({}, state.asyncStatus);
     delete copy[action.id];
     return Object.assign({}, state, {

@@ -1,8 +1,22 @@
 import React, { PropTypes, Component } from 'react';
-//components
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Pagination } from 'react-bootstrap';
+import Icon from 'react-fa';
+//Actions
+import * as AccessRoleActions from '../../../actions/access/role';
+//Components
+import RolesTableBody from './RolesTableBody';
 
 class Roles extends Component {
+  componentDidMount() {
+    const { fetchRoles } = this.props.actions;
+    fetchRoles();
+  }
+
   render() {
+    const { myId, myRoles, myPermissions, roles, isFetching, didInvalidate, asyncStatus, actions } = this.props;
+
     return (
       <div className="box-body">
         <div className="table-responsive">
@@ -16,50 +30,50 @@ class Roles extends Component {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Administrator</td>
-                <td>
-                  <span className="label label-success">All</span>
-                </td>
-                <td>1</td>
-                <td>1</td>
-                <td><a href="http://l.com/admin/access/roles/1/edit" className="btn btn-xs btn-primary"><i className="fa fa-pencil" data-toggle="tooltip" data-placement="top" title data-original-title="Edit" /></a> </td>
-              </tr>
-              <tr>
-                <td>User</td>
-                <td>
-                  <span className="label label-danger">None</span>
-                </td>
-                <td>3</td>
-                <td>2</td>
-                <td>
-                  <a href="http://l.com/admin/access/roles/2/edit" className="btn btn-xs btn-primary">
-                    <i className="fa fa-pencil" data-toggle="tooltip" data-placement="top" title data-original-title="Edit" />
-                  </a>
-                  <a className="btn btn-xs btn-danger" data-method="delete" style={{cursor: 'pointer'}} onclick="">
-                    <i className="fa fa-times" data-toggle="tooltip" data-placement="top" title data-original-title="Delete" />
-                  </a>
-                </td>
-              </tr>
-            </tbody>
+            {!didInvalidate && !isFetching && roles && 
+            <RolesTableBody
+              myId={myId}
+              myRoles={myRoles}
+              myPermissions={myPermissions}
+              roles={roles}
+              asyncStatus={asyncStatus}
+              actions={actions}/>}
           </table>
         </div>
-        <div className="pull-left">
-          2 role total
-        </div>
-        <div className="pull-right">
-        </div>
-        <div className="clearfix" />
       </div>
     );
   }
 }
 
 Roles.propTypes = {
-  message: PropTypes.array,
-  reservation: PropTypes.object.isRequired,
+  myId: PropTypes.number.isRequired,
+  myRoles: PropTypes.array.isRequired,
+  myPermissions: PropTypes.array.isRequired,
+  roles: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  didInvalidate: PropTypes.bool.isRequired,
+  asyncStatus: PropTypes.object,
+  path: PropTypes.string.isRequired,
   actions: PropTypes.object.isRequired
 };
 
-export default Roles;
+function mapStateToProps(state) {
+  return {
+    myId: state.myProfile.id,
+    myRoles: state.myProfile.assigneesRoles,
+    myPermissions: state.myProfile.assigneesPermissions,
+    roles: state.roles.roles,
+    isFetching: state.roles.isFetching,
+    didInvalidate: state.roles.didInvalidate,
+    asyncStatus: state.roles.asyncStatus,
+    path: state.routing.path
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(AccessRoleActions, dispatch)
+  };
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )(Roles);
