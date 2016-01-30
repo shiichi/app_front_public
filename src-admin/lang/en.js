@@ -7,9 +7,9 @@ export const alert = {
       notFound: 'That user does not exist.',
       deactivateSuccess: 'The user was successfully deactivated.',
       activateSuccess: 'The user was successfully activated.',
-      deleteSuccess: 'The user was successfully deleted.',
+      destroySuccess: 'The user was successfully deleted.',
       restoreSuccess: 'The user was successfully restored.',
-      permanentlyDeleteSuccess: 'The user was successfully permanently deleted.',
+      deleteSuccess: 'The user was successfully permanently deleted.',
       updatedSuccess: 'The user was successfully updated.',
       storeSuccess: 'The user was successfully created.',
       changePasswordSuccess: 'The user\'s password was successfully updated.',
@@ -37,13 +37,27 @@ export const alert = {
       associatedPermissionsPxplanation: 'A permission marked with a (D) means that the permission has dependencies. They will be checked automatically when you select that permission. You can manage each permissions dependencies in the dependency tab of the edit permission screen.'
     },
     permissions: {
+      notFound: 'That permission does not exist.',
       associatedPermissionsPxplanation: ''
     }
   }
 };
 
 export const server = {
-  faildToAccess: 'Oops! Faild to accsss server.'
+  '200': '200',
+  '201': '201',
+  '204': '204',
+  '400': '400',
+  '401': 'Unauthorized',
+  '403': 'Forbidden',
+  '404': 'Not Found',
+  '405': 'Method Not Allowed',
+  '406': 'Not Acceptable',
+  '409': 'Conflict',
+  '415': 'Unsupported Media Type',
+  '406': 'Not Acceptable',
+  '422': 'Unprocessable Entity',
+  '500': 'Internal Server Error',
 };
 
 export const validation = {

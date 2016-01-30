@@ -3,6 +3,7 @@ import { fetchWithJson } from '../../utils/fetchUtils';
 import { keyToCamel2, keyToSnake2 } from '../../utils/ChangeCaseUtils';
 import {
   url_REQUEST_PERMISSIONS,
+  url_REQUEST_PERMISSION_DEPENDENCY,
 } from '../../../config/url';
 
 function addAccessAlert(status, msg) {
@@ -26,7 +27,7 @@ function requestPermissionsSuccess(permissions) {
   };
 }
 
-function requestPermissionsFail(messages) {
+function requestPermissionsFail() {
   return {
     type: types.REQUEST_PERMISSIONS_FAIL,
   };
@@ -45,6 +46,38 @@ export function fetchPermissions() {
         }
         if (result.msg) {
           dispatch(requestPermissionsFail());
+        }
+      })
+      .catch(ex => {
+      });
+  };
+}
+
+function requestPermissionDependencySuccess(dependency) {
+  return {
+    type: types.ADD_DEPENDENCY,
+    dependency
+  };
+}
+
+function requestPermissionDependencyFail() {
+  return {
+    type: types.REQUEST_PERMISSION_DEPENDENCY_FAIL,
+  };
+}
+
+export function fetchPermissionDependency(id) {
+  return (dispatch) => {
+    fetchWithJson(url_REQUEST_PERMISSION_DEPENDENCY, {id})
+      .then(response => response.json())
+      .then(result => {
+        if (!result.msg) {
+          dispatch(requestPermissionDependencySuccess(
+            result.map(d => keyToCamel2(d)))
+          );
+        }
+        if (result.msg) {
+          dispatch(requestPermissionDependencyFail());
         }
       })
       .catch(ex => {

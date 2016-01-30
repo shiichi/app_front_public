@@ -4,11 +4,6 @@ import Icon from 'react-fa';
 import SidebarMenu from './SidebarMenu';
 
 class MainSidebar extends Component {
-  componentDidMount() {
-    const { fetchMyProfile } = this.props.actions;
-    fetchMyProfile();
-  }
-
   render() {
     const { userId } = this.props.myProfile;
 
@@ -41,7 +36,6 @@ class MainSidebar extends Component {
 
 MainSidebar.propTypes = {
   myProfile: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
 };
 
 export default MainSidebar;

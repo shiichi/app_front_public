@@ -33,7 +33,7 @@ class RolesTableBody extends Component {
         <td>{r.sort}</td>
         <td>
           {hasPermission(myRoles, myPermissions, 'edit-roles')  &&
-          <LinkContainer to={{ pathname: '/access/role/edit/' + r.id}}>
+          <LinkContainer to={{ pathname: '/access/roles/edit/' + r.id}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Edit</Tooltip>)}>
               <Button bsStyle="primary" bsSize="xsmall"><Icon name="pencil"/></Button>
             </OverlayTrigger>

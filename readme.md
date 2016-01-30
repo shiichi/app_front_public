@@ -1,5 +1,5 @@
 # 予約決済システム
 
-cd droview-front/node_modules/
-git clone https://github.com/rackerlabs/snappit-mocha-protractor.git
-
+eslintをglobalにインストールして使う場合、pluginもまたglobalにインストールしないと使えない
+ローカルにeslintが入っているとglobalなeslintコマンドでもローカルを参照するようになる
+今はlocal,global共にeslint及びそのプラグインがインストールされている状態

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Pagination } from 'react-bootstrap';
 import Icon from 'react-fa';
 //Actions
+import { routeActions } from 'react-router-redux';
 import * as AccessUserActions from '../../../actions/access/user';
 //Components
 import UsersTableBody from './UsersTableBody';
@@ -13,47 +14,45 @@ import Loading from '../../Common/Loading';
 class Users extends Component {
   constructor(props, context) {
     super(props, context);
+    const { query, perPage } = props;
     this.state = {
-      activePage: 1,
-      perpage: 10,
-      items: 1
+      page: Math.ceil(query.skip / perPage) + 1,
+      items: Math.ceil(query.skip / perPage) + 1
     };
   }
 
   componentWillReceiveProps(nextProps) {
     const { fetchUsers } = this.props.actions;
-    const { path, total } = nextProps;
-    const { activePage, perpage } = this.state;
+    const { total, search, perPage } = nextProps;
 
-    if (total !== this.props.total) {
+    if (total !== this.props.total || perPage !== this.props.perPage) {
       this.setState({
-        items: Math.ceil(total / perpage),
+        items: Math.ceil(total / perPage),
       });
     };
 
-    if (path !== this.props.path) {
-      fetchUsers(activePage, perpage);
+    if (search !== this.props.search) {
+      fetchUsers();
     };
   }
 
   componentDidMount() {
     const { fetchUsers } = this.props.actions;
-    const { activePage, perpage } = this.state;
-
-    fetchUsers(activePage, perpage);
+    fetchUsers();
   }
 
   handlePage(e, selectedEvent) {
-    const activePage = selectedEvent.eventKey;
-    const { fetchUsers } = this.props.actions;
-    const { perpage } = this.state;
+    const page = selectedEvent.eventKey;    
+    const { total, pathname, query, perPage, actions: {push} } = this.props;
+    const skip = (page - 1) * perPage;
+    const url = `${pathname}?filter=${query.filter}&skip=${skip}&take=${perPage}`;
 
-    this.setState({ activePage });
-    fetchUsers(activePage, perpage);
+    push(url);
+    this.setState({page});
   }
 
   render() {
-    const { activePage, perpage, items } = this.state;
+    const { page, items } = this.state;
     const { myId, myRoles, myPermissions, users, isFetching, didInvalidate, asyncStatus, actions } = this.props;
 
     return (
@@ -78,8 +77,6 @@ class Users extends Component {
               myPermissions={myPermissions}
               users={users}
               asyncStatus={asyncStatus}
-              activePage={activePage}
-              perpage={perpage}
               actions={actions}/>}
         </table>
         {!didInvalidate && isFetching && <Loading/>}
@@ -91,7 +88,7 @@ class Users extends Component {
             ellipsis
             items={this.state.items}
             maxButtons={10}
-            activePage={this.state.activePage}
+            activePage={this.state.page}
             onSelect={this.handlePage.bind(this)} />
         </div>
       </div>
@@ -104,11 +101,14 @@ Users.propTypes = {
   myRoles: PropTypes.array.isRequired,
   myPermissions: PropTypes.array.isRequired,
   total: PropTypes.number.isRequired,
-  users: PropTypes.string.isRequired,
+  users: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
   asyncStatus: PropTypes.object,
-  path: PropTypes.string.isRequired,
+  pathname: PropTypes.string.isRequired,
+  query: PropTypes.object.isRequired,
+  search: PropTypes.string.isRequired,
+  perPage: PropTypes.number.isRequired,
   actions: PropTypes.object.isRequired
 };
 
@@ -122,13 +122,17 @@ function mapStateToProps(state) {
     isFetching: state.users.isFetching,
     didInvalidate: state.users.didInvalidate,
     asyncStatus: state.users.asyncStatus,
-    path: state.routing.location.pathname
+    pathname: state.routing.location.pathname,
+    search: state.routing.location.search,
+    perPage: 10,
+    query: state.routing.location.query
   };
 }
 
 function mapDispatchToProps(dispatch) {
+  const actions = Object.assign(routeActions, AccessUserActions);
   return {
-    actions: bindActionCreators(AccessUserActions, dispatch)
+    actions: bindActionCreators(actions, dispatch)
   };
 }
 

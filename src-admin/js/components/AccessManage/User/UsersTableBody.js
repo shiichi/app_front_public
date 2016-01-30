@@ -11,27 +11,15 @@ import { hasPermission } from '../../../utils/PermissionUtils';
 class UsersTableBody extends Component {
   handleClick(e) {
     const { id, action } = e
-    const { activePage, perpage, asyncStatus, actions: {
-      deactivateUser, activateUser, deleteUser, restoreUser, permanentlyDeleteUser
-    }} = this.props;
+    const { asyncStatus, actions } = this.props;
 
     if (!asyncStatus[id]) {
       switch (action){
-        case 'deactivate':
-          deactivateUser(id, activePage, perpage);
-          break;
-        case 'activate':
-          activateUser(id, activePage, perpage);
-          break;
-        case 'delete':
-          deleteUser(id, activePage, perpage);
-          break;
-        case 'restore':
-          restoreUser(id, activePage, perpage);
-          break;
-        case 'permanentlyDelete':
-          permanentlyDeleteUser(id, activePage, perpage);
-          break;
+        case 'activate': actions.activateUser(id); break;
+        case 'deactivate': actions.deactivateUser(id); break;
+        case 'restore': actions.restoreUser(id); break;
+        case 'destroy': actions.destroyUser(id); break;
+        case 'delete': actions.deleteUser(id); break;
       }
     };
   }
@@ -55,13 +43,13 @@ class UsersTableBody extends Component {
         <td className="visible-lg">{u.updatedAt}</td>
         <td>
           {hasPermission(myRoles, myPermissions, 'edit-users') && !u.deletedAt &&
-          <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/user/edit/' + u.id}}>
+          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/users/${u.id}/edit`}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Edit</Tooltip>)}>
               <Button bsStyle="primary" bsSize="xsmall"><Icon name="pencil"/></Button>
             </OverlayTrigger>
           </LinkContainer>}
           {hasPermission(myRoles, myPermissions, 'change-user-password') && !u.deletedAt &&
-          <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/user/change/password/' + u.id}}>
+          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/users/${u.id}/change/password`}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Change Password</Tooltip>)}>
               <Button bsStyle="info" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'changePassword'})}>
                 <Icon name="refresh"/>
@@ -88,8 +76,8 @@ class UsersTableBody extends Component {
           </OverlayTrigger>}
           {hasPermission(myRoles, myPermissions, 'delete-users') && !u.deletedAt && u.id != myId &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Delete</Tooltip>)}>
-            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'delete'})}>
-              {asyncStatus[u.id] === 'delete' ? <Icon spin name="trash"/> : <Icon name="trash"/>}
+            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'destroy'})}>
+              {asyncStatus[u.id] === 'destroy' ? <Icon spin name="trash"/> : <Icon name="trash"/>}
             </Button>
           </OverlayTrigger>}
           {hasPermission(myRoles, myPermissions, 'undelete-users') && u.deletedAt &&
@@ -100,7 +88,7 @@ class UsersTableBody extends Component {
           </OverlayTrigger>}
           {hasPermission(myRoles, myPermissions, 'permanently-delete-users') && u.deletedAt &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Delete Permanently</Tooltip>)}>
-            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'permanentlyDelete'})}>
+            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'delete'})}>
               <Icon name="times"/>
             </Button>
           </OverlayTrigger>}

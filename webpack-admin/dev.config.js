@@ -28,18 +28,17 @@ module.exports = {
         loaders: [ 'babel' ],
         exclude: /node_modules/
       }, {
-        test: /bootstrap-social.css$/,
-        loaders: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader')
-      }, {
-        test: /\.min.css$/,
-        loaders: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader')
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract(
+          'style', 'css'
+        ),
       }, {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract(
           'style',
           'css?modules&importLoaders=2&localIdentName=[name]__[local]__[hash:base64:5]' +
           '!postcss' +
-          '!sass!url'
+          '!sass'
         ),
       }, {
         test: /glyphicons-halflings-regular\.woff(\?v=\d+\.\d+\.\d+)?$/,
@@ -59,9 +58,6 @@ module.exports = {
       },
       /* font-awesome */
       {
-        test: /font-awesome.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
-      }, {
         test: /fontawesome-webfont\.(otf|eot|svg|ttf|woff)\??/,
         loader: 'url-loader?limit=8192'
       }, {

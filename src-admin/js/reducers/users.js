@@ -27,11 +27,7 @@ export default function users(state = initialState, action) {
       total: action.total,
       users: action.users.map(user => 
         Object.assign({}, user, {
-          assigneesRoles: user.roles.map(role => role.name),
-          assigneesPermissions: user.roles.map(role =>
-            role.permissions.map(permission => 
-              permission.name)).toString().split(',').filter((x, i, self) => 
-                self.indexOf(x) === i)
+          assigneesRoles: user.roles.map(role => role.name)
         })
       ),
       isFetching: false

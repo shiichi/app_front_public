@@ -1,20 +1,14 @@
 import * as types from '../constants/ActionTypes';
 
-export function deleteAccessAlert(keys) {
+export function deleteAccessAlerts(keys) {
   return {
     type: types.DELETE_ACCESS_ALERT,
     keys
   };
 }
 
-export function clearValidationAlert() {
+export function clearDisposable() {
   return {
-    type: types.CLEAR_VALIDATION_ALERT,
-  };
-}
-
-export function clearAddress() {
-  return {
-    type: types.CLEAR_ADDRESS,
+    type: types.CLEAR_DISPOSABLE,
   };
 }

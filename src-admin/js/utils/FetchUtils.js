@@ -1,15 +1,49 @@
 import fetch from 'isomorphic-fetch';
-import { _CSRF_TOKEN, _DOMAIN_NAME } from '../../config/env';
+import { constantCase } from 'change-case';
+import { _CSRF_TOKEN, _DOMAIN_NAME, _ADMIN_DOMAIN_NAME } from '../../config/env';
+import * as urls from '../../config/url';
+import { keyToCamel, keyToSnake } from './ChangeCaseUtils';
 
-export function fetchWithJson(url, request) {
-  return fetch(_DOMAIN_NAME + url, {
-    method: 'post',
+function getURL(method, id) {
+  return _DOMAIN_NAME + urls['url_'+ constantCase(method)];
+}
+
+function expectStatusCode(method) {
+  switch(method) {
+    case 'GET':
+    case 'PUT':
+    case 'PATCH': return 200;
+    case 'POST': return 200;
+    case 'DELETE': return 200;
+  }
+}
+
+export function customFetch(url, method, body) {
+  let request = {
+    method: method,
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'X-CSRF-Token': _CSRF_TOKEN
     },
     credentials: 'same-origin',
-    body: JSON.stringify(request)
-  });
+  };
+
+  if (method !== 'GET') {
+    request.body = JSON.stringify(keyToSnake(body))
+  }
+
+  return fetch(_DOMAIN_NAME + _ADMIN_DOMAIN_NAME + url, request)
+    .then(response => {
+      if (response.status === expectStatusCode(method)) {
+        return response;
+      }
+      if (response.status >= 400) {
+        var error = new Error(response.statusText);
+        throw error;
+      }
+    })
+    .then(response => {
+      return response.json()
+    })
 }

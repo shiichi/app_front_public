@@ -1,9 +1,6 @@
 import * as types from '../constants/ActionTypes';
-import { fetchWithJson } from '../utils/fetchUtils';
+import { customFetch } from '../utils/fetchUtils';
 import { keyToCamel, keyToSnake } from '../utils/ChangeCaseUtils';
-import {
-  url_REQUEST_MY_PROFILE,
-} from '../../config/url';
 
 function requestMyProfile() {
   return {
@@ -27,10 +24,14 @@ export function requestMyProfileFail() {
 export function fetchMyProfile() {
   return dispatch => {
     dispatch(requestMyProfile());
-    fetchWithJson(url_REQUEST_MY_PROFILE)
-    .then(response => response.json())
-    .then(result => dispatch(requestMyProfileSuccess(keyToCamel(result))))
-    .catch(ex => dispatch(requestMyProfileFail()));
-  };
+    customFetch('api/getUserInfo', 'GET')
+    .then(result => {
+      dispatch(requestMyProfileSuccess(keyToCamel(result)));
+    })
+    .catch(ex => {
+      dispatch(requestMyProfileFail());
+      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+    })
+  }
 }
 

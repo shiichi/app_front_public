@@ -7,17 +7,18 @@ export const url_MARK_USER = '/admin/single/access/user/mark';
 export const url_DELETE_USER = '/admin/single/access/user/delete';
 export const url_RESTORE_USER = '/admin/single/access/user/restore';
 export const url_PERMANENTLY_DELETE_USER = '/admin/single/access/user/permanentlyDelete';
-export const url_CREATE_USERS = '/admin/single/access/user/store';
+export const url_CREATE_USER = '/admin/single/access/user/store';
 export const url_CHANGE_PASSWORD = '/admin/single/access/user/change/password';
 export const url_UPDATE_USER = '/admin/single/access/user/update';
 
 export const url_REQUEST_ROLES = '/admin/single/access/roles';
 export const url_DELETE_ROLE = '/admin/single/access/role/delete';
+export const url_CREATE_ROLE = '/admin/single/access/role/create';
 
 export const url_REQUEST_PERMISSIONS = '/admin/single/access/permissions';
+export const url_REQUEST_PERMISSION_DEPENDENCY = '/admin/single/access/permission/dependency';
 
 export const url_GET_ADDRESS = '/api/getAddress';
-
 
 export const REQUEST_TIMETABLE = '/api/getTimetable';
 export const REQUEST_DEFAULT_STATUS = '/api/getDefaultStatus';

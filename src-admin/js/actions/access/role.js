@@ -1,10 +1,6 @@
 import * as types from '../../constants/ActionTypes';
-import { fetchWithJson } from '../../utils/fetchUtils';
-import { keyToCamel2, keyToSnake2 } from '../../utils/ChangeCaseUtils';
-import {
-  url_REQUEST_ROLES,
-  url_DELETE_ROLE,
-} from '../../../config/url';
+import { customFetch } from '../../utils/fetchUtils';
+import { keyToCamel, keyToSnake } from '../../utils/ChangeCaseUtils';
 
 function addAccessAlert(status, msg) {
   return {
@@ -36,18 +32,14 @@ function requestRolesFail(messages) {
 export function fetchRoles() {
   return (dispatch) => {
     dispatch(requestRoles());
-    fetchWithJson(url_REQUEST_ROLES)
-      .then(response => response.json())
-      .then(result => {
-        if (!result.msg) {
-          dispatch(requestRolesSuccess(result.map(role => keyToCamel2(role))));
-        }
-        if (result.msg) {
-          dispatch(requestRolesFail());
-        }
-      })
-      .catch(ex => {
-      });
+    customFetch('access/roles/fetch', 'GET')
+    .then(result => {
+      dispatch(requestRolesSuccess(result.map(role => keyToCamel(role))));
+    })
+    .catch(ex => {
+      dispatch(requestRolesFail());
+      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+    })
   };
 }
 
@@ -83,6 +75,28 @@ export function deleteRole(id) {
       })
       .catch(ex => {
         dispatch(doneRoleAsyncAction(id));
+        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
+      });
+  };
+}
+
+export function createRole(request) {
+  return (dispatch) => {
+    fetchWithJson(url_CREATE_ROLE, keyToSnake(request))
+      .then(response => response.json())
+      .then(result => {
+        if (result === 'success') {
+          dispatch(addAccessAlert('success', 'alert.access.users.storeSuccess'));
+        }
+        if (result.msg) {
+          dispatch(addAccessAlert('warning', result.msg));
+        }
+        if (result.email) {
+          dispatch(addAccessAlert('warning', 'validation.someError'));
+          dispatch(addValidationAlert('validation.email.alreadyExists'));
+        }
+      })
+      .catch(ex => {
         dispatch(addAccessAlert('danger', 'server.faildToAccess'));
       });
   };

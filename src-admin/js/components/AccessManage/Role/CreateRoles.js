@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Input, Row, Col } from 'react-bootstrap';
 //Utility
-import { validat } from '../../../utils/ValidationUtils';
+import { validate } from '../../../utils/ValidationUtils';
 //Actions
 import * as AccessRoleActions from '../../../actions/access/role';
 import * as AccessPermissionActions from '../../../actions/access/permission';
@@ -37,29 +37,82 @@ class CreateRoles extends Component {
     fetchPermissions();
   }
 
-  validat(name, value, checked) {
+  componentWillReceiveProps(nextProps) {
+    const { dependency } = nextProps;
+    if (dependency) {
+      this.setState({ assigneesPermissions: {
+        value: this.state.assigneesPermissions.value.concat(dependency),
+        status: '',
+        message: ''
+      }});
+    }
+  }
+
+  validate(name, value, checked) {
+    const { fetchPermissionDependency } = this.props.actions;
+
     switch (name) {
     case 'assigneesPermissions':
-      this.setState({[name]: {value:[value]}});
+      if (checked) {
+        fetchPermissionDependency(value);
+        this.setState({[name]: {
+          value: this.state[name].value.concat([Number(value)]),
+          status: '',
+          message: ''
+        }});
+      } else {
+        this.setState({[name]: {
+          value: this.state[name].value.filter(p => p !== Number(value)),
+          status: '',
+          message: ''
+        }});
+      }
       break;
 
     default:
-      this.setState({[name]: validat(name, value)});
+      this.setState({[name]: validate(name, value)});
     }
   }
 
   handleChange(e) {
     const { name, value, checked } = e.target;
-    this.validat(name, value, checked);
+    this.validate(name, value, checked);
+  }
+
+  handleHover() {
+    for (let key in this.state) {
+      if (this.state[key].value === '') {
+        this.validate(key, this.state[key].status);
+      }
+    }
+  }
+
+  handleSubmit() {
+    const { createUser } = this.props.actions;
+    const Keys = Object.keys(this.state);
+    const hasError = Keys.some(key =>
+      this.state[key].status === 'error'
+    );
+
+    if (!hasError) {
+      createUser(Keys.reduce((request, key) => {
+        request[key] = this.state[key].value;
+        return request;
+      }, {}));
+    }
   }
 
   renderPermissions() {
     const { permissions } = this.props;
+    const { value } = this.state.assigneesPermissions;
     return permissions.map(permission =>
       <div className="col-xs-offset-2 col-xs-10" key={permission.id}>
         <div className="checkbox">
           <label className>
-            <input type="checkbox" value={permission.id} name="assigneesPermissions" className/>
+            <input type="checkbox"
+                   value={permission.id}
+                   name="assigneesPermissions"
+                   checked={value.indexOf(permission.id) >= 0 ? true : ''}/>
             <span><strong>{permission.displayName}</strong></span>
           </label>
         </div>
@@ -69,22 +122,34 @@ class CreateRoles extends Component {
 
   render() {
     const { name, sort } = this.state;
-
+    const hasError = Object.keys(this.state).some(key =>
+      this.state[key].status === 'error'
+    );
+console.log(this.state)
     return (
       <div className="box-body">
         <form className="form-horizontal" onChange={this.handleChange.bind(this)}>
-          <Input type="text" label="Name" name="userId" placeholder="Role Name"
+          <Input type="text" label="Name" name="name" placeholder="Role Name"
             bsStyle={name.status}
             labelClassName="col-xs-2"
             wrapperClassName="col-xs-10"
             help={name.message}/>
-          <Input type="text" label="Name" name="sort" placeholder="Sort"
+          <Input type="text" label="Sort" name="sort" placeholder="Sort"
             bsStyle={sort.status}
             labelClassName="col-xs-2"
             wrapperClassName="col-xs-10"
             help={sort.message}/>
           {this.renderPermissions()}
         </form>
+        <div className="pull-left">
+          <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
+        </div>
+        <div className="pull-right">
+          <button className="btn btn-success btn-xs" disabled={hasError}
+                  onClick={this.handleSubmit.bind(this)}
+                  onMouseOver={this.handleHover.bind(this)}>Create</button>
+        </div>
+        <div className="clearfix" />
       </div>
     );
   }
@@ -94,6 +159,7 @@ CreateRoles.propTypes = {
   lang: PropTypes.string.isRequired,
   validationError: PropTypes.string.isRequired,
   permissions: PropTypes.array.isRequired,
+  dependency: PropTypes.array
 };
 
 function mapStateToProps(state) {
@@ -101,6 +167,7 @@ function mapStateToProps(state) {
     lang: state.lang,
     validationError: state.validationError,
     permissions: state.permissions.permissions,
+    dependency: state.dependency
   };
 }
 

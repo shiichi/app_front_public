@@ -13,21 +13,30 @@ class BoxHeader extends Component {
           <div className="pull-right" style={{marginBottom: 10}}>
             <ButtonGroup>
               <DropdownButton bsStyle="primary" bsSize="small" title="Users">
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/users'}}>
+                <LinkContainer to={{
+                  pathname: _ADMIN_DOMAIN_NAME + 'access/users',
+                  query: { filter: 'all' }}}>
                   <MenuItem eventKey="1">All User</MenuItem>
                 </LinkContainer>
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/users/active'}}>
+                <LinkContainer to={{
+                  pathname: _ADMIN_DOMAIN_NAME + 'access/users',
+                  query: { filter: 'active' }}}>
                   <MenuItem eventKey="2">Active User</MenuItem>
                 </LinkContainer>
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/users/deactivated'}}>
+                <LinkContainer to={{
+                  pathname: _ADMIN_DOMAIN_NAME + 'access/users',
+                  query: { filter: 'deactivated' }}}>
                   <MenuItem eventKey="3">Deactivated User</MenuItem>
                 </LinkContainer>
                 <MenuItem divider />
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/user/create'}}>
+                <LinkContainer to={{
+                  pathname: _ADMIN_DOMAIN_NAME + 'access/users/create'}}>
                   <MenuItem eventKey="4">Create User</MenuItem>
                 </LinkContainer>
                 <MenuItem divider />
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/users/deleted'}}>
+                <LinkContainer to={{
+                  pathname: _ADMIN_DOMAIN_NAME + 'access/users',
+                  query: { filter: 'deleted' }}}>
                   <MenuItem eventKey="5">Deleted Users</MenuItem>
                 </LinkContainer>
               </DropdownButton>

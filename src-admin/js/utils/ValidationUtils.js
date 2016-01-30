@@ -1,24 +1,14 @@
-export function validat(type, value1, value2) {
+export function validate(type, value1, value2) {
   switch (type) {
-  case 'userId':
-    return validatUserId(value1);
-
-  case 'email':
-    return validatEmail(value1);
-
-  case 'password':
-    return validatPassword(value1, value2);
-
-  case 'passwordConfirmation':
-    return validatPasswordConf(value1, value2);
-
-  case 'age':
-    return validatAge(value1);
-
-  case 'postalCode':
-    return validatPostalCode(value1);
-
-  default:
+  case 'userId': return validatUserId(value1);
+  case 'email': return validatEmail(value1);
+  case 'password': return validatPassword(value1, value2);
+  case 'passwordConfirmation': return validatPasswordConf(value1, value2);
+  case 'age': return validatAge(value1);
+  case 'postalCode': return validatPostalCode(value1);
+  case 'name': return validatName(value1);
+  case 'sort': return validatSort(value1);
+  default: 
     return {
       value: value1,
       status: '',
@@ -163,3 +153,36 @@ function validatPostalCode(code) {
     };
   }
 }
+
+function validatName(name) {
+  if (name.length === 0) {
+    return {
+      value: name,
+      status: 'error',
+      message: 'validation.name.required'
+    };
+  } else if (name.length > 0) {
+    return {
+      value: name,
+      status: '',
+      message: ''
+    };
+  }
+}
+
+function validatSort(sort) {
+  if (sort.length === 0) {
+    return {
+      value: sort,
+      status: 'error',
+      message: 'validation.sort.required'
+    };
+  } else if (sort.length > 0) {
+    return {
+      value: sort,
+      status: '',
+      message: ''
+    };
+  }
+}
+

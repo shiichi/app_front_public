@@ -30,21 +30,18 @@ export default class Root extends Component {
               <Route path="dashboard" component={Dashboard}/>
               <Route path="access" component={AccessManage}>
                 <Route path="users" component={Users}/>
-                <Route path="users/active" component={Users}/>
-                <Route path="users/deactivated" component={Users}/>
-                <Route path="users/deleted" component={Users}/>
-                <Route path="user/create" component={CreateUser}/>
-                <Route path="user/edit/:id" component={EditUser}/>
-                <Route path="user/change/password/:id" component={ChangePassword}/>
+                <Route path="users/create" component={CreateUser}/>
+                <Route path="users/:id/edit" component={EditUser}/>
+                <Route path="users/:id/password/change" component={ChangePassword}/>
                 <Route path="roles" component={Roles}/>
-                <Route path="role/create" component={CreateRoles}/>
-                <Route path="role/edit/:id" component={CreateRoles}/>
+                <Route path="roles/create" component={CreateRoles}/>
+                <Route path="roles/:id/edit" component={CreateRoles}/>
                 <Route path="permissions" component={Permissions}/>
               </Route>
             </Route>
           </Router>
         </Provider>
-        <DevTools store={store} monitor={DiffMonitor} shortcut='ctrl+d'/>
+        {/*<DevTools store={store} monitor={DiffMonitor} shortcut='ctrl+d'/>*/}
       </div>
     )
   }

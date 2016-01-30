@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 //actions
 import * as MyProfileActions from '../actions/myProfile';
 import * as PageStatusActions from '../actions/pageStatus';
-import * as AlertActions from '../actions/alert';
+import * as InitializeActions from '../actions/initialize';
 //components
 import MainHeader from '../components/MainHeader/MainHeader';
 import MainSidebar from '../components/MainSidebar/MainSidebar';
@@ -14,7 +14,7 @@ import Alert from '../components/Common/Alert';
 class App extends Component {
   constructor(props, context) {
     super(props, context);
-    if (props.pageStatus.sidebar) {
+    if (props.sidebar) {
       this.state = {
         sidebar: "hold-transition skin-black sidebar-min"
       };
@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.pageStatus.sidebar) {
+    if (nextProps.sidebar) {
       this.state = {
         sidebar: "hold-transition skin-black sidebar-min"
       };
@@ -37,9 +37,14 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    const { fetchMyProfile } = this.props.actions;
+    fetchMyProfile();
+  }
+
   render() {
-    const { lang, myProfile, alert, routing, actions, children, actions: {
-      changeSidebar, deleteAccessAlert}
+    const { lang, myProfile, alert, routing, children, actions: {
+      changeSidebar, deleteAccessAlerts}
     } = this.props;
 
     return (
@@ -47,9 +52,7 @@ class App extends Component {
         <div id="dashboard-container">
           <div className="wrapper">
             <MainHeader changeSidebar={changeSidebar}/>
-            <MainSidebar
-              myProfile={myProfile}
-              actions={actions}/>
+            <MainSidebar myProfile={myProfile}/>
             <div className="content-wrapper" style={{ minHeight: '916px' }}>
               <ContentHeader routing={routing}/>
               <section className="content">
@@ -57,7 +60,7 @@ class App extends Component {
                   lang={lang}
                   alert={alert}
                   path={routing.path}
-                  deleteAccessAlert={deleteAccessAlert}/>
+                  deleteAccessAlerts={deleteAccessAlerts}/>
                 {children}
               </section>
             </div>
@@ -71,7 +74,7 @@ class App extends Component {
 App.propTypes = {
   lang: PropTypes.string.isRequired,
   myProfile: PropTypes.object.isRequired,
-  pageStatus: PropTypes.object.isRequired,
+  sidebar: PropTypes.bool.isRequired,
   alert: PropTypes.object,
   routing: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
@@ -79,16 +82,16 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    lang: state.lang,
+    lang: state.pageStatus.lang,
     myProfile: state.myProfile,
-    pageStatus: state.pageStatus,
+    sidebar: state.pageStatus.sidebar,
     alert: state.alert,
     routing: state.routing
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign(MyProfileActions, PageStatusActions, AlertActions);
+  const actions = Object.assign(MyProfileActions, PageStatusActions, InitializeActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };

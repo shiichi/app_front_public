@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Input, Row, Col } from 'react-bootstrap';
 //Utility
-import { validat } from '../../../utils/ValidationUtils';
+import { validate } from '../../../utils/ValidationUtils';
 //Actions
 import * as AccessUserActions from '../../../actions/access/user';
 import * as AccessRoleActions from '../../../actions/access/role';
@@ -19,7 +19,7 @@ class EditUser extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { user, validationError, address } = nextProps;
+    const { user, validation, address } = nextProps;
     //初回のみstateに渡す
     if (user !== null && this.props.user === null) {
       this.setState( Object.keys(user).reduce((state, key) => {
@@ -28,36 +28,32 @@ class EditUser extends Component {
       }, {}));
     };
 
-    if (validationError !== null) {
-      this.setState({ email: {
-        value: this.state.email.value,
-        status: 'error',
-        message: validationError
-      }});
+    if (validation !== {}) {
+      this.setState(validation);
     };
 
-    if (address !== null) {
+    if (address) {
       this.setState({
-        state: {value: address.stateName, status: '', message: ''},
+        state: {value: address.state, status: '', message: ''},
         city: {value: address.city, status: '', message: ''},
         street: {value: address.street, status: '', message: ''},
       });
-    };
+    }
   }
 
   componentWillMount() {
-    const { clearValidationAlert, clearAddress } = this.props.actions;
-    clearValidationAlert();
-    clearAddress();
+    const { clearDisposable } = this.props.actions;
+    clearDisposable();
   }
 
   componentDidMount() {
-    const { routeParams, actions: {fetchRoles, fetchUser} } = this.props;
+    console.log(this.props)
+    const { routeParams: {id}, actions: {fetchRoles, fetchUser} } = this.props;
     fetchRoles();
-    fetchUser(routeParams);
+    fetchUser(id);
   }
 
-  validat(name, value, checked) {
+  validate(name, value, checked) {
     switch (name) {
     case 'assigneesRoles':
       this.setState({[name]: {value:[value]}});
@@ -70,19 +66,19 @@ class EditUser extends Component {
       break;
 
     default:
-      this.setState({[name]: validat(name, value)});
+      this.setState({[name]: validate(name, value)});
     }
   }
 
   handleChange(e) {
     const { name, value, checked } = e.target;
-    this.validat(name, value, checked);
+    this.validate(name, value, checked);
   }
 
   handleHover() {
     for (let key in this.state) {
       if (this.state[key].value === '') {
-        this.validat(key, this.state[key].status);
+        this.validate(key, this.state[key].status);
       };
     }
   }
@@ -341,19 +337,19 @@ EditUser.propTypes = {
   user: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
-  validationError: PropTypes.string.isRequired,
+  validation: PropTypes.string.isRequired,
   address: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    lang: state.lang,
+    lang: state.pageStatus.lang,
     user: state.editUser.user,
     isFetching: state.editUser.isFetching,
     didInvalidate: state.editUser.didInvalidate,
-    validationError: state.validationError,
-    address: state.address,
+    validation: state.disposable.validation,
+    address: state.disposable.address,
     roles: state.roles.roles,
   };
 }

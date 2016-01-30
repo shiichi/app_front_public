@@ -8,16 +8,15 @@ import { trans } from '../../utils/TransUtils';
 class Alert extends Component {
   componentDidMount() {
     // setInterval(() => {
-    //   const { alert: {access}, deleteAccessAlert } = this.props;
+    //   const { alert: {access}, deleteAccessAlerts } = this.props;
     //   const shouldDelete = Object.keys(access).filter(key => key < Date.now() - 3000);
-    //   deleteAccessAlert(shouldDelete)
+    //   deleteAccessAlerts(shouldDelete)
     // }, 5000);
   }
 
   handleClick(key) {
-    const { deleteAccessAlert } = this.props;
-    //actionには削除するkeyの配列を渡す
-    deleteAccessAlert([key]);
+    const { deleteAccessAlerts } = this.props;
+    deleteAccessAlerts([key]);
   }
 
   getDefaultValue() {
@@ -103,7 +102,7 @@ Alert.propTypes = {
   lang: PropTypes.string.isRequired,
   alert: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
-  deleteAccessAlert: PropTypes.func.isRequired
+  deleteAccessAlerts: PropTypes.func.isRequired
 };
 
 export default Alert;

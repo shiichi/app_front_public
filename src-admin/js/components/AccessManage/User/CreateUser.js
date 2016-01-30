@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Input, Row, Col } from 'react-bootstrap';
 //Utility
-import { validat } from '../../../utils/ValidationUtils';
+import { validate } from '../../../utils/ValidationUtils';
 //Actions
 import * as AccessUserActions from '../../../actions/access/user';
 import * as AccessRoleActions from '../../../actions/access/role';
@@ -31,28 +31,24 @@ class CreateUser extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { validationError, address } = nextProps
-    if (validationError) {
-      this.setState({ email: {
-        value: this.state.email.value,
-        status: 'error',
-        message: validationError
-      }});
+    const { validation, address } = nextProps;
+
+    if (validation !== {}) {
+      this.setState(validation);
     };
 
     if (address) {
       this.setState({
-        state: {value: address.stateName, status: '', message: ''},
+        state: {value: address.state, status: '', message: ''},
         city: {value: address.city, status: '', message: ''},
         street: {value: address.street, status: '', message: ''},
       });
-    };
+    }
   }
 
   componentWillMount() {
-    const { clearValidationAlert, clearAddress } = this.props.actions;
-    clearValidationAlert();
-    clearAddress();
+    const { clearDisposable } = this.props.actions;
+    clearDisposable();
   }
 
   componentDidMount() {
@@ -60,7 +56,7 @@ class CreateUser extends Component {
     fetchRoles();
   }
 
-  validat(name, value, checked) {
+  validate(name, value, checked) {
     const pass = this.state.password.value;
     const passConf = this.state.passwordConfirmation.value;
 
@@ -77,31 +73,36 @@ class CreateUser extends Component {
 
     case 'password':
       this.setState({
-        password: validat(name, value),
-        passwordConfirmation: validat('passwordConfirmation', passConf, value)
+        password: validate(name, value),
+        passwordConfirmation: validate('passwordConfirmation', passConf, value)
       });
       break;
 
     case 'passwordConfirmation':
       this.setState({
-        [name]: validat(name, value, pass)
+        [name]: validate(name, value, pass)
       });
       break;
 
     default:
-      this.setState({[name]: validat(name, value)});
+      this.setState({[name]: validate(name, value)});
     }
   }
 
   handleChange(e) {
     const { name, value, checked } = e.target;
-    this.validat(name, value, checked);
+    this.validate(name, value, checked);
+  }
+
+  hanbleBlur(e) {
+    const { validateEmail } = this.props.actions;
+    validateEmail(this.state.email.value);
   }
 
   handleHover() {
     for (let key in this.state) {
       if (this.state[key].value === '') {
-        this.validat(key, this.state[key].status);
+        this.validate(key, this.state[key].status);
       };
     }
   }
@@ -144,6 +145,8 @@ class CreateUser extends Component {
   }
 
   render() {
+    console.log('state',this.state);
+
     const {
       userId, email, password, passwordConfirmation,
       firstName, lastName, sex, age, postalCode, state, city, street, building,
@@ -165,7 +168,8 @@ class CreateUser extends Component {
             bsStyle={email.status}
             labelClassName="col-xs-2"
             wrapperClassName="col-xs-10"
-            help={email.message}/>
+            help={email.message}
+            onBlur={this.hanbleBlur.bind(this)}/>
           <Input type="password" label="Password" name="password"
             bsStyle={password.status}
             labelClassName="col-xs-2"
@@ -326,6 +330,8 @@ class CreateUser extends Component {
           <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
         </div>
         <div className="pull-right">
+          <button className="btn btn-success btn-xs"
+            onClick={this.handleSubmit.bind(this)}>Create</button>
           <button className="btn btn-success btn-xs" disabled={hasError}
             onClick={this.handleSubmit.bind(this)}
             onMouseOver={this.handleHover.bind(this)}>Create</button>
@@ -338,16 +344,16 @@ class CreateUser extends Component {
 
 CreateUser.propTypes = {
   lang: PropTypes.string.isRequired,
-  validationError: PropTypes.string.isRequired,
+  validation: PropTypes.object.isRequired,
   address: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    lang: state.lang,
-    validationError: state.validationError,
-    address: state.address,
+    lang: state.pageStatus.lang,
+    validation: state.disposable.validation,
+    address: state.disposable.address,
     roles: state.roles.roles,
   };
 }
