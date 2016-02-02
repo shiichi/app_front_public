@@ -333,7 +333,6 @@ class EditUser extends Component {
 }
 
 EditUser.propTypes = {
-  lang: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
@@ -344,7 +343,6 @@ EditUser.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    lang: state.pageStatus.lang,
     user: state.editUser.user,
     isFetching: state.editUser.isFetching,
     didInvalidate: state.editUser.didInvalidate,

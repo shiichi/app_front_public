@@ -50,9 +50,7 @@ class App extends Component {
               <ContentHeader routing={routing}/>
               <section className="content">
                 <Alert
-                  locale={locale}
                   alert={alert}
-                  path={routing.path}
                   deleteSideAlerts={deleteSideAlerts}/>
                 {children}
               </section>
@@ -67,7 +65,7 @@ class App extends Component {
 App.propTypes = {
   locale: PropTypes.string.isRequired,
   myProfile: PropTypes.object.isRequired,
-  alert: PropTypes.array,
+  alert: PropTypes.object,
   routing: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };

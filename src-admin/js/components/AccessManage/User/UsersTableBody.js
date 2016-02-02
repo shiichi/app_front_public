@@ -26,7 +26,7 @@ class UsersTableBody extends Component {
 
   renderUser(){
     const { myId, myRoles, myPermissions, users, asyncStatus } = this.props;
-    console.log(asyncStatus)
+
     return users.map(u =>
       <tr key={u.id} className="tr-disabled-aaa">
         <td>{u.id}</td>
@@ -112,8 +112,6 @@ UsersTableBody.propTypes = {
   myPermissions: PropTypes.array.isRequired,
   users: PropTypes.array.isRequired,
   asyncStatus: PropTypes.object,
-  activePage: PropTypes.number.isRequired,
-  perpage: PropTypes.number.isRequired,
   actions: PropTypes.object.isRequired
 };
 

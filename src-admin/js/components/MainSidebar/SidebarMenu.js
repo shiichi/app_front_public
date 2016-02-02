@@ -41,9 +41,7 @@ class SidebarMenu extends Component {
 }
 
 SidebarMenu.propTypes = {
-  message: PropTypes.array,
-  reservation: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+
 };
 
 export default SidebarMenu;

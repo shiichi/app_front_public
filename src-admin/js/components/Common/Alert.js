@@ -100,9 +100,8 @@ class Alert extends Component {
 }
 
 Alert.propTypes = {
-  lacale: PropTypes.string.isRequired,
   alert: PropTypes.object.isRequired,
-  deleteAccessAlerts: PropTypes.func.isRequired
+  deleteSideAlerts: PropTypes.func.isRequired
 };
 
 export default Alert;

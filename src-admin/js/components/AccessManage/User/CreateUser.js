@@ -341,7 +341,6 @@ class CreateUser extends Component {
 }
 
 CreateUser.propTypes = {
-  lang: PropTypes.string.isRequired,
   validation: PropTypes.object.isRequired,
   address: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
@@ -349,7 +348,6 @@ CreateUser.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    lang: state.pageStatus.lang,
     validation: state.disposable.validation,
     address: state.disposable.address,
     roles: state.roles.roles,

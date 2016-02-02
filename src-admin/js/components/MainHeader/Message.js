@@ -82,9 +82,7 @@ class Message extends Component {
 }
 
 Message.propTypes = {
-  message: PropTypes.array,
-  reservation: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+
 };
 
 export default Message;

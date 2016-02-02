@@ -17,7 +17,7 @@ const createStoreWithMiddleware = compose(
   persistState(['jwtToken'])
 )(createStore);
 
-export default function configureProdStore(initialState) {
+export default function configureStore(initialState) {
   const store = createStoreWithMiddleware(rootReducer, initialState, thunk, promise);
   return store;
 }
