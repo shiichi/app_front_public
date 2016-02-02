@@ -84,20 +84,20 @@ class EditUser extends Component {
   }
 
   handleSubmit() {
-    const { routeParams, actions: {updateUser} } = this.props;
+    const { routeParams: {id}, actions: {updateUser} } = this.props;
     const Keys = Object.keys(this.state);
     const hasError = Keys.some(key => 
       this.state[key].status === 'error'
     );
 
     if (!hasError) {
-      updateUser( Object.assign(
+      updateUser(
+        id,
         Keys.reduce((request, key) => {
-          request[key] = this.state[key].value;
-          return request;
-        }, {}),
-        routeParams
-      ));
+        　request[key] = this.state[key].value;
+        　return request;
+        }, {})
+      );
     };
   }
 
@@ -324,7 +324,7 @@ class EditUser extends Component {
         <div className="pull-right">
           <button className="btn btn-success btn-xs" disabled={hasError}
             onClick={this.handleSubmit.bind(this)}
-            onMouseOver={this.handleHover.bind(this)}>Create</button>
+            onMouseOver={this.handleHover.bind(this)}>Update</button>
         </div>
         <div className="clearfix" />
       </div>

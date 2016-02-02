@@ -23,7 +23,7 @@ function requestRolesSuccess(roles) {
   };
 }
 
-function requestRolesFail(messages) {
+function requestRolesFail() {
   return {
     type: types.REQUEST_ROLES_FAIL,
   };
@@ -38,6 +38,25 @@ export function fetchRoles() {
     })
     .catch(ex => {
       dispatch(requestRolesFail());
+      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+    })
+  };
+}
+
+function requestRoleSuccess(role) {
+  return {
+    type: types.ADD_EDITING_ROLE,
+    role
+  };
+}
+
+export function fetchRole(id) {
+  return (dispatch) => {
+    customFetch(`access/roles/${id}/fetch`, 'GET')
+    .then(result => {
+      dispatch(requestRoleSuccess(keyToCamel(result)));
+    })
+    .catch(ex => {
       dispatch(addAccessAlert('danger', 'server.' + ex.status));
     })
   };
@@ -59,45 +78,73 @@ function doneRoleAsyncAction(id) {
 }
 
 export function deleteRole(id) {
-  return (dispatch, getState) => {
-    dispatch(doRoleAsyncAction(id, 'delete'));
-    fetchWithJson(url_DELETE_ROLE, {id: id})
-      .then(response => response.json())
-      .then(result => {
-        dispatch(doneRoleAsyncAction(id));
-        if (!result.msg) {
-          dispatch(requestRolesSuccess(result.map(role => keyToCamel2(role))));
-          dispatch(addAccessAlert('success', 'alert.access.role.deleteSuccess'));
-        }
-        if (result.msg) {
-          dispatch(addAccessAlert('warning', result.msg));
-        }
-      })
-      .catch(ex => {
-        dispatch(doneRoleAsyncAction(id));
-        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
-      });
+  console.log("aaa", id)
+  return (dispatch) => {
+    dispatch(doRoleAsyncAction(id, 'destroy'));
+    customFetch(`access/roles/${id}`, 'DELETE')
+    .then(result => {
+      dispatch(doneRoleAsyncAction(id));
+      dispatch(addAccessAlert('success', 'alert.access.roles.destroySuccess'));
+      dispatch(requestRolesSuccess(result.map(role => keyToCamel(role))));
+    })
+    .catch(ex => {
+      dispatch(requestRolesFail());
+      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+    })
   };
 }
 
-export function createRole(request) {
+export function storeRole(body) {
   return (dispatch) => {
-    fetchWithJson(url_CREATE_ROLE, keyToSnake(request))
-      .then(response => response.json())
-      .then(result => {
-        if (result === 'success') {
-          dispatch(addAccessAlert('success', 'alert.access.users.storeSuccess'));
-        }
-        if (result.msg) {
-          dispatch(addAccessAlert('warning', result.msg));
-        }
-        if (result.email) {
-          dispatch(addAccessAlert('warning', 'validation.someError'));
-          dispatch(addValidationAlert('validation.email.alreadyExists'));
-        }
-      })
-      .catch(ex => {
-        dispatch(addAccessAlert('danger', 'server.faildToAccess'));
-      });
+    customFetch(`access/roles`, 'POST', body)
+    .then(result => {
+      dispatch(addAccessAlert('success', 'alert.access.roles.storeSuccess'));
+    })
+    .catch(ex => {
+      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+    })
+  }
+}
+
+export function updateRole(id, body) {
+  return (dispatch) => {
+    customFetch(`access/roles/${id}`, 'PUT', body)
+    .then(result => {
+      dispatch(addAccessAlert('success', 'alert.access.roles.updateSuccess'));
+    })
+    .catch(ex => {
+      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+    })
+  }
+}
+
+
+
+
+
+function addValidation(validation) {
+  return {
+    type: types.ADD_VALIDATION,
+    validation
   };
+}
+
+export function validateRoleName(name) {
+  return (dispatch) => {
+    customFetch('validation/role', 'POST', {name})
+    .then(result => {
+      if (result !== 'ok') {
+        dispatch(addValidation({
+          name: {
+            value: name,
+            status: 'error',
+            message: 'validation.name.alreadyExists'
+          }
+        }));
+      };
+    })
+    .catch(ex => {
+      dispatch(requestUsersFail());
+    })
+  }
 }

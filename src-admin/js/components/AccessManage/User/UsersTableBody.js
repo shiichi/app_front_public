@@ -49,7 +49,7 @@ class UsersTableBody extends Component {
             </OverlayTrigger>
           </LinkContainer>}
           {hasPermission(myRoles, myPermissions, 'change-user-password') && !u.deletedAt &&
-          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/users/${u.id}/change/password`}}>
+          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/users/${u.id}/password/change`}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Change Password</Tooltip>)}>
               <Button bsStyle="info" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'changePassword'})}>
                 <Icon name="refresh"/>

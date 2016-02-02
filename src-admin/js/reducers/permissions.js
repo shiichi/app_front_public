@@ -23,7 +23,12 @@ export default function permissions(state = initialState, action) {
 
   case REQUEST_PERMISSIONS_SUCCESS:
     return Object.assign({}, state, {
-      permissions: action.permissions,
+      permissions: action.permissions.map(p =>
+        Object.assign({}, p, {
+          dependencies: p.dependencies.map(d => d.permission.display_name),
+          roles: p.roles.map(r => r.name)
+        })
+      ),
       isFetching: false
     });
 

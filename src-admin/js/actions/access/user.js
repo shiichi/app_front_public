@@ -4,11 +4,12 @@ import { customFetch } from '../../utils/fetchUtils';
 import { keyToCamel } from '../../utils/ChangeCaseUtils';
 //import {} from '../../../config/url';
 
-export function addAccessAlert(status, msg) {
+export function addSideAlert(status, messageId, value) {
   return {
-    type: types.ADD_ACCESS_ALERT,
+    type: types.ADD_SIDE_ALERT,
     status,
-    msg
+    messageId,
+    value
   };
 }
 
@@ -60,7 +61,7 @@ export function fetchUsers() {
     })
     .catch(ex => {
       dispatch(requestUsersFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };
 }
@@ -93,31 +94,37 @@ export function fetchUser(id) {
     })
     .catch(ex => {
       dispatch(requestUserFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };
 }
 
 export function storeUser(body) {
   return (dispatch) => {
-    customFetch(`access/users/${id}`, 'POST', body)
+    customFetch(`access/users`, 'POST', body)
     .then(result => {
-      dispatch(addAccessAlert(status, msg));
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'store' }));
     })
     .catch(ex => {
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   }
 }
 
-export function updateUser(body) {
+export function updateUser(id, body) {
   return (dispatch) => {
-    customFetch('access/users/{id}', 'PUT', body)
+    customFetch(`access/users/${id}`, 'PUT', body)
     .then(result => {
-      dispatch(addAccessAlert(status, msg));
-    })
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'update' }));
+      })
     .catch(ex => {
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   }
 }
@@ -129,15 +136,18 @@ export function activateUser(id) {
     customFetch(`access/users/${id}/activate`, 'PATCH', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
-      dispatch(addAccessAlert('success', 'alert.access.users.activateSuccess'));
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'activate' }));
       dispatch(requestUsersSuccess(
         result.total,
         result.users.map(user => keyToCamel(user))
       ));
     })
     .catch(ex => {
-      dispatch(requestUsersFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(doneAsyncAction(id));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };
 }
@@ -149,15 +159,18 @@ export function deactivateUser(id) {
     customFetch(`access/users/${id}/deactivate`, 'PATCH', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
-      dispatch(addAccessAlert('success', 'alert.access.users.deactivateSuccess'));
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'deactivate' }));
       dispatch(requestUsersSuccess(
         result.total,
         result.users.map(user => keyToCamel(user))
       ));
     })
     .catch(ex => {
-      dispatch(requestUsersFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(doneAsyncAction(id));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };
 }
@@ -169,15 +182,18 @@ export function restoreUser(id, activePage, perpage) {
     customFetch(`access/users/${id}/restore`, 'PATCH', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
-      dispatch(addAccessAlert('success', 'alert.access.users.restoreSuccess'));
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'restore' }));
       dispatch(requestUsersSuccess(
         result.total,
         result.users.map(user => keyToCamel(user))
       ));
     })
     .catch(ex => {
-      dispatch(requestUsersFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(doneAsyncAction(id));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };
 }
@@ -189,16 +205,18 @@ export function destroyUser(id) {
     customFetch(`access/users/${id}`, 'DELETE', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
-      dispatch(addAccessAlert('success', 'alert.access.users.destroySuccess'));
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'destroy' }));
       dispatch(requestUsersSuccess(
         result.total,
         result.users.map(user => keyToCamel(user))
       ));
     })
     .catch(ex => {
-      console.log('action内のcatch')
-      dispatch(requestUsersFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(doneAsyncAction(id));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };
 }
@@ -210,15 +228,18 @@ export function deleteUser(id) {
     customFetch(`access/users/${id}/hard`, 'DELETE', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
-      dispatch(addAccessAlert('success', 'alert.access.users.deleteSuccess'));
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'delete' }));
       dispatch(requestUsersSuccess(
         result.total,
         result.users.map(user => keyToCamel(user))
       ));
     })
     .catch(ex => {
-      dispatch(requestUsersFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(doneAsyncAction(id));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };
 }
@@ -227,10 +248,13 @@ export function changePassword(body) {
   return (dispatch) => {
     customFetch('access/users/{id}/password/change', 'POST', body)
     .then(result => {
-      dispatch(addAccessAlert(status, msg));
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'changePassword' }));
     })
     .catch(ex => {
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   }
 }
@@ -286,7 +310,3 @@ export function validateEmail(email) {
     })
   }
 }
-
-
-
-

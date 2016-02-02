@@ -23,7 +23,12 @@ export default function roles(state = initialState, action) {
 
   case REQUEST_ROLES_SUCCESS:
     return Object.assign({}, state, {
-      roles: action.roles,
+      roles: action.roles.map(r =>
+        Object.assign({}, r, {
+          permissions: r.permissions.map(p => p.display_name),
+          numberOfUsers: r.users.length
+        })
+      ),
       isFetching: false
     });
 

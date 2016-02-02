@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 //actions
+import * as ApplicationActions from '../actions/application';
 import * as MyProfileActions from '../actions/myProfile';
-import * as PageStatusActions from '../actions/pageStatus';
 import * as InitializeActions from '../actions/initialize';
 //components
 import MainHeader from '../components/MainHeader/MainHeader';
@@ -14,26 +14,8 @@ import Alert from '../components/Common/Alert';
 class App extends Component {
   constructor(props, context) {
     super(props, context);
-    if (props.sidebar) {
-      this.state = {
-        sidebar: "hold-transition skin-black sidebar-min"
-      };
-    } else {
-      this.state = {
-        sidebar: "hold-transition skin-black sidebar-collapse"
-      };
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.sidebar) {
-      this.state = {
-        sidebar: "hold-transition skin-black sidebar-min"
-      };
-    } else {
-      this.state = {
-        sidebar: "hold-transition skin-black sidebar-collapse"
-      };
+    this.state = {
+      sidebar: 'min'
     };
   }
 
@@ -42,25 +24,36 @@ class App extends Component {
     fetchMyProfile();
   }
 
+  hundleSidebar() {
+    if (this.state.sidebar === 'min') {
+      this.setState({sidebar: 'collapse'});
+    } else {
+      this.setState({sidebar: 'min'});
+    }
+  }
+
   render() {
-    const { lang, myProfile, alert, routing, children, actions: {
-      changeSidebar, deleteAccessAlerts}
+    const { locale, myProfile, alert, routing, children, actions: {
+      changeLocale, changeSidebar, deleteSideAlerts}
     } = this.props;
 
     return (
-      <div className={this.state.sidebar}>
+      <div className={`hold-transition skin-black sidebar-${this.state.sidebar}`}>
         <div id="dashboard-container">
           <div className="wrapper">
-            <MainHeader changeSidebar={changeSidebar}/>
+            <MainHeader
+              locale={locale}
+              changeLocale={changeLocale}
+              hundleSidebar={this.hundleSidebar.bind(this)}/>
             <MainSidebar myProfile={myProfile}/>
             <div className="content-wrapper" style={{ minHeight: '916px' }}>
               <ContentHeader routing={routing}/>
               <section className="content">
                 <Alert
-                  lang={lang}
+                  locale={locale}
                   alert={alert}
                   path={routing.path}
-                  deleteAccessAlerts={deleteAccessAlerts}/>
+                  deleteSideAlerts={deleteSideAlerts}/>
                 {children}
               </section>
             </div>
@@ -72,26 +65,28 @@ class App extends Component {
 }
 
 App.propTypes = {
-  lang: PropTypes.string.isRequired,
+  locale: PropTypes.string.isRequired,
   myProfile: PropTypes.object.isRequired,
-  sidebar: PropTypes.bool.isRequired,
-  alert: PropTypes.object,
+  alert: PropTypes.array,
   routing: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    lang: state.pageStatus.lang,
+    locale: state.application.locale,
     myProfile: state.myProfile,
-    sidebar: state.pageStatus.sidebar,
-    alert: state.alert,
+    alert: state.alert.side,
     routing: state.routing
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign(MyProfileActions, PageStatusActions, InitializeActions);
+  const actions = Object.assign(
+    ApplicationActions,
+    MyProfileActions,
+    InitializeActions
+  );
   return {
     actions: bindActionCreators(actions, dispatch)
   };

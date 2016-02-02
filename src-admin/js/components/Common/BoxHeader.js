@@ -44,22 +44,13 @@ class BoxHeader extends Component {
                 <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/roles'}}>
                   <MenuItem eventKey="1">All Roles</MenuItem>
                 </LinkContainer>
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/role/create'}}>
+                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/roles/create'}}>
                   <MenuItem eventKey="2">Create Role</MenuItem>
                 </LinkContainer>
               </DropdownButton>
               <DropdownButton bsStyle="primary" bsSize="small" title="Permissions">
                 <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/permissions'}}>
-                  <MenuItem eventKey="1">All Groups</MenuItem>
-                </LinkContainer>
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/permissions'}}>
-                  <MenuItem eventKey="2">All Permissions</MenuItem>
-                </LinkContainer>
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/permissions'}}>
-                  <MenuItem eventKey="3">Create Group</MenuItem>
-                </LinkContainer>
-                <LinkContainer to={{ pathname: _ADMIN_DOMAIN_NAME + 'access/permissions'}}>
-                  <MenuItem eventKey="4">Create Permission</MenuItem>
+                  <MenuItem eventKey="1">All Permissions</MenuItem>
                 </LinkContainer>
               </DropdownButton>
             </ButtonGroup>

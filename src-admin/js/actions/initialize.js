@@ -1,8 +1,8 @@
 import * as types from '../constants/ActionTypes';
 
-export function deleteAccessAlerts(keys) {
+export function deleteSideAlerts(keys) {
   return {
-    type: types.DELETE_ACCESS_ALERT,
+    type: types.DELETE_SIDE_ALERT,
     keys
   };
 }

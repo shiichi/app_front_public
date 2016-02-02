@@ -10,7 +10,7 @@ import * as AccessRoleActions from '../../../actions/access/role';
 import * as AccessPermissionActions from '../../../actions/access/permission';
 import * as InitializeActions from '../../../actions/initialize';
 
-class CreateRoles extends Component {
+class EditRoles extends Component {
   constructor(props, context) {
     super(props, context);
     const string = ['name', 'sort', 'associatedPermissions'].reduce((request, key) => {
@@ -32,12 +32,22 @@ class CreateRoles extends Component {
   }
 
   componentDidMount() {
-    const { fetchPermissions } = this.props.actions;
+    const { routeParams: {id}, actions: {fetchRole, fetchPermissions} } = this.props;
+    fetchRole(id);
     fetchPermissions();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { validation, dependency } = nextProps;
+    const { role, validation, dependency } = nextProps;
+
+    console.log(role, this.props.role);
+    if (role !== null && this.props.role === null) {
+      console.log('in  if', role);
+      this.setState( Object.keys(role).reduce((state, key) => {
+        state[key] = {value: role[key], status: '', message: ''};
+        return state;
+      }, {}));
+    };
 
     if (validation !== {}) {
       this.setState(validation);
@@ -97,14 +107,14 @@ class CreateRoles extends Component {
   }
 
   handleSubmit() {
-    const { storeRole } = this.props.actions;
+    const { routeParams: {id}, actions: {updateRole} } = this.props;
     const Keys = Object.keys(this.state);
     const hasError = Keys.some(key =>
       this.state[key].status === 'error'
     );
 
     if (!hasError) {
-      storeRole(Keys.reduce((request, key) => {
+      updateRole(id, Keys.reduce((request, key) => {
         request[key] = this.state[key].value;
         return request;
       }, {}));
@@ -119,9 +129,9 @@ class CreateRoles extends Component {
         <div className="checkbox">
           <label className>
             <input type="checkbox"
-                   value={permission.id}
-                   name="permissions"
-                   checked={value.indexOf(permission.id) >= 0 ? true : ''}/>
+             value={permission.id}
+             name="permissions"
+             checked={value.indexOf(permission.id) >= 0 ? true : ''}/>
             <span><strong>{permission.displayName}</strong></span>
           </label>
         </div>
@@ -139,12 +149,14 @@ class CreateRoles extends Component {
       <div className="box-body">
         <form className="form-horizontal" onChange={this.handleChange.bind(this)}>
           <Input type="text" label="Name" name="name" placeholder="Role Name"
+            value={name.value}
             bsStyle={name.status}
             labelClassName="col-xs-2"
             wrapperClassName="col-xs-10"
             help={name.message}
             onBlur={this.hanbleBlur.bind(this)}/>
           <Input type="text" label="Sort" name="sort" placeholder="Sort"
+            value={sort.value}
             bsStyle={sort.status}
             labelClassName="col-xs-2"
             wrapperClassName="col-xs-10"
@@ -158,7 +170,7 @@ class CreateRoles extends Component {
           <button className="btn btn-success btn-xs" disabled={hasError}
             onClick={this.handleSubmit.bind(this)}
             onMouseOver={this.handleHover.bind(this)}>
-            Create
+            Update
           </button>
         </div>
         <div className="clearfix" />
@@ -167,8 +179,9 @@ class CreateRoles extends Component {
   }
 }
 
-CreateRoles.propTypes = {
+EditRoles.propTypes = {
   lang: PropTypes.string.isRequired,
+  role: PropTypes.object.isRequired,
   validation: PropTypes.string.isRequired,
   permissions: PropTypes.array.isRequired,
   dependency: PropTypes.array
@@ -177,6 +190,7 @@ CreateRoles.propTypes = {
 function mapStateToProps(state) {
   return {
     lang: state.lang,
+    role: state.disposable.editingRole,
     validation: state.disposable.validation,
     permissions: state.permissions.permissions,
     dependency: state.dependency
@@ -190,4 +204,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(CreateRoles);
+export default connect( mapStateToProps, mapDispatchToProps)(EditRoles);

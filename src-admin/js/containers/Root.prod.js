@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react'
 import { Provider } from 'react-redux'
 import { Router, Route, Link, Redirect, IndexRoute } from 'react-router'
 import configureProdStore from '../store/configureProdStore'
-
 // Components
 import App from './App'
 import MainHeader from '../components/MainHeader'

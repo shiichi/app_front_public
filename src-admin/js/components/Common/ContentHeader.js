@@ -25,9 +25,7 @@ class ContentHeder extends Component {
 }
 
 ContentHeder.propTypes = {
-  message: PropTypes.array,
-  reservation: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+
 };
 
 export default ContentHeder;

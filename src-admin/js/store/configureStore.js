@@ -5,8 +5,8 @@ import { devTools, persistState as persistDevToolsState } from 'redux-devtools';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import createLogger from 'redux-logger';
-import persistState from 'redux-localstorage'
-import rootReducer from '../reducers'
+import persistState from 'redux-localstorage';
+import rootReducer from '../reducers';
 
 // Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(browserHistory)
@@ -17,7 +17,7 @@ const logger = createLogger({
 //persistStateはdevToolsより上に記述
 const createStoreWithMiddleware = compose(
   applyMiddleware(thunk, promise, logger, reduxRouterMiddleware),
-  persistState(['jwtToken']),
+  persistState(['application']),
   devTools(),
   persistDevToolsState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore);

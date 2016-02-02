@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import Icon from 'react-fa';
-//components
 
 class Dashboard extends Component {
   render() {

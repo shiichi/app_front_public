@@ -108,14 +108,14 @@ class CreateUser extends Component {
   }
 
   handleSubmit() {
-    const { createUser } = this.props.actions;
+    const { storeUser } = this.props.actions;
     const Keys = Object.keys(this.state);
     const hasError = Keys.some(key => 
       this.state[key].status === 'error'
     );
 
     if (!hasError) {
-      createUser(Keys.reduce((request, key) => {
+      storeUser(Keys.reduce((request, key) => {
         request[key] = this.state[key].value;
         return request;
       }, {}));
@@ -145,8 +145,6 @@ class CreateUser extends Component {
   }
 
   render() {
-    console.log('state',this.state);
-
     const {
       userId, email, password, passwordConfirmation,
       firstName, lastName, sex, age, postalCode, state, city, street, building,
@@ -330,11 +328,11 @@ class CreateUser extends Component {
           <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
         </div>
         <div className="pull-right">
-          <button className="btn btn-success btn-xs"
-            onClick={this.handleSubmit.bind(this)}>Create</button>
           <button className="btn btn-success btn-xs" disabled={hasError}
             onClick={this.handleSubmit.bind(this)}
-            onMouseOver={this.handleHover.bind(this)}>Create</button>
+            onMouseOver={this.handleHover.bind(this)}>
+            Create
+          </button>
         </div>
         <div className="clearfix" />
       </div>

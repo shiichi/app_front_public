@@ -1,8 +1,22 @@
 import React, { PropTypes, Component } from 'react';
-//components
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Pagination } from 'react-bootstrap';
+import Icon from 'react-fa';
+//Actions
+import * as AccessPermissionActions from '../../../actions/access/permission';
+//Components
+import PermissionsTableBody from './PermissionsTableBody';
 
 class Permissions extends Component {
+  componentDidMount() {
+    const { fetchPermissions } = this.props.actions;
+    fetchPermissions();
+  }
+
   render() {
+    const { myId, myRoles, myPermissions, permissions, isFetching, didInvalidate } = this.props;
+
     return (
       <table className="table table-striped table-bordered table-hover">
         <thead>
@@ -12,36 +26,16 @@ class Permissions extends Component {
             <th>Dependencies</th>
             <th>Users</th>
             <th>Roles</th>
-            <th>Group</th>
             <th>Group Sort</th>
             <th>System</th>
-            <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>change-user-password</td>
-            <td>Change User Password</td>
-            <td>
-              View Backend<br />
-              View Access Management<br />
-            </td>
-            <td>
-              <span className="label label-danger">None</span>
-            </td>
-            <td>
-              Administrator<br />
-            </td>
-            <td>
-              User
-            </td>
-            <td>8</td>
-            <td><span className="label label-danger">Yes</span></td>
-            <td>
-              <a href="http://l.com/admin/access/roles/permissions/6/edit" className="btn btn-xs btn-primary"><i className="fa fa-pencil" data-toggle="tooltip" data-placement="top" title data-original-title="Edit" /></a>
-            </td>
-          </tr>
-        </tbody>
+        {!didInvalidate && !isFetching && permissions && 
+        <PermissionsTableBody
+          myId={myId}
+          myRoles={myRoles}
+          myPermissions={myPermissions}
+          permissions={permissions}/>}
       </table>
     );
   }
@@ -53,4 +47,23 @@ Permissions.propTypes = {
   actions: PropTypes.object.isRequired
 };
 
-export default Permissions;
+function mapStateToProps(state) {
+  return {
+    myId: state.myProfile.id,
+    myRoles: state.myProfile.assigneesRoles,
+    myPermissions: state.myProfile.assigneesPermissions,
+    permissions: state.permissions.permissions,
+    isFetching: state.permissions.isFetching,
+    didInvalidate: state.permissions.didInvalidate,
+    asyncStatus: state.permissions.asyncStatus,
+    path: state.routing.path
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(AccessPermissionActions, dispatch)
+  };
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )(Permissions);

@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { Pagination } from 'react-bootstrap';
 import Icon from 'react-fa';
-//components
 
 class MessageInTable extends Component {
   render() {

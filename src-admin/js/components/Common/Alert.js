@@ -2,8 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { TransitionMotion, Motion, spring, presets } from 'react-motion';
 import { Input } from 'react-bootstrap';
-//Utility
-import { trans } from '../../utils/TransUtils';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 class Alert extends Component {
   componentDidMount() {
@@ -15,35 +14,35 @@ class Alert extends Component {
   }
 
   handleClick(key) {
-    const { deleteAccessAlerts } = this.props;
-    deleteAccessAlerts([key]);
+    const { deleteSideAlerts } = this.props;
+    deleteSideAlerts([key]);
   }
 
   getDefaultValue() {
-    const {access} = this.props.alert;
-    return Object.keys(access)
+    const { alert } = this.props;
+    return Object.keys(alert)
       .reduce((alerts, key) => {
         alerts[key] = {
           height: 0,
           opacity: 1,
           padding: 0,
           marginBottom: 0,
-          data: access[key],
+          data: alert[key],
         };
         return alerts;
       }, {});
   }
 
   getEndValue() {
-    const {access} = this.props.alert;
-    return Object.keys(access)
+    const { alert } = this.props;
+    return Object.keys(alert)
       .reduce((alerts, key) => {
         alerts[key] = {
           height: spring(50, presets.gentle),
           opacity: spring(1, presets.gentle),
           padding: spring(15, presets.gentle),
           marginBottom: spring(15, presets.gentle),
-          data: access[key],
+          data: alert[key],
         };
         return alerts;
       }, {});
@@ -55,7 +54,7 @@ class Alert extends Component {
       opacity: 1,
       padding: 0,
       marginBottom: 0,
-      data: this.props.alert.access[key],
+      data: this.props.alert[key],
     };
   }
 
@@ -70,10 +69,10 @@ class Alert extends Component {
   }
 
   render() {
-    const { lang, alert: {access}} = this.props;
+    const { lacale, alert } = this.props;
     return (
       <div>
-      {access &&
+      {alert &&
       <TransitionMotion
         defaultStyles={this.getDefaultValue.bind(this)}
         styles={this.getEndValue.bind(this)}
@@ -82,10 +81,12 @@ class Alert extends Component {
         {alerts =>
           <div className="alert-wrap">
             {Object.keys(alerts).map((key, i) => {
-              const {data: {status, msg}, ...style} = alerts[key];
+              const {data: {status, messageId, value}, ...style} = alerts[key];
               return (
                 <div className={'callout custom-alert callout-' + status} style={style} key={key}>
-                  <p>{trans(lang, msg)}</p>
+                  <FormattedMessage id={messageId} values={value}>
+                    {text => <p>{text}</p>}
+                  </FormattedMessage>
                   <span className="btn-close" title={key} onClick={this.handleClick.bind(this, key)}>×</span>
                 </div>
               );
@@ -99,9 +100,8 @@ class Alert extends Component {
 }
 
 Alert.propTypes = {
-  lang: PropTypes.string.isRequired,
+  lacale: PropTypes.string.isRequired,
   alert: PropTypes.object.isRequired,
-  path: PropTypes.string.isRequired,
   deleteAccessAlerts: PropTypes.func.isRequired
 };
 

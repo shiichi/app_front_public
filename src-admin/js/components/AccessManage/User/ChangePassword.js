@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Input } from 'react-bootstrap';
 //Utility
-import { validat } from '../../../utils/ValidationUtils';
+import { validate } from '../../../utils/ValidationUtils';
 //Actions
 import * as AccessUserActions from '../../../actions/access/user';
 
@@ -17,21 +17,21 @@ class ChangePassword extends Component {
     };
   }
 
-  validat(name, value) {
+  validate(name, value) {
     const pass = this.state.password.value;
     const passConf = this.state.passwordConfirmation.value;
 
     switch (name) {
     case 'password':
       this.setState({
-        password: validat(name, value),
-        passwordConfirmation: validat('passwordConfirmation', passConf, value)
+        password: validate(name, value),
+        passwordConfirmation: validate('passwordConfirmation', passConf, value)
       });
       break;
 
     case 'passwordConfirmation':
       this.setState({
-        passwordConfirmation: validat(name, value, pass)
+        passwordConfirmation: validate(name, value, pass)
       });
       break;
 
@@ -41,13 +41,13 @@ class ChangePassword extends Component {
 
   handleChange(e) {
     const { name, value } = e.target;
-    this.validat(name, value);
+    this.validate(name, value);
   }
 
   handleHover() {
     for (let key in this.state) {
       if (this.state[key].value === '') {
-        this.validat(key, this.state[key].status);
+        this.validate(key, this.state[key].status);
       };
     }
   }
@@ -72,7 +72,6 @@ class ChangePassword extends Component {
     const hasError = Object.keys(this.state).some(key => 
       this.state[key].status === 'error'
     );
-    console.log(this.props.routeParams)
 
     return (
       <div className="box-body">

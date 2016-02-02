@@ -29,7 +29,7 @@ export function customFetch(url, method, body) {
     credentials: 'same-origin',
   };
 
-  if (method !== 'GET') {
+  if (method !== 'GET' && body) {
     request.body = JSON.stringify(keyToSnake(body))
   }
 

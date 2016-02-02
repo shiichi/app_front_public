@@ -1,8 +1,25 @@
-export user from './user';
-export timetables from './timetables';
-export selector from './selector';
-export message from './message';
-export modal from './modal';
-export reservation from './reservation';
-export logs from './logs';
-export jwtToken from './jwtToken';
+import { combineReducers } from 'redux'
+import {reducer as formReducer} from 'redux-form';
+import { routeReducer } from 'react-router-redux'
+//my reducers
+import user from './user';
+import timetables from './timetables';
+import selector from './selector';
+import message from './message';
+import modal from './modal';
+import reservation from './reservation';
+import logs from './logs';
+import jwtToken from './jwtToken';
+
+//reducers/index.jsから全てのreducerを取得しformReducer,routeReducerとcombine
+const rootReducer = combineReducers(Object.assign({
+	user, timetables, selector, message, modal, reservation, logs, jwtToken
+  }, {
+    form: formReducer,
+    routing: routeReducer
+  }
+));
+
+export default rootReducer
+
+

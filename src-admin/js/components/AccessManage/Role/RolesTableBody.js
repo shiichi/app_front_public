@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Icon from 'react-fa';
+//Config
+import { _ADMIN_DOMAIN_NAME } from '../../../../config/env';
 //Utility
 import { hasPermission } from '../../../utils/PermissionUtils';
 
@@ -13,11 +15,8 @@ class RolesTableBody extends Component {
 
     if (!asyncStatus[id]) {
       switch (action){
-        case 'delete':
-          deleteRole(id);
-          break;
-        default:
-          break;
+        case 'destroy': deleteRole(id); break;
+        default: break;
       }
     };
   }
@@ -28,20 +27,22 @@ class RolesTableBody extends Component {
     return roles.map(r =>
       <tr key={r.id} className="tr-disabled-aaa">
         <td>{r.name}</td>
-        <td></td>
-        <td></td>
+        {r.all === 1 ?
+          <td><span className="label label-success">All</span></td> :
+          <td>{r.permissions.toString()}</td>}        
+        <td>{r.numberOfUsers}</td>
         <td>{r.sort}</td>
         <td>
           {hasPermission(myRoles, myPermissions, 'edit-roles')  &&
-          <LinkContainer to={{ pathname: '/access/roles/edit/' + r.id}}>
+          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/roles/${r.id}/edit`}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Edit</Tooltip>)}>
               <Button bsStyle="primary" bsSize="xsmall"><Icon name="pencil"/></Button>
             </OverlayTrigger>
           </LinkContainer>}
           {hasPermission(myRoles, myPermissions, 'delete-roles') &&
           <OverlayTrigger placement="top" overlay={(<Tooltip>Delete</Tooltip>)}>
-            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: r.id, action: 'delete'})}>
-              {asyncStatus[r.id] === 'delete' ? <Icon spin name="trash"/> : <Icon name="trash"/>}
+            <Button bsStyle="danger" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: r.id, action: 'destroy'})}>
+              {asyncStatus[r.id] === 'destroy' ? <Icon spin name="trash"/> : <Icon name="trash"/>}
             </Button>
           </OverlayTrigger>}
         </td>

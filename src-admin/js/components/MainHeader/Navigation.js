@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 //components
-import Language from './Language';
+import International from './International';
 import Message from './Message';
 import Notification from './Notification';
 import Task from './Task';
@@ -13,6 +13,7 @@ class Navigation extends Component {
   }
 
   render() {
+    const { locale, changeLocale } = this.props;
     return (
         <nav className="navbar navbar-static-top" role="navigation">
           <div className="sidebar-toggle" data-toggle="offcanvas" role="button" onClick={this.handleClick.bind(this)}>
@@ -24,7 +25,7 @@ class Navigation extends Component {
               <Notification/>
               <Task/>
               <User/>
-              <Language/>
+              <International locale={locale} changeLocale={changeLocale}/>
             </ul>
           </div>
         </nav>
@@ -33,6 +34,8 @@ class Navigation extends Component {
 }
 
 Navigation.propTypes = {
+  locale: PropTypes.string.isRequired,
+  changeLocale: PropTypes.func.isRequired,
   changeSidebar: PropTypes.func.isRequired
 };
 
