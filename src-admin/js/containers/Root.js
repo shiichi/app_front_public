@@ -27,9 +27,12 @@ export default class Root extends Component {
       <div>
         <IntlProvider key='intl' locale={locale} messages={i18n[locale]}>
           <Router history={browserHistory}>
+            <Redirect from="/admin/single" to="/admin/single/dashboard"/>
             <Route path={_ADMIN_DOMAIN_NAME} component={App}>
+              <Redirect from="" to="dashboard"/>
               <Route path="dashboard" component={Dashboard}/>
               <Route path="access" component={AccessManage}>
+                <Redirect from="" to="users"/>
                 <Route path="users" component={Users}/>
                 <Route path="users/create" component={CreateUser}/>
                 <Route path="users/:id/edit" component={EditUser}/>

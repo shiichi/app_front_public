@@ -3,6 +3,7 @@ import * as types from '../../constants/ActionTypes';
 import { customFetch } from '../../utils/fetchUtils';
 import { keyToCamel } from '../../utils/ChangeCaseUtils';
 //import {} from '../../../config/url';
+import { routeActions } from 'react-router-redux'
 
 export function addSideAlert(status, messageId, value) {
   return {
@@ -107,6 +108,7 @@ export function storeUser(body) {
         'success',
         'sideAlert.success',
         { attribute: 'user', method: 'store' }));
+      dispatch(routeActions.push(`/admin/single/access/users/?filter=all&skip=${Math.floor(result / 10) * 10}&take=10`));
     })
     .catch(ex => {
       dispatch(addSideAlert('danger', 'server.' + ex.status));
@@ -122,7 +124,8 @@ export function updateUser(id, body) {
         'success',
         'sideAlert.success',
         { attribute: 'user', method: 'update' }));
-      })
+      history.back();
+    })
     .catch(ex => {
       dispatch(addSideAlert('danger', 'server.' + ex.status));
     })

@@ -47,7 +47,6 @@ class EditUser extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
     const { routeParams: {id}, actions: {fetchRoles, fetchUser} } = this.props;
     fetchRoles();
     fetchUser(id);
@@ -107,6 +106,10 @@ class EditUser extends Component {
     if (value.length === 7) {
       fetchAddress(value);
     }
+  }
+
+  handleClick() {
+    history.back()
   }
 
   renderRoles() {
@@ -319,7 +322,10 @@ class EditUser extends Component {
         </form>}
         {!didInvalidate && isFetching && <Loading/>}
         <div className="pull-left">
-          <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
+          <button className="btn btn-danger btn-xs"
+            onClick={this.handleClick.bind(this)}>
+            Cancel
+          </button>
         </div>
         <div className="pull-right">
           <button className="btn btn-success btn-xs" disabled={hasError}

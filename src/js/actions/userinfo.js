@@ -1,11 +1,19 @@
 import * as types from '../constants/ActionTypes';
-import { fetchWithJson } from '../utils/fetchUtils';
-import { REQUEST_USER_INFO, UPDATE_USER_PROF, CHANGE_PASSWORD, DEACTIVE_USER } from '../../config/url';
+import { customFetch } from '../utils/fetchUtils';
+import { keyToCamel, keyToSnake } from '../utils/ChangeCaseUtils';
+import {
+  REQUEST_USER_INFO,
+  UPDATE_USER_PROF,
+  CHANGE_PASSWORD,
+  DEACTIVE_USER
+} from '../../config/url';
 
-export function addMessage(msg) {
+function addSideAlert(status, messageId, value) {
   return {
-    type: types.ADD_MESSAGE,
-    msg: msg
+    type: types.ADD_SIDE_ALERT,
+    status,
+    messageId,
+    value
   };
 }
 
@@ -31,31 +39,31 @@ export function requestUserInfoFail() {
 export function fetchUserInfo() {
   return dispatch => {
     dispatch(requestUserInfo());
-    fetchWithJson(REQUEST_USER_INFO)
-    .then(response => response.json())
-    .then(result => dispatch(requestUserInfoSuccess(result)))
-    .catch(ex => dispatch(requestUserInfoFail()));
-  };
+    customFetch(REQUEST_USER_INFO, 'POST')
+    .then(result => {
+      dispatch(requestUserInfoSuccess(keyToCamel(result)));
+    })
+    .catch(ex => {
+      dispatch(requestUserInfoFail());
+      dispatch(addSideAlert('danger', 'getUserInfo.fail'));
+    })
+  }
 }
 
 export function UpdateUserProf(request) {
+  console.log(request)
   return dispatch => {
     dispatch(requestUserInfo());
-    fetchWithJson(UPDATE_USER_PROF, request)
-      .then(response => response.json())
-      .then(result => {
-        dispatch(requestUserInfoSuccess(result.userProf));
-        dispatch(addMessage(result.msg));
-      })
-      .catch(ex => {
-        dispatch(requestUserInfoFail(ex));
-        const msg = {
-          type: 'error',
-          msg: 'ユーザー情報の更新に失敗しました'
-        };
-        dispatch(addMessage(msg));
-      });
-  };
+    customFetch(UPDATE_USER_PROF, 'POST', request)
+    .then(result => {
+      dispatch(requestUserInfoSuccess(keyToCamel(result.userProf)));
+      dispatch(addSideAlert('success', 'updateUserProf.success'));
+    })
+    .catch(ex => {
+      dispatch(requestUserInfoFail());
+      dispatch(addSideAlert('danger', 'updateUserProf.fail'));
+    })
+  }
 }
 
 function changePassword() {
@@ -67,32 +75,56 @@ function changePassword() {
 export function postChangePassword(request) {
   return dispatch => {
     dispatch(changePassword());
-    fetchWithJson(CHANGE_PASSWORD, request)
-      .then(response => response.json())
-      .then(result => dispatch(addMessage(result)))
-      .catch(ex => {
-        const msg = {
-          type: 'error',
-          msg: 'パスワードの更新に失敗しました'
-        };
-        dispatch(addMessage(msg));
-      });
-  };
+    customFetch(CHANGE_PASSWORD, 'POST', request)
+    .then(result => {
+      dispatch(addSideAlert('success', 'changePassword.success'));
+    })
+    .catch(ex => {
+      dispatch(addSideAlert('danger', 'changePassword.fail'));
+    })
+  }
 }
-/*
-export function deactiveUser() {
+
+export function destroy(request) {
   return dispatch => {
-    dispatch(changePassword());
-    fetchWithJson(DEACTIVE_USER)
-      .then(response => response.json())
-      .then(result => dispatch(addMessage(result)))
-      .catch(ex => {
-        const msg = {
-          type: 'error',
-          msg: 'アカウントの削除に失敗しました'
-        };
-        dispatch(addMessage(msg));
-      });
+    customFetch(`/auth`, 'DELETE')
+    .then(result => {
+      location.href = 'http://l.com'
+    })
+    .catch(ex => {
+      dispatch(addSideAlert('danger', 'destroy.fail'));
+    })
+  }
+}
+
+function addValidation(validation) {
+  return {
+    type: types.ADD_VALIDATION,
+    validation
   };
 }
-*/
+
+function addAddress(address) {
+  return {
+    type: types.ADD_ADDRESS,
+    address
+  };
+}
+
+export function fetchAddress(code) {
+  return (dispatch) => {
+    customFetch(`/admin/single/getAddress/${code.slice(0,3)}/${code.slice(3,7)}`, 'GET')
+    .then(result => {
+      dispatch(addAddress(result));
+    })
+    .catch(ex => {
+      dispatch(addValidation({
+        postalCode: {
+          value: code,
+          status: 'error',
+          message: 'validation.postalCode.notValid'
+        }
+      }));
+    })
+  }
+}

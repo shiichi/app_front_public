@@ -7,20 +7,20 @@ import {
 } from '../constants/ActionTypes';
 
 const initialState = {
-  name: '',
-  first_name: '',
-  last_name: '',
+  name: null,
+  firstName: '',
+  lastName: '',
   age: '',
   sex: '',
-  postal_code: '',
+  postalCode: '',
   state: '',
   city: '',
   street: '',
   building: '',
   auth: [],
   status: {
-    reservations: '',
-    remainingTickets: ''
+    reservations: 0,
+    remainingTickets: 0
   },
   isFetching: false,
   didInvalidate: false

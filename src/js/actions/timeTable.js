@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { fetchWithJson } from '../utils/fetchUtils';
+import { customFetch } from '../utils/fetchUtils';
 import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../config/url';
 
 function setPlans(plans) {
@@ -77,10 +77,13 @@ function requestTimetableFail(key) {
 export function fetchTimetable(key, request) {
   return dispatch => {
     dispatch(requestTimetable(key));
-    fetchWithJson(REQUEST_TIMETABLE, request)
-      .then(response => response.json())
-      .then(result => dispatch(requestTimetableSuccess(key, result)))
-      .catch(ex => dispatch(requestTimetableFail(key)));
+    customFetch(REQUEST_TIMETABLE, 'POST', request)
+    .then(result => {
+      dispatch(requestTimetableSuccess(key, result));
+    })
+    .catch(ex => {
+      dispatch(requestTimetableFail(key));
+    })
   };
 }
 
@@ -143,24 +146,26 @@ function convertPlans(plans) {
 
 export function fetchDefaultStatus() {
   return dispatch => {
-    fetchWithJson(REQUEST_DEFAULT_STATUS)
-      .then(response => response.json())
-      .then(result => {
-        const { types, places, plans } = result.selector;
-        const { key, data } = result.timetable;
-        const minTypeId = Math.min.apply({}, plans.map(p => Number(p.type_id)));
-        const minPlaceId = Math.min.apply({}, plans.map(p => Number(p.type_id) === minTypeId ? p.place_id : 100000));
+    customFetch(REQUEST_DEFAULT_STATUS, 'POST')
+    .then(result => {
+      const { types, places, plans } = result.selector;
+      const { key, data } = result.timetable;
+      const minTypeId = Math.min.apply({}, plans.map(p => Number(p.type_id)));
+      const minPlaceId = Math.min.apply({}, plans.map(p => Number(p.type_id) === minTypeId ? p.place_id : 100000));
 
-        //timetableに登録
-        dispatch(setPlans(convertPlans(plans)));
-        dispatch(requestTimetableSuccess(key, data));
-        //selectorに登録
-        dispatch(setTypeStatus(types));
-        dispatch(setPlaceStatus(places));
-        dispatch(changeTypeChecked(minTypeId));
-        dispatch(changeActivePlace(convertPlans(plans)[minTypeId]));
-        dispatch(changePlaceChecked(minPlaceId));
-      })
-      .catch(ex => console.log(ex));
+      //timetableに登録
+      dispatch(setPlans(convertPlans(plans)));
+      dispatch(requestTimetableSuccess(key, data));
+      //selectorに登録
+      dispatch(setTypeStatus(types));
+      dispatch(setPlaceStatus(places));
+      dispatch(changeTypeChecked(minTypeId));
+      dispatch(changeActivePlace(convertPlans(plans)[minTypeId]));
+      dispatch(changePlaceChecked(minPlaceId));
+    })
+    .catch(ex => {
+      dispatch(requestTimetableFail(key));
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
+    })
   };
 }

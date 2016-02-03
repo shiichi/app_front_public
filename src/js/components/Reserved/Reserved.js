@@ -27,7 +27,6 @@ class Reserved extends Component {
 }
 
 Reserved.propTypes = {
-  message: PropTypes.array,
   reservation: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };

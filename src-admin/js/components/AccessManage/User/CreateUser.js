@@ -9,6 +9,7 @@ import { validate } from '../../../utils/ValidationUtils';
 import * as AccessUserActions from '../../../actions/access/user';
 import * as AccessRoleActions from '../../../actions/access/role';
 import * as InitializeActions from '../../../actions/initialize';
+import { routeActions } from 'react-router-redux';
 
 class CreateUser extends Component {
   constructor(props, context) {
@@ -128,6 +129,10 @@ class CreateUser extends Component {
     if (value.length === 7) {
       fetchAddress(value);
     }
+  }
+
+  handleClick() {
+    history.back()
   }
 
   renderRoles() {
@@ -325,7 +330,10 @@ class CreateUser extends Component {
           </div>
         </form>
         <div className="pull-left">
-          <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
+          <button className="btn btn-danger btn-xs"
+            onClick={this.handleClick.bind(this)}>
+            Cancel
+          </button>
         </div>
         <div className="pull-right">
           <button className="btn btn-success btn-xs" disabled={hasError}

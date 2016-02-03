@@ -8,15 +8,17 @@ class Panel extends Component {
   }
 
   handleCancel(e) {
-    const { cancel, status } = this.props;
-    this.props.cancel({id: status.pivot.id});
+    const { cancel, isCanceling, status: {pivot: {id}} } = this.props;
+    if (isCanceling.indexOf(id)) {
+      cancel({id});
+    };
   }
 
   render() {
-    const { status } = this.props;
+    const { status, style } = this.props;
 
     return (
-      <div className="panel panel-default reservation">
+      <div className="panel panel-default reservation" style={style}>
         <div className="panel-heading">
           <h5 className="panel-title">{ status.flight_at}</h5>
           <button type="button" className="btn btn-info btn-sm" onClick={this.handleClick.bind(this)}>
@@ -107,6 +109,7 @@ class Panel extends Component {
 
 Panel.propTypes = {
   status: PropTypes.object.isRequired,
+  isCanceling: PropTypes.array.isRequired,
   cancel: PropTypes.func.isRequired
 };
 

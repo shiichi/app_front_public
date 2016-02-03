@@ -121,6 +121,10 @@ class EditRoles extends Component {
     }
   }
 
+  handleClick() {
+    history.back()
+  }
+
   renderPermissions() {
     const { permissions } = this.props;
     const { value } = this.state.permissions;
@@ -164,7 +168,10 @@ class EditRoles extends Component {
           {this.renderPermissions()}
         </form>
         <div className="pull-left">
-          <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
+          <button className="btn btn-danger btn-xs"
+            onClick={this.handleClick.bind(this)}>
+            Cancel
+          </button>
         </div>
         <div className="pull-right">
           <button className="btn btn-success btn-xs" disabled={hasError}

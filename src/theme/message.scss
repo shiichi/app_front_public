@@ -1,39 +1,36 @@
 .alert-wrap{
+  position: fixed;
+  top: 75px;
+  right: 10px;
+  z-index: 1000;
+
   .custom-alert{
     width: 400px;
-    height: 70px;
     background: #FFFFFF;
     border: 2px solid;
     border-radius: 4px;
-    position: fixed;
-    right: 10px;
-    z-index: 1000;
-    animation-duration: 0.7s;  /* アニメーション時間 */
-    animation-name: slidein;  /* アニメーション名 */
+    position: relative;
 
     .btn-close {
       position: absolute;
       top: 8px;
       right: 10px;
-      color: #cc3;
       cursor: pointer;
-        font-size: 20px;
-        height: 16px;
-        width: 16px;
-        line-height: 16px;
-        text-align: center;
+      font-size: 20px;
+      height: 16px;
+      width: 16px;
+      line-height: 16px;
+      text-align: center;
     }
 
     p {
       &.alert-title{
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
-        margin: 10px 0 5px 20px;
       }
 
       &.alert-detail{
         font-size: 12px;
-        margin: 0 0 0 20px;
       }
     }
 
@@ -48,9 +45,9 @@
         background-image:url(/img/icon/icon-success.svg);
         width: 28px;
         height: 28px;
-          position: absolute;
-          top: -14px;
-          left: -14px;
+        position: absolute;
+        top: -14px;
+        left: -14px;
       }
     }
 
@@ -72,47 +69,5 @@
         left: -14px;
       }
     }
-
-    &:nth-child(1){
-      top: 100px;
-    }
-    &:nth-child(2){
-      top: 175px;
-    }
-    &:nth-child(3){
-      top: 250px;
-    }
   }
-
-}
-
-@keyframes slidein {
-  from {
-    position: fixed;
-    right: -400px;
-  }
-  to {
-    position: fixed;
-    right: 10px;
-  }
-}
-
-@keyframes slideout {
-  from {
-    position: fixed;
-    right: 10px;
-  }
-  to {
-    position: fixed;
-    right: -4000px;
-  }
-}
-
-@media screen and (max-width: 680px){
-.alert-wrap{
-  .custom-alert{
-    width: 200px;
-    height: 60px;
-  }
-}
 }

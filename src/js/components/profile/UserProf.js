@@ -1,312 +1,290 @@
 import React, { PropTypes, Component } from 'react';
-import { fetchWithJson } from '../../utils/fetchUtils';
-import { REQUEST_ADDRESS } from '../../../config/url';
+import { Link } from 'react-router';
+import { Input, Row, Col } from 'react-bootstrap';
+//Utility
+import { validate } from '../../utils/ValidationUtils';
 
 class UserProf extends Component {
   constructor(props, context) {
     super(props, context);
-    const { name, first_name, last_name, age, sex, postal_code, state, city, street, building} = this.props.user;
-    this.state = {
-      name: {value: name, err: false},
-      first_name: {value: first_name, err: false},
-      last_name: {value: last_name, err: false},
-      age: {value: age, err: false},
-      sex: {value: sex, err: false},
-      post1: {value: postal_code.substr(0, 3), err: false},
-      post2: {value: postal_code.substr(3, 6), err: false},
-      state: {value: state, err: false},
-      city: {value: city, err: false},
-      street: {value: street, err: false},
-      building: {value: building, err: false}
-    };
+    this.state = Object.keys(props.user)
+      .reduce((state, key) => {
+        state[key] = {value: props.user[key], status: '', message: ''};
+        return state;
+      }, {});
   }
 
   componentWillReceiveProps(nextProps) {
-    const { name, first_name, last_name, age, sex, postal_code, state, city, street, building} = nextProps.user;
-    this.state = {
-      name: {value: name, err: false},
-      first_name: {value: first_name, err: false},
-      last_name: {value: last_name, err: false},
-      age: {value: age, err: false},
-      sex: {value: sex, err: false},
-      post1: {value: postal_code.substr(0, 3), err: false},
-      post2: {value: postal_code.substr(3, 6), err: false},
-      state: {value: state, err: false},
-      city: {value: city, err: false},
-      street: {value: street, err: false},
-      building: {value: building, err: false}
+    const { user, address } = nextProps;
+    //初回のみstateに渡す
+    if (user !== null && this.props.user === null) {
+      this.setState( Object.keys(user).reduce((state, key) => {
+        state[key] = {value: user[key], status: '', message: ''};
+        return state;
+      }, {}));
+    };
+
+    if (address) {
+      this.setState({
+        state: {value: address.state, status: '', message: ''},
+        city: {value: address.city, status: '', message: ''},
+        street: {value: address.street, status: '', message: ''},
+      });
+    }
+  }
+
+  // componentWillMount() {
+  //   const { clearDisposable } = this.props.actions;
+  //   clearDisposable();
+  // }
+
+  // componentDidMount() {
+  //   const { routeParams: {id}, actions: {fetchRoles, fetchUser} } = this.props;
+  //   fetchRoles();
+  //   fetchUser(id);
+  // }
+
+  validate(name, value, checked) {
+    switch (name) {
+    case 'assigneesRoles':
+      this.setState({[name]: {value:[value]}});
+      break;
+
+    case 'status':
+    case 'confirmed':
+    case 'confirmationEmail':
+      this.setState({[name]: {value: checked ? '1' : '0'}});
+      break;
+
+    default:
+      this.setState({[name]: validate(name, value)});
+    }
+  }
+
+  handleChange(e) {
+    const { name, value, checked } = e.target;
+    this.validate(name, value, checked);
+  }
+
+  handleHover() {
+    for (let key in this.state) {
+      if (this.state[key].value === '') {
+        this.validate(key, this.state[key].status);
+      };
+    }
+  }
+
+  handleSubmit() {
+    const { UpdateUserProf } = this.props;
+    const Keys = Object.keys(this.state);
+    const hasError = Keys.some(key => 
+      this.state[key].status === 'error'
+    );
+
+    if (!hasError) {
+      UpdateUserProf(
+        Keys.reduce((request, key) => {
+        　request[key] = this.state[key].value;
+        　return request;
+        }, {})
+      );
     };
   }
 
   getAddress() {
-    const post1 = this.state.post1.value;
-    const post2 = this.state.post2.value;
-
-    if (post1.length === 3 && post2.length === 4) {
-      const request = {post1: post1, post2: post2};
-
-      (function fetchAddress(set) {
-        fetchWithJson(REQUEST_ADDRESS, request)
-          .then(response => response.json())
-          .then(result =>
-            set({
-              state: {value: result.stateName, err: false},
-              city: {value: result.city, err: false},
-              street: {value: result.street, err: false}
-            })
-          )
-          .catch(ex => 
-            set({
-              post1: {value: post1, err: '郵便番号が正しくありません'},
-              state: {value: null, err: false},
-              city: {value: null, err: false},
-              street: {value: null, err: false}
-            })
-          );
-      })(this.setState.bind(this));
-    } else {
-      console.log('郵便番号がおかしい');
+    const { fetchAddress } = this.props;
+    const { value, status } = this.state.postalCode;
+    if (status === '') {
+      fetchAddress(value.toString());
     }
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    const { name, first_name, last_name, age, sex, post1, post2, state, city, street, building} = this.state;
-    const request = {
-      name: name.value,
-      first_name: first_name.value,
-      last_name: last_name.value,
-      age: age.value,
-      sex: sex.value,
-      postal_code: post1.value + post2.value,
-      state: state.value,
-      city: city.value,
-      street: street.value,
-      building: building.value
-    };
+  renderRoles() {
+    const { roles } = this.props;
+    const { value } = this.state.assigneesRoles;
 
-    this.props.UpdateUserProf(request);
-  }
-
-  handleChange(e) {
-    const {name, value} = e.target;
-    switch (name) {
-    case 'name':
-      if (!value) {
-        this.setState({ name: {value: value, err: '必須項目です' }});
-      } else {
-        this.setState({ name: {value: value, err: false }});
-      }
-      break;
-    case 'firstName':
-      this.setState({ first_name: {value: value, err: false }});
-      break;
-    case 'lastName':
-      this.setState({ last_name: {value: value, err: false }});
-      break;
-    case 'sex':
-      this.setState({ sex: {value: value, err: false }});
-      break;
-    case 'age':
-      if (/^[\d]{1,3}$/i.test(value)) {
-        this.setState({ age: {value: value, err: false }});
-      } else {
-        this.setState({ age: {value: value, err: '無効な年齢です'}});
-      }
-      break;
-    case 'post1':
-      if (/^\d{3}$/i.test(value)) {
-        this.setState({ post1: {value: value, err: false }});
-      } else {
-        this.setState({ post1: {value: value, err: '郵便番号が正しくありません'}});
-      }
-      break;
-    case 'post2':
-      if (/^\d{4}$/i.test(value)) {
-        this.setState({ post1: {value: this.state.post1.value, err: false }});
-      } else {
-        this.setState({ post1: {value: this.state.post1.value, err: '郵便番号が正しくありません'}});
-      }
-      this.setState({ post2: {value: value, err: false }});
-
-      break;
-    case 'state':
-      this.setState({ state: {value: value, err: false }});
-      break;
-    case 'city':
-      this.setState({ city: {value: value, err: false }});
-      break;
-    case 'street':
-      this.setState({ street: {value: value, err: false }});
-      break;
-    case 'building':
-      this.setState({ building: {value: value, err: false }});
-      break;
-    default :
-    }
+    return roles.map( (role, i) =>
+      <div className="col-xs-offset-2 col-xs-10" key={role.id}>
+        <div className="checkbox">
+          <label className>
+            <input
+              type="radio"
+              value={role.id}
+              name="assigneesRoles"
+              defaultChecked={value.indexOf(role.id) >= 0 ? true : ''}/>
+            <span><strong>{role.name}</strong></span>
+          </label>
+        </div>
+      </div>
+    )
   }
 
   render() {
-    const { user } = this.props;
-    const { name, first_name, last_name, age, sex, post1, post2, state, city, street, building} = this.state;
+    const { isFetching, didInvalidate, user } = this.props;
+    const {
+      userId, email,
+      firstName, lastName, sex, age, postalCode, state, city, street, building,
+      status, confirmed, confirmationEmail
+    } = this.state;
 
-    let hasErr;
-    if (name.err || age.err || post1.err || name.value === null) {
-      hasErr = true;
-    } else {
-      hasErr = false;
-    }
+    const hasError = Object.keys(this.state).some(key => 
+      this.state[key].status === 'error'
+    );
 
     return (
-      <form className="form-horizontal" role="form" onChange={this.handleChange.bind(this)}>
-        <div className={name.err ? 'form-group has-error' : 'form-group'}>
-          <label htmlFor="name" className="col-sm-2 control-label">ユーザーID</label>
-          <div className="col-sm-4">
-            <input type="text" name="name" className="form-control" id=""
-                   placeholder="" defaultValue={user.name} value={name.value}/>
-          </div>
-          {name.err && <div className="col-sm-4 help-block">{name.err}</div> }
-        </div>
-        <div className="form-group">
-          <label htmlFor="firstName" className="col-sm-2 control-label">名前</label>
-          <div className="row">
-            <div className="col-sm-2">
-              <input type="text" name="firstName" className="form-control"
-                     placeholder="性" defaultValue={user.first_name} value={first_name.value}/>
-            </div>
-            <div className="col-sm-2">
-              <input type="text" name="lastName" className="form-control"
-                     placeholder="名" defaultValue={user.last_name} value={last_name.value}/>
-            </div>
-          </div>
-        </div>
-        <div className={age.err ? 'form-group has-error' : 'form-group'}>
-          <label htmlFor="age" className="col-sm-2 control-label">年齢</label>
-          <div className="col-sm-1">
-            <input type="text" name="age" className="form-control" id=""
-                   placeholder="" defaultValue={user.age} value={age.value}/>
-          </div>
-          {age.err && <div className="col-sm-4 help-block">{age.err}</div> }
-        </div>
-        <div className="form-group">
-          <label htmlFor="sex" className="col-sm-2 control-label">性別</label>
-          <div className="col-sm-1">
-            <select name="sex" className="form-control" defaultValue={user.sex} value={sex.value}>
-              <option value="0">男</option>
-              <option value="1">女</option>
-            </select>
-          </div>
-        </div>
-        <div className={post1.err ? 'form-group has-error' : 'form-group'}>
-          <label htmlFor="post1" className="col-sm-2 control-label">郵便番号</label>
-          <div className="row">
-            <div className="col-sm-2">
-              <input type="text" name="post1" className="form-control"
-                     placeholder="000" defaultValue={user.postal_code.substr(0, 3)} value={post1.value}/>
-            </div>
-            <div className="col-sm-2">
-              <input type="text" name="post2"className="form-control"
-                     placeholder="0000" defaultValue={user.postal_code.substr(3, 6)} value={post2.value}/>
-            </div>
-            <div className="col-sm-2">
-              <button type="button" className="btn btn-default" onClick={this.getAddress.bind(this)}>
-                住所を検索
-              </button>
-            </div>
-            {post1.err && <div className="col-sm-3 help-block">{post1.err}</div>}
-          </div>
-        </div>
-        <div className="form-group">
-          <label className="col-sm-2 control-label">住所</label>
-          <div className="col-sm-3">
-            <select className="form-control" name="state" defaultValue={user.state} value={state.value}>
-              <option value="北海道">北海道</option>
-              <option value="青森県">青森県</option>
-              <option value="岩手県">岩手県</option>
-              <option value="宮城県">宮城県</option>
-              <option value="秋田県">秋田県</option>
-              <option value="山形県">山形県</option>
-              <option value="福島県">福島県</option>
-              <option value="茨城県">茨城県</option>
-              <option value="栃木県">栃木県</option>
-              <option value="群馬県">群馬県</option>
-              <option value="埼玉県">埼玉県</option>
-              <option value="千葉県">千葉県</option>
-              <option value="東京都">東京都</option>
-              <option value="神奈川県">神奈川県</option>
-              <option value="新潟県">新潟県</option>
-              <option value="山梨県">山梨県</option>
-              <option value="長野県">長野県</option>
-              <option value="富山県">富山県</option>
-              <option value="石川県">石川県</option>
-              <option value="福井県">福井県</option>
-              <option value="岐阜県">岐阜県</option>
-              <option value="静岡県">静岡県</option>
-              <option value="愛知県">愛知県</option>
-              <option value="三重県">三重県</option>
-              <option value="滋賀県">滋賀県</option>
-              <option value="京都府">京都府</option>
-              <option value="大阪府">大阪府</option>
-              <option value="兵庫県">兵庫県</option>
-              <option value="奈良県">奈良県</option>
-              <option value="和歌山県">和歌山県</option>
-              <option value="鳥取県">鳥取県</option>
-              <option value="島根県">島根県</option>
-              <option value="岡山県">岡山県</option>
-              <option value="広島県">広島県</option>
-              <option value="山口県">山口県</option>
-              <option value="徳島県">徳島県</option>
-              <option value="香川県">香川県</option>
-              <option value="愛媛県">愛媛県</option>
-              <option value="高知県">高知県</option>
-              <option value="福岡県">福岡県</option>
-              <option value="佐賀県">佐賀県</option>
-              <option value="長崎県">長崎県</option>
-              <option value="熊本県">熊本県</option>
-              <option value="大分県">大分県</option>
-              <option value="宮崎県">宮崎県</option>
-              <option value="鹿児島県">鹿児島県</option>
-              <option value="沖縄県">沖縄県</option>
-            </select>
-          </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="" className="col-sm-2 control-label"> </label>
-          <div className="col-sm-8">
-            <input type="text" name="city" className="form-control" id=""
-                   placeholder="住所１" defaultValue={user.city} value={city.value}/>
-          </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="inputPassword3" className="col-sm-2 control-label"> </label>
-          <div className="col-sm-8">
-            <input type="text" name="street" className="form-control" id=""
-                   placeholder="住所２" defaultValue={user.street} value={street.value}/>
-          </div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="inputPassword3" className="col-sm-2 control-label"> </label>
-          <div className="col-sm-8">
-            <input type="text" name="building" className="form-control" id=""
-                   placeholder="マンション名など" defaultValue={user.building} value={building.value}/>
-          </div>
-        </div>
+      <div className="box-body">
+        <form className="form-horizontal" onChange={this.handleChange.bind(this)}>
+          <Input type="text" label="User ID" name="userId" placeholder="User ID"
+            defaultValue={userId.value}
+            bsStyle={userId.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-10"
+            help={userId.message}/>
+          <Input label="Name"
+            bsStyle={firstName.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-10"
+            help={firstName.message}>
+            <Row>
+              <Col xs={6} sm={5}>
+                <input type="text" name="firstName" className="form-control"
+                  placeholder="First Name"
+                  defaultValue={firstName.value}/>
+              </Col>
+              <Col xs={6} sm={5}>
+                <input type="text" name="lastName" className="form-control"
+                  placeholder="Last Name"
+                  defaultValue={lastName.value}/>
+              </Col>
+            </Row>
+          </Input>
+          <Input type="select" label="Sex" name="sex" placeholder="sex"
+            defaultValue={sex.value}
+            bsStyle={sex.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-5 col-sm-3 col-md-2"
+            help={sex.message}>
+            <option value="0">Man</option>
+            <option value="1">Woman</option>
+          </Input>
+          <Input type="number" label="Age" name="age" placeholder="age"
+            defaultValue={age.value}
+            bsStyle={age.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-5 col-sm-3 col-md-2"
+            help={age.message}/>
+
+          <Input label="Postal Code"
+            bsStyle={postalCode.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-10"
+            help={postalCode.message}>
+            <Row>
+              <Col xs={6} sm={4} md={3}>
+                <input type="text" name="postalCode" className="form-control"
+                  placeholder="1234567"
+                  value={postalCode.value}/>
+              </Col>
+              <Col xs={6} sm={4} md={3}>
+                <button type="button" className="btn btn-default" onClick={this.getAddress.bind(this)}>
+                  Serch Address
+                </button>
+              </Col>
+            </Row>
+          </Input>
+          <Input type="select" label="State" name="state" placeholder="State"
+            value={state.value}
+            bsStyle={state.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-5 col-sm-3 col-md-2"
+            help={state.message}>
+            <option value="北海道">北海道</option>
+            <option value="青森県">青森県</option>
+            <option value="岩手県">岩手県</option>
+            <option value="宮城県">宮城県</option>
+            <option value="秋田県">秋田県</option>
+            <option value="山形県">山形県</option>
+            <option value="福島県">福島県</option>
+            <option value="茨城県">茨城県</option>
+            <option value="栃木県">栃木県</option>
+            <option value="群馬県">群馬県</option>
+            <option value="埼玉県">埼玉県</option>
+            <option value="千葉県">千葉県</option>
+            <option value="東京都">東京都</option>
+            <option value="神奈川県">神奈川県</option>
+            <option value="新潟県">新潟県</option>
+            <option value="山梨県">山梨県</option>
+            <option value="長野県">長野県</option>
+            <option value="富山県">富山県</option>
+            <option value="石川県">石川県</option>
+            <option value="福井県">福井県</option>
+            <option value="岐阜県">岐阜県</option>
+            <option value="静岡県">静岡県</option>
+            <option value="愛知県">愛知県</option>
+            <option value="三重県">三重県</option>
+            <option value="滋賀県">滋賀県</option>
+            <option value="京都府">京都府</option>
+            <option value="大阪府">大阪府</option>
+            <option value="兵庫県">兵庫県</option>
+            <option value="奈良県">奈良県</option>
+            <option value="和歌山県">和歌山県</option>
+            <option value="鳥取県">鳥取県</option>
+            <option value="島根県">島根県</option>
+            <option value="岡山県">岡山県</option>
+            <option value="広島県">広島県</option>
+            <option value="山口県">山口県</option>
+            <option value="徳島県">徳島県</option>
+            <option value="香川県">香川県</option>
+            <option value="愛媛県">愛媛県</option>
+            <option value="高知県">高知県</option>
+            <option value="福岡県">福岡県</option>
+            <option value="佐賀県">佐賀県</option>
+            <option value="長崎県">長崎県</option>
+            <option value="熊本県">熊本県</option>
+            <option value="大分県">大分県</option>
+            <option value="宮崎県">宮崎県</option>
+            <option value="鹿児島県">鹿児島県</option>
+            <option value="沖縄県">沖縄県</option>
+          </Input>
+          <Input type="text" label="City" name="city" placeholder="City"
+            value={city.value}
+            bsStyle={city.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-10"
+            help={city.message}/>
+          <Input type="text" label="Street" name="street" placeholder="Street"
+            value={street.value}
+            bsStyle={street.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-10"
+            help={street.message}/>
+          <Input type="text" label="Building" name="building" placeholder="Building"
+            value={building.value}
+            bsStyle={building.status}
+            labelClassName="col-xs-2"
+            wrapperClassName="col-xs-10"
+            help={building.message}/>
+        </form>
         <div className="form-group">
           <div className="col-sm-8 col-sm-offset-2">
-            <button type="button" className={hasErr ? 'btn btn-danger disabled' : 'btn btn-danger'}
-                    onClick={this.handleSubmit.bind(this)}>
+            <button
+              type="button"
+              className={hasError ? 'btn btn-danger disabled' : 'btn btn-danger'}
+              onClick={this.handleSubmit.bind(this)}>
               変更を保存
             </button>
           </div>
         </div>
-      </form>
+      </div>
     );
   }
 }
 
 UserProf.propTypes = {
   user: PropTypes.object.isRequired,
-  UpdateUserProf: PropTypes.func.isRequired
+  address: PropTypes.object.isRequired,
+  UpdateUserProf: PropTypes.func.isRequired,
+  fetchAddress: PropTypes.func.isRequired,
 };
 
 export default UserProf;

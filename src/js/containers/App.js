@@ -1,20 +1,55 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+//actions
+import * as ApplicationActions from '../actions/application';
+import * as InitializeActions from '../actions/initialize';
 //components
 import Navigation from '../components/Navigation/Navigation';
-import Message from '../components/message';
+import Alert from '../components/Alert';
 
 class App extends Component {
   render() {
+    const { locale, alert, routing, children, actions: {deleteSideAlerts} } = this.props;
+
     return (
       <div className="container">
         <Navigation />
-        <Message />
+        <Alert
+          alert={alert}
+          deleteSideAlerts={deleteSideAlerts}/>
         <div className="content col-md-10">
-          {this.props.children}
+          {children}
         </div>
       </div>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  locale: PropTypes.string.isRequired,
+  alert: PropTypes.object,
+  routing: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
+};
+
+function mapStateToProps(state) {
+  return {
+    locale: state.application.locale,
+    alert: state.alert.side,
+    routing: state.routing
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  const actions = Object.assign(
+    ApplicationActions,
+    InitializeActions
+  );
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+
+export default connect( mapStateToProps, mapDispatchToProps)(App);
+

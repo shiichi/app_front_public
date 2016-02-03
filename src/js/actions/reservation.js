@@ -1,11 +1,13 @@
 import * as types from '../constants/ActionTypes';
-import { fetchWithJson } from '../utils/fetchUtils';
+import { customFetch } from '../utils/fetchUtils';
 import { REQUEST_TEST_TOKEN, RESERVE, REQUEST_RESERVATIONS, GETJWT, CANCEL } from '../../config/url';
 
-function addMessage(msg) {
+function addSideAlert(status, messageId, value) {
   return {
-    type: types.ADD_MESSAGE,
-    msg: msg
+    type: types.ADD_SIDE_ALERT,
+    status,
+    messageId,
+    value
   };
 }
 
@@ -84,66 +86,54 @@ function RequestReservationsFail() {
 export function fetchReservations() {
   return dispatch => {
     dispatch(RequestReservations());
-    fetchWithJson(REQUEST_RESERVATIONS)
-      .then(response => response.json())
-      .then(result => dispatch(RequestReservationsSuccess(result)))
-      .catch(ex => {
-        dispatch(RequestReservationsFail());
-        const msg = {
-          type: 'error',
-          msg: '予約情報の取得に失敗しました'
-        };
-        dispatch(addMessage(msg));
-      });
+    customFetch(REQUEST_RESERVATIONS, 'POST')
+    .then(result => {
+      dispatch(RequestReservationsSuccess(result));
+    })
+    .catch(ex => {
+      dispatch(RequestReservationsFail());
+      dispatch(addSideAlert('danger', 'getReservations.fail'));
+    })
   };
 }
 
 export function fetchTestToken(request) {
   return dispatch => {
-    fetchWithJson(REQUEST_TEST_TOKEN, request)
-      .then(response => response.json())
-      .then(result => {
-        if (result.msg.type === 'error') {
-          dispatch(addMessage(result.msg));
-        }
-        if (result.msg.type === 'success') {
-          dispatch(setTestToken(result.jwt));
-          dispatch(modalOn());
-        }
-      })
-      .catch(ex => {
-        const msg = {
-          type: 'error',
-          msg: '接続テストを実行できませんでした'
-        };
-        dispatch(addMessage(msg));
-      });
+    customFetch(REQUEST_TEST_TOKEN, 'POST', request)
+    .then(result => {
+      if (result.msg.type === 'error') {
+        dispatch(addSideAlert('danger', 'reserve.fail', {reason: result.msg.msg}));
+      }
+      if (result.msg.type === 'success') {
+        dispatch(setTestToken(result.jwt));
+        dispatch(modalOn());
+      }
+    })
+    .catch(ex => {
+      dispatch(addSideAlert('danger', 'conectionTest.fail'));
+    });
   };
 }
 
 export function reserve(request, key) {
   return dispatch => {
-    fetchWithJson(RESERVE, request)
-      .then(response => response.json())
-      .then(result => {
-        if (result.msg.type === 'error') {
-          dispatch(addMessage(result.msg));
-        }
-        if (result.msg.type === 'success') {
-          dispatch(deleteTestToken());
-          dispatch(setConfToken(result.jwt));
-          dispatch(updateUserInfoReservations(result.reservations));
-          dispatch(timetableIsOld(key));
-          dispatch(addMessage(result.msg));
-        }
-      })
-      .catch(ex => {
-        const msg = {
-          type: 'error',
-          msg: '予約に失敗しました'
-        };
-        dispatch(addMessage(msg));
-      }); };
+    customFetch(RESERVE, 'POST', request)
+    .then(result => {
+      if (result.msg.type === 'error') {
+        dispatch(addSideAlert('danger', 'reserve.fail', {reason: result.msg.msg}));
+      }
+      if (result.msg.type === 'success') {
+        dispatch(deleteTestToken());
+        dispatch(setConfToken(result.jwt));
+        dispatch(updateUserInfoReservations(result.reservations));
+        dispatch(timetableIsOld(key));
+        dispatch(addSideAlert('success', 'reserve.success'));
+      }
+    })
+    .catch(ex => {
+      dispatch(addSideAlert('danger', 'reserve.fail', {reason: 'server'}));
+    });
+　};
 }
 
 export function getJwtIfNeeded(id) {
@@ -156,40 +146,47 @@ export function getJwtIfNeeded(id) {
 
 function getJwt() {
   return dispatch => {
-    fetchWithJson(GETJWT)
-      .then(response => response.json())
-      .then(result => dispatch(setConfToken(result)))
-      .catch(ex => {
-        const msg = {
-          type: 'error',
-          msg: '予約トークンを取得できません'
-        };
-        dispatch(addMessage(msg));
-      });
+    customFetch(GETJWT, 'POST')
+    .then(result => dispatch(setConfToken(result)))
+    .catch(ex => {
+      dispatch(addSideAlert('danger', 'getReservationToken.fail'));
+    });
+  };
+}
+
+function doCancelAction(id) {
+  return {
+    type: types.DO_CANCEL_ACTION,
+    id
+  };
+}
+
+function doneCancelAction(id) {
+  return {
+    type: types.DONE_CANCEL_ACTION,
+    id
   };
 }
 
 export function cancel(request) {
   return dispatch => {
-    fetchWithJson(CANCEL, request)
-      .then(response => response.json())
-      .then(result => {
-        if (result.msg.type === 'error') {
-          dispatch(addMessage(result.msg));
-        }
-        if (result.msg.type === 'success') {
-          dispatch(deleteConfToken(request.id));
-          dispatch(RequestReservationsSuccess(result.data));
-          dispatch(updateUserInfoReservations(result.reservations));
-          dispatch(addMessage(result.msg));
-        }
-      })
-      .catch(ex => {
-        const msg = {
-          type: 'error',
-          msg: '予約のキャンセルに失敗しました'
-        };
-        dispatch(addMessage(msg));
-      });
+    dispatch(doCancelAction(request.id));
+    customFetch(CANCEL, 'POST', request)
+    .then(result => {
+      dispatch(doneCancelAction(request.id));
+      if (result.msg.type === 'error') {
+        dispatch(addSideAlert('danger', 'cancel.fail', {reason: result.msg.msg}));
+      }
+      if (result.msg.type === 'success') {
+        dispatch(deleteConfToken(request.id));
+        dispatch(RequestReservationsSuccess(result.data));
+        dispatch(updateUserInfoReservations(result.reservations));
+        dispatch(addSideAlert('success', 'cancel.success'));
+      }
+    })
+    .catch(ex => {
+      dispatch(doneCancelAction(request.id));
+      dispatch(addSideAlert('danger', 'cancel.fail', {reason: 'server'}));
+    });
   };
 }

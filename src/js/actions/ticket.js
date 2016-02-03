@@ -1,11 +1,13 @@
 import * as types from '../constants/ActionTypes';
-import { fetchWithJson } from '../utils/fetchUtils';
+import { customFetch } from '../utils/fetchUtils';
 import { WEBPAY, PIN } from '../../config/url';
 
-export function addMessage(msg) {
+function addSideAlert(status, messageId, value) {
   return {
-    type: types.ADD_MESSAGE,
-    msg: msg
+    type: types.ADD_SIDE_ALERT,
+    status,
+    messageId,
+    value
   };
 }
 
@@ -37,41 +39,36 @@ export function requestTicketFail() {
 export function fetchWebpay(request) {
   return dispatch => {
     dispatch(requestTicket());
-    fetchWithJson(WEBPAY, request)
-      .then(response => response.json())
-      .then(result => {
+    customFetch(WEBPAY, 'POST', request)
+    .then(result => {
+      if (result.msg.type === 'error') {
+        dispatch(addSideAlert('danger', 'addTicket.fail'));
+      }
+      else if (result.msg.type === 'success') {
         dispatch(requestTicketSuccess());
         dispatch(updateUserInfoTickets(result.tickets));
-        dispatch(addMessage(result.msg));
-      })
-      .catch(ex => {
-        dispatch(requestTicketFail(ex));
-        const msg = {
-          type: 'error',
-          msg: 'チケット購入に失敗しました'
-        };
-        dispatch(addMessage(msg));
-      });
-  };
+        dispatch(addSideAlert('success', 'addTicket.success'));
+      }
+    })
+    .catch(ex => {
+      dispatch(requestTicketFail());
+      dispatch(addSideAlert('danger', 'addTicket.fail'));
+    })
+  }
 }
 
 export function fetchPin(pin) {
   return dispatch => {
     dispatch(requestTicket());
-    fetchWithJson(PIN, pin)
-      .then(response => response.json())
-      .then(result => {
-        dispatch(requestTicketSuccess(result));
-        dispatch(updateUserInfoTickets(result.tickets));
-        dispatch(addMessage(result.msg));
-      })
-      .catch(ex => {
-        dispatch(requestTicketFail(ex));
-        const msg = {
-          type: 'error',
-          msg: 'チケット購入に失敗しました'
-        };
-        dispatch(addMessage(msg));
-      });
-  };
+    customFetch(PIN, 'POST', pin)
+    .then(result => {
+      dispatch(requestTicketSuccess());
+      dispatch(updateUserInfoTickets(result.tickets));
+      dispatch(addSideAlert('success', 'addTicket.success'));
+    })
+    .catch(ex => {
+      dispatch(requestTicketFail());
+      dispatch(addSideAlert('danger', 'addTicket.fail'));
+    })
+  }
 }

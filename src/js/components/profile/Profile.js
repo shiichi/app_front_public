@@ -8,12 +8,15 @@ import MainSection from './MainSection';
 
 class Profile extends Component {
   render() {
-    const { user, actions } = this.props;
+    const { user, address, actions } = this.props;
 
     return (
       <div>
         <Header/>
-        <MainSection user={user} actions={actions}/>
+        <MainSection
+          user={user}
+          address={address}
+          actions={actions}/>
       </div>
     );
   }
@@ -25,9 +28,9 @@ Profile.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { user } = state;
   return {
-    user
+    user: state.user,
+    address: state.disposable.address
   };
 }
 

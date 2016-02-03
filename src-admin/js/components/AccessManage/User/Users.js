@@ -14,24 +14,22 @@ import Loading from '../../Common/Loading';
 class Users extends Component {
   constructor(props, context) {
     super(props, context);
-    const { query, perPage } = props;
-    this.state = {
-      page: Math.ceil(query.skip / perPage) + 1,
-      items: Math.ceil(query.skip / perPage) + 1
-    };
+    this.state = { page: 1, items: 1 };
   }
 
   componentWillReceiveProps(nextProps) {
     const { fetchUsers } = this.props.actions;
-    const { total, search, perPage } = nextProps;
+    const { total, search, perPage, query } = nextProps;
 
-    if (total !== this.props.total || perPage !== this.props.perPage) {
+    if (total !== this.props.total || query !== this.props.query) {
       this.setState({
+        page: Math.ceil(query.skip / perPage) + 1 || 1,
         items: Math.ceil(total / perPage),
       });
     };
 
     if (search !== this.props.search) {
+      console.log('componentWillReceiveProps')
       fetchUsers();
     };
   }
@@ -52,6 +50,7 @@ class Users extends Component {
   }
 
   render() {
+    console.log(this.state)
     const { page, items } = this.state;
     const { myId, myRoles, myPermissions, users, isFetching, didInvalidate, asyncStatus, actions } = this.props;
 

@@ -1,6 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { Accordion, Panel } from 'react-bootstrap';
+//Components
 import CreditCard from './CreditCard';
+import PayPal from './PayPal';
+import PinCode from './PinCode';
 
 class MainSection extends Component {
   constructor(props, context) {
@@ -17,17 +20,6 @@ class MainSection extends Component {
   render() {
     const { panel } = this.state;
     const { fetchWebpay, fetchPin } = this.props.actions;
-
-    let PinCode;
-    require.ensure([], () => {
-      PinCode = require('./PinCode.js');
-    });
-
-    let PayPal;
-    require.ensure([], () => {
-      PayPal = require('./PayPal.js');
-    });
-
     const credit = (
       <p>PayPalアカウンントをお持ちの方<span className="icon paypal"></span></p>
     );

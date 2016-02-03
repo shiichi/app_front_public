@@ -5,13 +5,15 @@ import LoginInfo from './LoginInfo';
 import UserProf from './UserProf';
 
 class MainSection extends Component {
-
-  handleClick(e) {
-    browserHistory.push('/log');
+  handleClick() {
+    const { destroy } = this.props.actions;
+    destroy();
   }
 
   render() {
-    const { user, actions: {UpdateUserProf, postChangePassword} } = this.props;
+    const { user, address, actions: {
+      UpdateUserProf, fetchAddress, postChangePassword}
+    } = this.props;
 
     return (
       <div className="content-boody">
@@ -21,23 +23,21 @@ class MainSection extends Component {
             <LoginInfo user={user} postChangePassword={postChangePassword}/>
           </div>
         </div>
-        {!user.isFetching &&
+        {user.name && !user.isFetching &&
         <div className="row">
           <h4>プロフィール</h4>
           {user.didInvalidate && <p>ユーザー情報の更新に失敗しました</p>}
           <div className="wrap-white">
-            <UserProf user={user} UpdateUserProf={UpdateUserProf}/>
+            <UserProf
+              user={user}
+              address={address}
+              UpdateUserProf={UpdateUserProf}
+              fetchAddress={fetchAddress}/>
           </div>
         </div>}
         <div>
-          <button type="button" className="btn btn-default">
-            <a href="/auth/deactive">アカウントを停止</a>
-          </button>
-          <button type="button" className="btn btn-default">
-            <a href="/auth/destroy">アカウントを削除</a>
-          </button>
           <button type="button" className="btn btn-default" onClick={this.handleClick.bind(this)}>
-            リダイレクト
+            <p>退会する</p>
           </button>
         </div>
       </div>
@@ -47,6 +47,7 @@ class MainSection extends Component {
 
 MainSection.propTypes = {
   user: PropTypes.object.isRequired,
+  address: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
