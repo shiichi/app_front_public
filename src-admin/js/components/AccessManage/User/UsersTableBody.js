@@ -20,6 +20,7 @@ class UsersTableBody extends Component {
         case 'restore': actions.restoreUser(id); break;
         case 'destroy': actions.destroyUser(id); break;
         case 'delete': actions.deleteUser(id); break;
+        case 'resend': actions.resendUser(id); break;
       }
     };
   }

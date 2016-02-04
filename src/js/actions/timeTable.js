@@ -2,6 +2,15 @@ import * as types from '../constants/ActionTypes';
 import { customFetch } from '../utils/fetchUtils';
 import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../config/url';
 
+function addSideAlert(status, messageId, value) {
+  return {
+    type: types.ADD_SIDE_ALERT,
+    status,
+    messageId,
+    value
+  };
+}
+
 function setPlans(plans) {
   return {
     type: types.SET_PLANS,
@@ -164,7 +173,7 @@ export function fetchDefaultStatus() {
       dispatch(changePlaceChecked(minPlaceId));
     })
     .catch(ex => {
-      dispatch(requestTimetableFail(key));
+      dispatch(requestTimetableFail('1_1_0'));
       dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };

@@ -6,6 +6,7 @@ import Icon from 'react-fa';
 //Actions
 import * as AccessRoleActions from '../../../actions/access/role';
 //Components
+import RightMenu from '../RightMenu';
 import RolesTableBody from './RolesTableBody';
 
 class Roles extends Component {
@@ -18,27 +19,33 @@ class Roles extends Component {
     const { myId, myRoles, myPermissions, roles, isFetching, didInvalidate, asyncStatus, actions } = this.props;
 
     return (
-      <div className="box-body">
-        <div className="table-responsive">
-          <table className="table table-striped table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Role</th>
-                <th>Permissions</th>
-                <th>Number of Users</th>
-                <th>Sort</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            {!didInvalidate && !isFetching && roles && 
-            <RolesTableBody
-              myId={myId}
-              myRoles={myRoles}
-              myPermissions={myPermissions}
-              roles={roles}
-              asyncStatus={asyncStatus}
-              actions={actions}/>}
-          </table>
+      <div className="box box-success">
+        <div className="box-header with-border">
+          <h3 className="box-title">All Roles</h3>
+          <RightMenu/>
+        </div>
+        <div className="box-body">
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Role</th>
+                  <th>Permissions</th>
+                  <th>Number of Users</th>
+                  <th>Sort</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              {!didInvalidate && !isFetching && roles && 
+              <RolesTableBody
+                myId={myId}
+                myRoles={myRoles}
+                myPermissions={myPermissions}
+                roles={roles}
+                asyncStatus={asyncStatus}
+                actions={actions}/>}
+            </table>
+          </div>
         </div>
       </div>
     );

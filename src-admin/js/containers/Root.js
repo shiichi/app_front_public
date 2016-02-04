@@ -19,6 +19,8 @@ import Roles from '../components/AccessManage/Role/Roles';
 import CreateRoles from '../components/AccessManage/Role/CreateRoles';
 import EditRoles from '../components/AccessManage/Role/EditRoles';
 import Permissions from '../components/AccessManage/Permission/Permissions';
+import PinCodeManage from '../components/PinCodeManage/PinCodeManage';
+import GeneratePin from '../components/PinCodeManage/GeneratePin';
 
 export default class Root extends Component {
   render() {
@@ -41,6 +43,9 @@ export default class Root extends Component {
                 <Route path="roles/create" component={CreateRoles}/>
                 <Route path="roles/:id/edit" component={EditRoles}/>
                 <Route path="permissions" component={Permissions}/>
+              </Route>
+              <Route path="pin" component={PinCodeManage}>
+                <Route path="generate" component={GeneratePin}/>
               </Route>
             </Route>
           </Router>

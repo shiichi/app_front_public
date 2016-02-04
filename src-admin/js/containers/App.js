@@ -8,7 +8,6 @@ import * as InitializeActions from '../actions/initialize';
 //components
 import MainHeader from '../components/MainHeader/MainHeader';
 import MainSidebar from '../components/MainSidebar/MainSidebar';
-import ContentHeader from '../components/Common/ContentHeader';
 import Alert from '../components/Common/Alert';
 
 class App extends Component {
@@ -46,15 +45,10 @@ class App extends Component {
               changeLocale={changeLocale}
               hundleSidebar={this.hundleSidebar.bind(this)}/>
             <MainSidebar myProfile={myProfile}/>
-            <div className="content-wrapper" style={{ minHeight: '916px' }}>
-              <ContentHeader routing={routing}/>
-              <section className="content">
-                <Alert
-                  alert={alert}
-                  deleteSideAlerts={deleteSideAlerts}/>
-                {children}
-              </section>
-            </div>
+            <Alert
+              alert={alert}
+              deleteSideAlerts={deleteSideAlerts}/>
+            {children}
           </div>
         </div>
       </div>

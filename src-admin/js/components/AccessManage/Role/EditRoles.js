@@ -9,6 +9,8 @@ import { validate } from '../../../utils/ValidationUtils';
 import * as AccessRoleActions from '../../../actions/access/role';
 import * as AccessPermissionActions from '../../../actions/access/permission';
 import * as InitializeActions from '../../../actions/initialize';
+//Components
+import RightMenu from '../RightMenu';
 
 class EditRoles extends Component {
   constructor(props, context) {
@@ -150,37 +152,43 @@ class EditRoles extends Component {
     );
 
     return (
-      <div className="box-body">
-        <form className="form-horizontal" onChange={this.handleChange.bind(this)}>
-          <Input type="text" label="Name" name="name" placeholder="Role Name"
-            value={name.value}
-            bsStyle={name.status}
-            labelClassName="col-xs-2"
-            wrapperClassName="col-xs-10"
-            help={name.message}
-            onBlur={this.hanbleBlur.bind(this)}/>
-          <Input type="text" label="Sort" name="sort" placeholder="Sort"
-            value={sort.value}
-            bsStyle={sort.status}
-            labelClassName="col-xs-2"
-            wrapperClassName="col-xs-10"
-            help={sort.message}/>
-          {this.renderPermissions()}
-        </form>
-        <div className="pull-left">
-          <button className="btn btn-danger btn-xs"
-            onClick={this.handleClick.bind(this)}>
-            Cancel
-          </button>
+      <div className="box box-success">
+        <div className="box-header with-border">
+          <h3 className="box-title">Edit Role</h3>
+          <RightMenu/>
         </div>
-        <div className="pull-right">
-          <button className="btn btn-success btn-xs" disabled={hasError}
-            onClick={this.handleSubmit.bind(this)}
-            onMouseOver={this.handleHover.bind(this)}>
-            Update
-          </button>
+        <div className="box-body">
+          <form className="form-horizontal" onChange={this.handleChange.bind(this)}>
+            <Input type="text" label="Name" name="name" placeholder="Role Name"
+              value={name.value}
+              bsStyle={name.status}
+              labelClassName="col-xs-2"
+              wrapperClassName="col-xs-10"
+              help={name.message}
+              onBlur={this.hanbleBlur.bind(this)}/>
+            <Input type="text" label="Sort" name="sort" placeholder="Sort"
+              value={sort.value}
+              bsStyle={sort.status}
+              labelClassName="col-xs-2"
+              wrapperClassName="col-xs-10"
+              help={sort.message}/>
+            {this.renderPermissions()}
+          </form>
+          <div className="pull-left">
+            <button className="btn btn-danger btn-xs"
+              onClick={this.handleClick.bind(this)}>
+              Cancel
+            </button>
+          </div>
+          <div className="pull-right">
+            <button className="btn btn-success btn-xs" disabled={hasError}
+              onClick={this.handleSubmit.bind(this)}
+              onMouseOver={this.handleHover.bind(this)}>
+              Update
+            </button>
+          </div>
+          <div className="clearfix" />
         </div>
-        <div className="clearfix" />
       </div>
     );
   }

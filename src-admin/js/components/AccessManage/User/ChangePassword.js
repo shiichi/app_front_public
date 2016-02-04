@@ -7,6 +7,8 @@ import { Input } from 'react-bootstrap';
 import { validate } from '../../../utils/ValidationUtils';
 //Actions
 import * as AccessUserActions from '../../../actions/access/user';
+//Components
+import RightMenu from '../RightMenu';
 
 class ChangePassword extends Component {
   constructor(props, context) {
@@ -74,28 +76,34 @@ class ChangePassword extends Component {
     );
 
     return (
-      <div className="box-body">
-        <form className="form-horizontal" onChange={this.handleChange.bind(this)}>
-          <Input type="password" label="Password" name="password"
-            bsStyle={password.status}
-            labelClassName="col-xs-2"
-            wrapperClassName="col-xs-10"
-            help={password.message}/>
-          <Input type="password" label="Password Confirmation" name="passwordConfirmation"
-            bsStyle={passwordConfirmation.status}
-            labelClassName="col-xs-2"
-            wrapperClassName="col-xs-10"
-            help={passwordConfirmation.message}/>
-        </form>
-        <div className="pull-left">
-          <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
+      <div className="box box-success">
+        <div className="box-header with-border">
+          <h3 className="box-title">Change Password</h3>
+          <RightMenu/>
         </div>
-        <div className="pull-right">
-          <button className="btn btn-success btn-xs" disabled={hasError}
-            onClick={this.handleSubmit.bind(this)}
-            onMouseOver={this.handleHover.bind(this)}>Create</button>
+        <div className="box-body">
+          <form className="form-horizontal" onChange={this.handleChange.bind(this)}>
+            <Input type="password" label="Password" name="password"
+              bsStyle={password.status}
+              labelClassName="col-xs-2"
+              wrapperClassName="col-xs-10"
+              help={password.message}/>
+            <Input type="password" label="Password Confirmation" name="passwordConfirmation"
+              bsStyle={passwordConfirmation.status}
+              labelClassName="col-xs-2"
+              wrapperClassName="col-xs-10"
+              help={passwordConfirmation.message}/>
+          </form>
+          <div className="pull-left">
+            <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
+          </div>
+          <div className="pull-right">
+            <button className="btn btn-success btn-xs" disabled={hasError}
+              onClick={this.handleSubmit.bind(this)}
+              onMouseOver={this.handleHover.bind(this)}>Create</button>
+          </div>
+          <div className="clearfix" />
         </div>
-        <div className="clearfix" />
       </div>
     );
   }

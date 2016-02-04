@@ -7,9 +7,10 @@ import Icon from 'react-fa';
 import { routeActions } from 'react-router-redux';
 import * as AccessUserActions from '../../../actions/access/user';
 //Components
-import UsersTableBody from './UsersTableBody';
 import MessageInTable from '../../Common/MessageInTable';
 import Loading from '../../Common/Loading';
+import RightMenu from '../RightMenu';
+import UsersTableBody from './UsersTableBody';
 
 class Users extends Component {
   constructor(props, context) {
@@ -43,52 +44,59 @@ class Users extends Component {
     const page = selectedEvent.eventKey;    
     const { total, pathname, query, perPage, actions: {push} } = this.props;
     const skip = (page - 1) * perPage;
-    const url = `${pathname}?filter=${query.filter}&skip=${skip}&take=${perPage}`;
+    const url = `${pathname}?filter=${query.filter || 'all'}&skip=${skip}&take=${perPage}`;
 
     push(url);
     this.setState({page});
   }
 
   render() {
-    console.log(this.state)
     const { page, items } = this.state;
     const { myId, myRoles, myPermissions, users, isFetching, didInvalidate, asyncStatus, actions } = this.props;
 
     return (
-      <div className="table-responsive">
-        <table className="table table-striped table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>E-mail</th>
-              <th>Confirmed</th>
-              <th>Roles</th>
-              <th className="visible-lg">Created</th>
-              <th className="visible-lg">Last Updated</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          {!didInvalidate && !isFetching && users && 
-            <UsersTableBody
-              myId={myId}
-              myRoles={myRoles}
-              myPermissions={myPermissions}
-              users={users}
-              asyncStatus={asyncStatus}
-              actions={actions}/>}
-        </table>
-        {!didInvalidate && isFetching && <Loading/>}
-        {didInvalidate && <MessageInTable/>}
-        <div className="pull-right">
-          <Pagination
-            first
-            last
-            ellipsis
-            items={this.state.items}
-            maxButtons={10}
-            activePage={this.state.page}
-            onSelect={this.handlePage.bind(this)} />
+      <div className="box box-success">
+        <div className="box-header with-border">
+          <h3 className="box-title">Active Users</h3>
+          <RightMenu/>
+        </div>
+        <div className="box-body">
+          <div className="table-responsive">
+            <table className="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>E-mail</th>
+                  <th>Confirmed</th>
+                  <th>Roles</th>
+                  <th className="visible-lg">Created</th>
+                  <th className="visible-lg">Last Updated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              {!didInvalidate && !isFetching && users && 
+                <UsersTableBody
+                  myId={myId}
+                  myRoles={myRoles}
+                  myPermissions={myPermissions}
+                  users={users}
+                  asyncStatus={asyncStatus}
+                  actions={actions}/>}
+            </table>
+            {!didInvalidate && isFetching && <Loading/>}
+            {didInvalidate && <MessageInTable/>}
+            <div className="pull-right">
+              <Pagination
+                first
+                last
+                ellipsis
+                items={this.state.items}
+                maxButtons={10}
+                activePage={this.state.page}
+                onSelect={this.handlePage.bind(this)} />
+            </div>
+          </div>
         </div>
       </div>
     );

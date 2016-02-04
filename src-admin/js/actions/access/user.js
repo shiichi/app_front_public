@@ -132,6 +132,21 @@ export function updateUser(id, body) {
   }
 }
 
+export function changePassword(body) {
+  return (dispatch) => {
+    customFetch('access/users/{id}/password/change', 'POST', body)
+    .then(result => {
+      dispatch(addSideAlert(
+        'success',
+        'sideAlert.success',
+        { attribute: 'user', method: 'changePassword' }));
+    })
+    .catch(ex => {
+      dispatch(addSideAlert('danger', 'server.' + ex.status));
+    })
+  }
+}
+
 export function activateUser(id) {
   return (dispatch, getState) => {
     const { query } = getState().routing.location;
@@ -247,19 +262,27 @@ export function deleteUser(id) {
   };
 }
 
-export function changePassword(body) {
-  return (dispatch) => {
-    customFetch('access/users/{id}/password/change', 'POST', body)
+export function resendUser(id) {
+  return (dispatch, getState) => {
+    const { query } = getState().routing.location;
+    dispatch(doAsyncAction(id, 'resend'));
+    customFetch(`access/users/${id}/confirm/resend`, 'GET', query)
     .then(result => {
+      dispatch(doneAsyncAction(id));
       dispatch(addSideAlert(
         'success',
         'sideAlert.success',
-        { attribute: 'user', method: 'changePassword' }));
+        { attribute: 'user', method: 'resend' }));
+      dispatch(requestUsersSuccess(
+        result.total,
+        result.users.map(user => keyToCamel(user))
+      ));
     })
     .catch(ex => {
+      dispatch(doneAsyncAction(id));
       dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
-  }
+  };
 }
 
 function addValidation(validation) {

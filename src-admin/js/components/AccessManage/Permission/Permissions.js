@@ -6,6 +6,7 @@ import Icon from 'react-fa';
 //Actions
 import * as AccessPermissionActions from '../../../actions/access/permission';
 //Components
+import RightMenu from '../RightMenu';
 import PermissionsTableBody from './PermissionsTableBody';
 
 class Permissions extends Component {
@@ -18,25 +19,33 @@ class Permissions extends Component {
     const { myId, myRoles, myPermissions, permissions, isFetching, didInvalidate } = this.props;
 
     return (
-      <table className="table table-striped table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>Permission</th>
-            <th>Name</th>
-            <th>Dependencies</th>
-            <th>Users</th>
-            <th>Roles</th>
-            <th>Group Sort</th>
-            <th>System</th>
-          </tr>
-        </thead>
-        {!didInvalidate && !isFetching && permissions && 
-        <PermissionsTableBody
-          myId={myId}
-          myRoles={myRoles}
-          myPermissions={myPermissions}
-          permissions={permissions}/>}
-      </table>
+      <div className="box box-success">
+        <div className="box-header with-border">
+          <h3 className="box-title">Active Users</h3>
+          <RightMenu/>
+        </div>
+        <div className="box-body">
+          <table className="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>Permission</th>
+                <th>Name</th>
+                <th>Dependencies</th>
+                <th>Users</th>
+                <th>Roles</th>
+                <th>Group Sort</th>
+                <th>System</th>
+              </tr>
+            </thead>
+            {!didInvalidate && !isFetching && permissions && 
+            <PermissionsTableBody
+              myId={myId}
+              myRoles={myRoles}
+              myPermissions={myPermissions}
+              permissions={permissions}/>}
+          </table>
+        </div>
+      </div>
     );
   }
 }
