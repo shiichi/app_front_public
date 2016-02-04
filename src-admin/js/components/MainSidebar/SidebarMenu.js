@@ -19,7 +19,7 @@ class SidebarMenu extends Component {
           <Link to={_ADMIN_DOMAIN_NAME + 'flight'} activeClassName="active" ><Icon name="calendar" /> Flight Management</Link>
         </li>
         <li className="link pin">
-          <Link to={_ADMIN_DOMAIN_NAME + 'pin'} activeClassName="active" ><Icon name="calendar" /> PinCode Management</Link>
+          <Link to={_ADMIN_DOMAIN_NAME + 'pins'} activeClassName="active" ><Icon name="calendar" /> PinCode Management</Link>
         </li>
         <li className=" treeview">
           <a href="#">

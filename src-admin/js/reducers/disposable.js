@@ -1,4 +1,5 @@
 import {
+  ADD_EDITING_USER,
   ADD_EDITING_ROLE,
   ADD_ADDRESS,
   ADD_VALIDATION,
@@ -6,13 +7,21 @@ import {
 } from '../constants/ActionTypes';
 
 const initialState = {
+  editingUser: null,
   editingRole: null,
-  address: {},
-  validation: {}
+  address: null,
+  validation: null
 };
 
 export default function disposable(state = initialState, action) {
   switch (action.type) {
+  case ADD_EDITING_USER:
+    return Object.assign({}, state, { 
+      editingUser: Object.assign(action.user,
+        { assigneesRoles: action.user.roles.map(role => role.id) }
+      )
+    });
+
   case ADD_EDITING_ROLE:
     return Object.assign({}, state, { 
       editingRole: Object.assign(action.role,

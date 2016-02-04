@@ -28,12 +28,12 @@ class RightMenu extends Component {
               </LinkContainer>
               <MenuItem divider />
               <LinkContainer to={{
-                pathname: _ADMIN_DOMAIN_NAME + 'access/users/create'}}>
+                pathname: _ADMIN_DOMAIN_NAME + 'access/user/create'}}>
                 <MenuItem eventKey="4">Create User</MenuItem>
               </LinkContainer>
               <MenuItem divider />
               <LinkContainer to={{
-                pathname: _ADMIN_DOMAIN_NAME + 'access/users',
+                pathname: _ADMIN_DOMAIN_NAME + 'access/user',
                 query: { filter: 'deleted' }}}>
                 <MenuItem eventKey="5">Deleted Users</MenuItem>
               </LinkContainer>

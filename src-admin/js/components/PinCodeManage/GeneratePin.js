@@ -1,6 +1,9 @@
 import React, { PropTypes, Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Input, Row, Col } from 'react-bootstrap';
+//Actions
+import * as PinActions from '../../actions/pin/pin';
 //Components
 import RightMenu from './RightMenu';
 
@@ -8,21 +11,20 @@ class GeneratePin extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      ticket: 1,
-      pin: 1,
+      tickets: "1",
+      pins: "1",
     };
   }
 
   handleChange(e) {
     const { name, value } = e.target;
-    console.log('handleSubmit')
     this.setState({[name]: value});
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.refs)
-    console.log(e.target)
+    const { generatePins } = this.props.actions;
+    generatePins(this.state);
   }
 
   render() {
@@ -36,9 +38,8 @@ class GeneratePin extends Component {
         <div className="box-body">
           <form
             className="form-horizontal"
-            onChange={this.handleChange.bind(this)}
-            onClick={this.handleSubmit.bind(this)}>
-            <Input type="select" label="獲得できるチケットの枚数" name="ticket" ref="ticket"
+            onChange={this.handleChange.bind(this)}>
+            <Input type="select" label="獲得できるチケットの枚数" name="tickets" ref="ticket"
               value={ticket}
               labelClassName="col-xs-3"
               wrapperClassName="col-xs-5 col-sm-3 col-md-2">
@@ -53,7 +54,7 @@ class GeneratePin extends Component {
               <option value="9">9</option>
               <option value="10">10</option>
             </Input>
-            <Input type="select" label="発行するPINコードの数" name="pin" ref="pin"
+            <Input type="select" label="発行するPINコードの数" name="pins" ref="pin"
               value={pin}
               labelClassName="col-xs-3"
               wrapperClassName="col-xs-5 col-sm-3 col-md-2">
@@ -68,8 +69,10 @@ class GeneratePin extends Component {
               <option value="9">9</option>
               <option value="10">10</option>
             </Input>
-            <button className="btn btn-default" disabled="">画面出力</button>
-            <button className="btn btn-default" disabled="">メールで送信</button>
+            <button className="btn btn-default" disabled=""
+              onClick={this.handleSubmit.bind(this)}>
+              発行する
+            </button>
           </form>
         </div>
       </div>
@@ -78,7 +81,8 @@ class GeneratePin extends Component {
 }
 
 GeneratePin.propTypes = {
-  routing: PropTypes.object.isRequired
+  routing: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -87,4 +91,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect( mapStateToProps )(GeneratePin);
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(PinActions, dispatch)
+  };
+}
+
+export default connect( mapStateToProps, mapDispatchToProps )(GeneratePin);

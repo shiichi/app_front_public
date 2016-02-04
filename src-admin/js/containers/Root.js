@@ -20,6 +20,7 @@ import CreateRoles from '../components/AccessManage/Role/CreateRoles';
 import EditRoles from '../components/AccessManage/Role/EditRoles';
 import Permissions from '../components/AccessManage/Permission/Permissions';
 import PinCodeManage from '../components/PinCodeManage/PinCodeManage';
+import Pins from '../components/PinCodeManage/Pins';
 import GeneratePin from '../components/PinCodeManage/GeneratePin';
 
 export default class Root extends Component {
@@ -33,18 +34,19 @@ export default class Root extends Component {
             <Route path={_ADMIN_DOMAIN_NAME} component={App}>
               <Redirect from="" to="dashboard"/>
               <Route path="dashboard" component={Dashboard}/>
+              <Redirect from="access" to="access/users"/>
               <Route path="access" component={AccessManage}>
-                <Redirect from="" to="users"/>
                 <Route path="users" component={Users}/>
-                <Route path="users/create" component={CreateUser}/>
-                <Route path="users/:id/edit" component={EditUser}/>
-                <Route path="users/:id/password/change" component={ChangePassword}/>
+                <Route path="user/create" component={CreateUser}/>
+                <Route path="user/:id/edit" component={EditUser}/>
+                <Route path="user/:id/password/change" component={ChangePassword}/>
                 <Route path="roles" component={Roles}/>
                 <Route path="roles/create" component={CreateRoles}/>
                 <Route path="roles/:id/edit" component={EditRoles}/>
                 <Route path="permissions" component={Permissions}/>
               </Route>
-              <Route path="pin" component={PinCodeManage}>
+              <Route path="pins" component={PinCodeManage}>
+                <Route path="list" component={Pins}/>
                 <Route path="generate" component={GeneratePin}/>
               </Route>
             </Route>

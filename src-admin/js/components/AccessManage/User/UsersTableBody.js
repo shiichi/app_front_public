@@ -44,13 +44,13 @@ class UsersTableBody extends Component {
         <td className="visible-lg">{u.updatedAt}</td>
         <td>
           {hasPermission(myRoles, myPermissions, 'edit-users') && !u.deletedAt &&
-          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/users/${u.id}/edit`}}>
+          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/user/${u.id}/edit`}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Edit</Tooltip>)}>
               <Button bsStyle="primary" bsSize="xsmall"><Icon name="pencil"/></Button>
             </OverlayTrigger>
           </LinkContainer>}
           {hasPermission(myRoles, myPermissions, 'change-user-password') && !u.deletedAt &&
-          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/users/${u.id}/password/change`}}>
+          <LinkContainer to={{ pathname: `${_ADMIN_DOMAIN_NAME}access/user/${u.id}/password/change`}}>
             <OverlayTrigger placement="top" overlay={(<Tooltip>Change Password</Tooltip>)}>
               <Button bsStyle="info" bsSize="xsmall" onClick={this.handleClick.bind(this, {id: u.id, action: 'changePassword'})}>
                 <Icon name="refresh"/>

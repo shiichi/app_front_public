@@ -9,13 +9,13 @@ import disposable from './disposable';
 import users from './users';
 import roles from './roles';
 import permissions from './permissions';
-import editUser from './editUser';
 import dependency from './dependency';
+import pins from './pins';
 
 //reducers/index.jsから全てのreducerを取得しformReducer,routeReducerとcombine
 const rootReducer = combineReducers(Object.assign({
     application, myProfile, alert, disposable,
-    users, roles, permissions, editUser, dependency
+    users, roles, permissions, dependency, pins
   }, {
     form: formReducer,
     routing: routeReducer

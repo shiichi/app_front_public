@@ -16,6 +16,10 @@ import RightMenu from '../RightMenu';
 class CreateUser extends Component {
   constructor(props, context) {
     super(props, context);
+    const {clearDisposable, fetchRoles, fetchUser } = props.actions;
+    clearDisposable();
+    fetchRoles();
+
     const string = [
       'userId', 'email', 'password', 'passwordConfirmation',
       'firstName', 'lastName', 'sex', 'age', 'postalCode', 'state', 'city', 'street', 'building',
@@ -36,27 +40,16 @@ class CreateUser extends Component {
   componentWillReceiveProps(nextProps) {
     const { validation, address } = nextProps;
 
-    if (validation !== {}) {
+    if (validation) {
       this.setState(validation);
     };
 
     if (address) {
-      this.setState({
-        state: {value: address.state, status: '', message: ''},
-        city: {value: address.city, status: '', message: ''},
-        street: {value: address.street, status: '', message: ''},
-      });
-    }
-  }
-
-  componentWillMount() {
-    const { clearDisposable } = this.props.actions;
-    clearDisposable();
-  }
-
-  componentDidMount() {
-    const { fetchRoles } = this.props.actions;
-    fetchRoles();
+      this.setState(Object.keys(address).reduce((state, key) => {
+        state[key] = {value: address[key], status: '', message: ''};
+        return state;
+      }, {}));
+    };
   }
 
   validate(name, value, checked) {
@@ -127,9 +120,9 @@ class CreateUser extends Component {
 
   getAddress() {
     const { fetchAddress } = this.props.actions;
-    const { value } = this.state.postalCode;
-    if (value.length === 7) {
-      fetchAddress(value);
+    const { value, status } = this.state.postalCode;
+    if (status === '' && value.toString().length !== 0) {
+      fetchAddress(value.toString());
     }
   }
 
@@ -333,7 +326,7 @@ class CreateUser extends Component {
 
             <div className="form-group">
               <label className="col-xs-2 control-label">Associated Roles</label>
-              {this.renderRoles()}
+              {this.props.roles && this.renderRoles()}
             </div>
           </form>
           <div className="pull-left">

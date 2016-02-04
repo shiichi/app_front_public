@@ -67,34 +67,20 @@ export function fetchUsers() {
   };
 }
 
-function requestUser() {
+function addEditingUser(user) {
   return {
-    type: types.REQUEST_USER,
-  };
-}
-
-function requestUserSuccess(user) {
-  return {
-    type: types.REQUEST_USER_SUCCESS,
+    type: types.ADD_EDITING_USER,
     user
-  };
-}
-
-function requestUserFail() {
-  return {
-    type: types.REQUEST_USER_FAIL,
   };
 }
 
 export function fetchUser(id) {
   return (dispatch, getState) => {
-    dispatch(requestUser());
-    customFetch(`access/users/${id}/fetch`, 'GET')
+    customFetch(`access/user/${id}/fetch`, 'GET')
     .then(result => {
-      dispatch(requestUserSuccess(keyToCamel(result)));
+      dispatch(addEditingUser(keyToCamel(result)));
     })
     .catch(ex => {
-      dispatch(requestUserFail());
       dispatch(addSideAlert('danger', 'server.' + ex.status));
     })
   };
@@ -102,7 +88,7 @@ export function fetchUser(id) {
 
 export function storeUser(body) {
   return (dispatch) => {
-    customFetch(`access/users`, 'POST', body)
+    customFetch(`access/user`, 'POST', body)
     .then(result => {
       dispatch(addSideAlert(
         'success',
@@ -118,7 +104,7 @@ export function storeUser(body) {
 
 export function updateUser(id, body) {
   return (dispatch) => {
-    customFetch(`access/users/${id}`, 'PUT', body)
+    customFetch(`access/user/${id}`, 'PUT', body)
     .then(result => {
       dispatch(addSideAlert(
         'success',
@@ -132,9 +118,10 @@ export function updateUser(id, body) {
   }
 }
 
-export function changePassword(body) {
+export function changePassword(id, body) {
+  console.log(id)
   return (dispatch) => {
-    customFetch('access/users/{id}/password/change', 'POST', body)
+    customFetch(`access/user/${id}/password/change`, 'POST', body)
     .then(result => {
       dispatch(addSideAlert(
         'success',
@@ -151,7 +138,7 @@ export function activateUser(id) {
   return (dispatch, getState) => {
     const { query } = getState().routing.location;
     dispatch(doAsyncAction(id, 'activate'));
-    customFetch(`access/users/${id}/activate`, 'PATCH', query)
+    customFetch(`access/user/${id}/activate`, 'PATCH', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
       dispatch(addSideAlert(
@@ -174,7 +161,7 @@ export function deactivateUser(id) {
   return (dispatch, getState) => {
     const { query } = getState().routing.location;
     dispatch(doAsyncAction(id, 'deactivate'));
-    customFetch(`access/users/${id}/deactivate`, 'PATCH', query)
+    customFetch(`access/user/${id}/deactivate`, 'PATCH', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
       dispatch(addSideAlert(
@@ -197,7 +184,7 @@ export function restoreUser(id, activePage, perpage) {
   return (dispatch, getState) => {
     const { query } = getState().routing.location;
     dispatch(doAsyncAction(id, 'restore'));
-    customFetch(`access/users/${id}/restore`, 'PATCH', query)
+    customFetch(`access/user/${id}/restore`, 'PATCH', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
       dispatch(addSideAlert(
@@ -220,7 +207,7 @@ export function destroyUser(id) {
   return (dispatch, getState) => {
     const { query } = getState().routing.location;
     dispatch(doAsyncAction(id, 'destroy'));
-    customFetch(`access/users/${id}`, 'DELETE', query)
+    customFetch(`access/user/${id}`, 'DELETE', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
       dispatch(addSideAlert(
@@ -243,7 +230,7 @@ export function deleteUser(id) {
   return (dispatch, getState) => {
     const { query } = getState().routing.location;
     dispatch(doAsyncAction(id, 'delete'));
-    customFetch(`access/users/${id}/hard`, 'DELETE', query)
+    customFetch(`access/user/${id}/hard`, 'DELETE', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
       dispatch(addSideAlert(
@@ -266,7 +253,7 @@ export function resendUser(id) {
   return (dispatch, getState) => {
     const { query } = getState().routing.location;
     dispatch(doAsyncAction(id, 'resend'));
-    customFetch(`access/users/${id}/confirm/resend`, 'GET', query)
+    customFetch(`access/user/${id}/confirm/resend`, 'GET', query)
     .then(result => {
       dispatch(doneAsyncAction(id));
       dispatch(addSideAlert(

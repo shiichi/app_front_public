@@ -15,6 +15,7 @@ import UsersTableBody from './UsersTableBody';
 class Users extends Component {
   constructor(props, context) {
     super(props, context);
+    this.props.actions.fetchUsers();
     this.state = { page: 1, items: 1 };
   }
 
@@ -22,22 +23,14 @@ class Users extends Component {
     const { fetchUsers } = this.props.actions;
     const { total, search, perPage, query } = nextProps;
 
-    if (total !== this.props.total || query !== this.props.query) {
-      this.setState({
-        page: Math.ceil(query.skip / perPage) + 1 || 1,
-        items: Math.ceil(total / perPage),
-      });
-    };
+    this.setState({
+      page: Math.ceil(query.skip / perPage) + 1 || 1,
+      items: Math.ceil(total / perPage),
+    });
 
     if (search !== this.props.search) {
-      console.log('componentWillReceiveProps')
       fetchUsers();
     };
-  }
-
-  componentDidMount() {
-    const { fetchUsers } = this.props.actions;
-    fetchUsers();
   }
 
   handlePage(e, selectedEvent) {
@@ -52,12 +45,19 @@ class Users extends Component {
 
   render() {
     const { page, items } = this.state;
-    const { myId, myRoles, myPermissions, users, isFetching, didInvalidate, asyncStatus, actions } = this.props;
+    const { myId, myRoles, myPermissions, users, isFetching, didInvalidate, asyncStatus, actions, query } = this.props;
+    let title;
+    switch(query.filter) {
+      case 'active': title = 'Active Users'; break;
+      case 'deactivated': title = 'Deactivated Users'; break;
+      case 'delete': title = 'Deleted Users'; break;
+      default: title = 'All Users'; break;
+    }
 
     return (
       <div className="box box-success">
         <div className="box-header with-border">
-          <h3 className="box-title">Active Users</h3>
+          <h3 className="box-title">{title}</h3>
           <RightMenu/>
         </div>
         <div className="box-body">

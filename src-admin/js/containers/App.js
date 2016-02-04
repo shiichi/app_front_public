@@ -13,14 +13,8 @@ import Alert from '../components/Common/Alert';
 class App extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      sidebar: 'min'
-    };
-  }
-
-  componentDidMount() {
-    const { fetchMyProfile } = this.props.actions;
-    fetchMyProfile();
+    props.actions.fetchMyProfile();
+    this.state = { sidebar: 'min' };
   }
 
   hundleSidebar() {

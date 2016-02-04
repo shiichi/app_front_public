@@ -61,12 +61,15 @@ class ChangePassword extends Component {
     );
 
     if (!hasError) {
-      changePassword({
-        id,
+      changePassword(id, {
         password: this.state.password.value,
         password_confirmation: this.state.passwordConfirmation.value,
       });
     };
+  }
+
+  handleClick() {
+    history.back()
   }
 
   render() {
@@ -95,7 +98,10 @@ class ChangePassword extends Component {
               help={passwordConfirmation.message}/>
           </form>
           <div className="pull-left">
-            <Link to="/access/users" className="btn btn-danger btn-xs" >Cancel</Link>
+            <button className="btn btn-danger btn-xs"
+              onClick={this.handleClick.bind(this)}>
+              Cancel
+            </button>
           </div>
           <div className="pull-right">
             <button className="btn btn-success btn-xs" disabled={hasError}

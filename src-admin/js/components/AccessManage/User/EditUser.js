@@ -16,41 +16,35 @@ import RightMenu from '../RightMenu';
 class EditUser extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state ={};
+    const {clearDisposable, fetchRoles, fetchUser } = props.actions;
+    clearDisposable();
+    fetchUser(props.routeParams.id);
+    fetchRoles();
+    this.state = {};
   }
 
   componentWillReceiveProps(nextProps) {
-    const { user, validation, address } = nextProps;
-    //初回のみstateに渡す
-    if (user !== null && this.props.user === null) {
-      this.setState( Object.keys(user).reduce((state, key) => {
+    const { user, validation, address, roles } = nextProps;
+
+    if (user) {
+      this.setState(Object.keys(user).reduce((state, key) => {
         state[key] = {value: user[key], status: '', message: ''};
         return state;
       }, {}));
     };
 
-    if (validation !== {}) {
+    if (validation) {
       this.setState(validation);
     };
 
     if (address) {
-      this.setState({
-        state: {value: address.state, status: '', message: ''},
-        city: {value: address.city, status: '', message: ''},
-        street: {value: address.street, status: '', message: ''},
-      });
-    }
-  }
+      this.setState(Object.keys(address).reduce((state, key) => {
+        state[key] = {value: address[key], status: '', message: ''};
+        return state;
+      }, {}));
+    };
 
-  componentWillMount() {
-    const { clearDisposable } = this.props.actions;
-    clearDisposable();
-  }
-
-  componentDidMount() {
-    const { routeParams: {id}, actions: {fetchRoles, fetchUser} } = this.props;
-    fetchRoles();
-    fetchUser(id);
+    this.props.actions.clearDisposable();
   }
 
   validate(name, value, checked) {
@@ -103,9 +97,9 @@ class EditUser extends Component {
 
   getAddress() {
     const { fetchAddress } = this.props.actions;
-    const { value } = this.state.postalCode;
-    if (value.length === 7) {
-      fetchAddress(value);
+    const { value, status } = this.state.postalCode;
+    if (status === '' && value.toString().length !== 0) {
+      fetchAddress(value.toString());
     }
   }
 
@@ -134,17 +128,15 @@ class EditUser extends Component {
   }
 
   render() {
-    const { isFetching, didInvalidate, user } = this.props;
     const {
       userId, email,
       firstName, lastName, sex, age, postalCode, state, city, street, building,
       status, confirmed, confirmationEmail
     } = this.state;
 
-    const hasError = false;
-      // const hasError = Object.keys(this.state).some(key => 
-      //   this.state[key].status === 'error'
-      // );
+    const hasError = Object.keys(this.state).some(key => 
+      this.state[key].status === 'error'
+    );
 
     return (
       <div className="box box-success">
@@ -153,7 +145,7 @@ class EditUser extends Component {
           <RightMenu/>
         </div>
         <div className="box-body">
-          {!didInvalidate && !isFetching && userId &&
+          {userId &&
           <form className="form-horizontal" onChange={this.handleChange.bind(this)}>
             <Input type="text" label="User ID" name="userId" placeholder="User ID"
               defaultValue={userId.value}
@@ -214,7 +206,9 @@ class EditUser extends Component {
                     value={postalCode.value}/>
                 </Col>
                 <Col xs={6} sm={4} md={3}>
-                  <button type="button" className="btn btn-default" onClick={this.getAddress.bind(this)}>
+                  <button type="button" className="btn btn-default"
+                    onClick={this.getAddress.bind(this)}
+                    onMouseOver={this.handleHover.bind(this)}>
                     Serch Address
                   </button>
                 </Col>
@@ -323,10 +317,10 @@ class EditUser extends Component {
 
             <div className="form-group">
               <label className="col-xs-2 control-label">Associated Roles</label>
-              {this.renderRoles()}
+              {this.props.roles && this.renderRoles()}
             </div>
           </form>}
-          {!didInvalidate && isFetching && <Loading/>}
+          {!userId && <Loading/>}
           <div className="pull-left">
             <button className="btn btn-danger btn-xs"
               onClick={this.handleClick.bind(this)}>
@@ -347,8 +341,6 @@ class EditUser extends Component {
 
 EditUser.propTypes = {
   user: PropTypes.object.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  didInvalidate: PropTypes.bool.isRequired,
   validation: PropTypes.string.isRequired,
   address: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
@@ -356,9 +348,7 @@ EditUser.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    user: state.editUser.user,
-    isFetching: state.editUser.isFetching,
-    didInvalidate: state.editUser.didInvalidate,
+    user: state.disposable.editingUser,
     validation: state.disposable.validation,
     address: state.disposable.address,
     roles: state.roles.roles,

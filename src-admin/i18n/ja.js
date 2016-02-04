@@ -3,6 +3,7 @@ export default {
   "user": "ユーザー",
   "role": "ロール",
   "permission": "パーミッション",
+  "generatePin.success": `PINコードを作成しました`,
   "sideAlert.success": `{attribute, plural,
   	=user {ユーザー} =role {ロール} =permission {パーミッション}}{method, plural,
   	=activate {の停止を解除} =deactivate {を停止} =restore{を復旧} =destroy{を削除} =delete{を完全に削除} =resend{に確認メールを送信}}しました`,

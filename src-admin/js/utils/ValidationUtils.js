@@ -132,7 +132,7 @@ function validatAge(age) {
 }
 
 function validatPostalCode(code) {
-  if (code.length === 0) {
+  if (code.toString().length === 0) {
     return {
       value: code,
       status: '',
