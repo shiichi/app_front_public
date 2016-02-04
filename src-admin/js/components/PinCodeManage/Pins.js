@@ -38,9 +38,10 @@ class Pins extends Component {
           <RightMenu/>
         </div>
         <div className="box-body">
-          <BootstrapTable data={pins}>
+          <BootstrapTable data={pins} pagination={true}>
             <TableHeaderColumn
               dataField="pin"
+              dataSort={true}
               isKey={true}>
               Code
             </TableHeaderColumn>
@@ -50,9 +51,10 @@ class Pins extends Component {
               NumberOfTickets
             </TableHeaderColumn>
             <TableHeaderColumn
-              dataField="createdAt">
+              dataField="createdAt"
+              dataSort={true}>
               Created
-            </TableHeaderColumn>
+              </TableHeaderColumn>
           </BootstrapTable>
         </div>
       </div>
