@@ -4,7 +4,7 @@
   "description": "led-view",
   "scripts": {
     "start": "node server.js",
-    "lint": "eslint src-admin",
+    "lint": "node ./node_modules/eslint/bin/eslint.js src-admin",
     "test": "NODE_ENV=test mocha 'test/UnitTest/**/*.js' --recursive --compilers js:babel-core/register --require ./test/UnitTest/setup.js --require ./test/UnitTest/css-null-compiler.js",
     "test:watch": "npm test -- --watch",
     "build": "webpack --config webpack/prod.config.js",
