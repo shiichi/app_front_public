@@ -11,5 +11,3 @@ front と admin 両方をテスト
 
 npm run lint
 adminにのみLintをかける
-
-

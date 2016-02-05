@@ -11,7 +11,7 @@
     "node": true
   },
   "rules": {
-    max-len: 0,
+    //max-len: 0,
     no-else-return: 0,
     //Ensure JSDoc comments are valid
     //"valid-jsdoc": 2,
