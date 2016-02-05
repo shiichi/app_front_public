@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { TransitionMotion, Motion, spring, presets } from 'react-motion';
-import { Input } from 'react-bootstrap';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { TransitionMotion, spring, presets } from 'react-motion';
+import { FormattedMessage } from 'react-intl';
 
 class Alert extends Component {
   componentDidMount() {
@@ -11,11 +9,6 @@ class Alert extends Component {
     //   const shouldDelete = Object.keys(access).filter(key => key < Date.now() - 3000);
     //   deleteAccessAlerts(shouldDelete)
     // }, 5000);
-  }
-
-  handleClick(key) {
-    const { deleteSideAlerts } = this.props;
-    deleteSideAlerts([key]);
   }
 
   getDefaultValue() {
@@ -68,8 +61,13 @@ class Alert extends Component {
     };
   }
 
+  handleClick(key) {
+    const { deleteSideAlerts } = this.props;
+    deleteSideAlerts([key]);
+  }
+
   render() {
-    const { lacale, alert } = this.props;
+    const { alert } = this.props;
     return (
       <div>
       {alert &&
@@ -80,10 +78,10 @@ class Alert extends Component {
         willEnter={this.willEnter.bind(this)}>
         {alerts =>
           <div className="alert-wrap">
-            {Object.keys(alerts).map((key, i) => {
-              const {data: {status, messageId, value}, ...style} = alerts[key];
+            {Object.keys(alerts).map(key => {
+              const { data: { status, messageId, value }, ...style } = alerts[key];
               return (
-                <div className={'callout custom-alert callout-' + status} style={style} key={key}>
+                <div className={`callout custom-alert callout-${status}`} style={style} key={key}>
                   <FormattedMessage id={messageId} values={value}>
                     {text => <p>{text}</p>}
                   </FormattedMessage>

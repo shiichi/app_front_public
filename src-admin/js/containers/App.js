@@ -13,22 +13,22 @@ import Alert from '../components/Common/Alert';
 class App extends Component {
   constructor(props, context) {
     super(props, context);
+    this.handleSidebar = this.handleSidebar.bind(this);
     props.actions.fetchMyProfile();
     this.state = { sidebar: 'min' };
   }
 
-  hundleSidebar() {
+  handleSidebar() {
     if (this.state.sidebar === 'min') {
-      this.setState({sidebar: 'collapse'});
+      this.setState({ sidebar: 'collapse' });
     } else {
-      this.setState({sidebar: 'min'});
+      this.setState({ sidebar: 'min' });
     }
   }
 
   render() {
-    const { locale, myProfile, alert, routing, children, actions: {
-      changeLocale, changeSidebar, deleteSideAlerts}
-    } = this.props;
+    const { locale, myProfile, alert, children, actions: {
+      changeLocale, deleteSideAlerts } } = this.props;
 
     return (
       <div className={`hold-transition skin-black sidebar-${this.state.sidebar}`}>
@@ -37,11 +37,13 @@ class App extends Component {
             <MainHeader
               locale={locale}
               changeLocale={changeLocale}
-              hundleSidebar={this.hundleSidebar.bind(this)}/>
+              hundleSidebar={this.handleSidebar}
+            />
             <MainSidebar myProfile={myProfile}/>
             <Alert
               alert={alert}
-              deleteSideAlerts={deleteSideAlerts}/>
+              deleteSideAlerts={deleteSideAlerts}
+            />
             {children}
           </div>
         </div>
@@ -51,6 +53,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+  children: PropTypes.element.isRequired,
   locale: PropTypes.string.isRequired,
   myProfile: PropTypes.object.isRequired,
   alert: PropTypes.object,
@@ -78,4 +81,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

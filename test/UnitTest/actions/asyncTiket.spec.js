@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 const middlewares = [ thunk ];
 import * as actions from '../../../src/js/actions/ticket';
 import * as types from '../../../src/js/constants/ActionTypes';
-import { DOMAIN_NAME } from '../../../src/config/env';
+import { _DOMAIN_NAME } from '../../../src/config/env';
 import { WEBPAY, PIN } from '../../../src/config/url';
 
 function mockStore(getState, expectedActions, done) {
@@ -47,9 +47,12 @@ describe('fetchWebpay', () => {
   });
 
   it('fetch SUCCESS', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(WEBPAY)
-      .reply(200, {tickets: '23', msg: {type: 'success', msg: 'message'}});
+      .reply(200, {
+        tickets: '23',
+        msg: {type: 'success', msg: 'message'}
+      });
 
     const request = {num: '3', amount: '3000', token: 'tok_8GaeNjaHubVF4Bz'};
     const state = {user: {}};
@@ -62,8 +65,10 @@ describe('fetchWebpay', () => {
         type: types.UPDATE_USERINFO_TICKETS,
         num: '23'
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'success', msg: 'message'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'success',
+        messageId: 'addTicket.success',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);
@@ -71,7 +76,7 @@ describe('fetchWebpay', () => {
   });
 
   it('fetch FAIL', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(WEBPAY)
       .replyWithError('something happened');
 
@@ -83,8 +88,10 @@ describe('fetchWebpay', () => {
       }, {
         type: types.REQUEST_TICKET_FAIL
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'error', msg: 'チケット購入に失敗しました'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'danger',
+        messageId: 'addTicket.fail',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);
@@ -98,9 +105,12 @@ describe('fetchPin', () => {
   });
 
   it('fetch SUCCESS', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(PIN)
-      .reply(200, {tickets: '23', msg: {type: 'success', msg: 'message'}});
+      .reply(200, {
+        tickets: '23',
+        msg: { type: 'success', msg: 'message' }
+      });
 
     const request = {pin: 'pinCode'};
     const state = {user: {}};
@@ -113,8 +123,10 @@ describe('fetchPin', () => {
         type: types.UPDATE_USERINFO_TICKETS,
         num: '23'
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'success', msg: 'message'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'success',
+        messageId: 'addTicket.success',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);
@@ -122,7 +134,7 @@ describe('fetchPin', () => {
   });
 
   it('fetch FAIL', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(PIN)
       .replyWithError('something happened');
 
@@ -134,8 +146,10 @@ describe('fetchPin', () => {
       }, {
         type: types.REQUEST_TICKET_FAIL
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'error', msg: 'チケット購入に失敗しました'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'danger',
+        messageId: 'addTicket.fail',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);

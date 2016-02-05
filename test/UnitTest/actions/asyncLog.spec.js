@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 const middlewares = [ thunk ];
 import * as actions from '../../../src/js/actions/log';
 import * as types from '../../../src/js/constants/ActionTypes';
-import { DOMAIN_NAME } from '../../../src/config/env';
+import { _DOMAIN_NAME } from '../../../src/config/env';
 import { REQUEST_LOG } from '../../../src/config/url';
 
 function mockStore(getState, expectedActions, done) {
@@ -47,7 +47,7 @@ describe('fetchLog', () => {
   });
 
   it('fetch SUCCESS', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_LOG)
       .reply(200, [
         {action: '1'},
@@ -71,7 +71,7 @@ describe('fetchLog', () => {
   });
 
   it('fetch FAIL', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_LOG)
       .replyWithError('something happened');
 
@@ -82,8 +82,10 @@ describe('fetchLog', () => {
       }, {
         type: types.REQUEST_LOG_FAIL
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'error', msg: 'ログの取得に失敗しました'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'danger',
+        messageId: 'getLog.fail',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);

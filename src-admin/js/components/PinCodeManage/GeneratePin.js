@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Input, Row, Col } from 'react-bootstrap';
+import { Input } from 'react-bootstrap';
 //Actions
 import * as PinActions from '../../actions/pin/pin';
 //Components
@@ -11,14 +11,14 @@ class GeneratePin extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      tickets: "1",
-      pins: "1",
+      tickets: '1',
+      pins: '1',
     };
   }
 
   handleChange(e) {
     const { name, value } = e.target;
-    this.setState({[name]: value});
+    this.setState({ [name]: value });
   }
 
   handleSubmit(e) {
@@ -97,4 +97,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )(GeneratePin);
+export default connect(mapStateToProps, mapDispatchToProps)(GeneratePin);

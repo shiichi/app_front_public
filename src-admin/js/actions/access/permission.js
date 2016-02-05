@@ -1,6 +1,6 @@
 import * as types from '../../constants/ActionTypes';
 import { customFetch } from '../../utils/fetchUtils';
-import { keyToCamel, keyToSnake } from '../../utils/ChangeCaseUtils';
+import { keyToCamel } from '../../utils/ChangeCaseUtils';
 
 function addAccessAlert(status, msg) {
   return {
@@ -38,8 +38,8 @@ export function fetchPermissions() {
     })
     .catch(ex => {
       dispatch(requestPermissionsFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addAccessAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -64,22 +64,7 @@ export function fetchPermissionDependency(id) {
     })
     .catch(ex => {
       dispatch(requestPermissionDependencyFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
-    })
-  };
-}
-
-function doAsyncAction(id, action) {
-  return {
-    type: types.DO_ROLE_ASYNC_ACTION,
-    id,
-    action
-  };
-}
-
-function doneAsyncAction(id) {
-  return {
-    type: types.DONE_ROLE_ASYNC_ACTION,
-    id
+      dispatch(addAccessAlert('danger', `server.${ex.status}`));
+    });
   };
 }

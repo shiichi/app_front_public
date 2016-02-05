@@ -1,6 +1,4 @@
-import React, { PropTypes, Component } from 'react';
-import { connect } from 'react-redux';
-import { Pagination } from 'react-bootstrap';
+import React, { Component } from 'react';
 import Icon from 'react-fa';
 
 class MessageInTable extends Component {

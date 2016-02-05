@@ -2,7 +2,7 @@ import * as types from '../constants/ActionTypes';
 import { customFetch } from '../utils/fetchUtils';
 import { REQUEST_TEST_TOKEN, RESERVE, REQUEST_RESERVATIONS, GETJWT, CANCEL } from '../../config/url';
 
-function addSideAlert(status, messageId, value) {
+function addSideAlert(status, messageId, value = null) {
   return {
     type: types.ADD_SIDE_ALERT,
     status,

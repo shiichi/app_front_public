@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 const middlewares = [ thunk ];
 import * as actions from '../../../src/js/actions/userinfo';
 import * as types from '../../../src/js/constants/ActionTypes';
-import { DOMAIN_NAME } from '../../../src/config/env';
+import { _DOMAIN_NAME } from '../../../src/config/env';
 import { REQUEST_USER_INFO, UPDATE_USER_PROF, CHANGE_PASSWORD } from '../../../src/config/url';
 
 function mockStore(getState, expectedActions, done) {
@@ -47,7 +47,7 @@ describe('fetchUserInfo', () => {
   });
 
   it('fetch SUCCESS', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_USER_INFO)
       .reply(200, {name: 'user'});
 
@@ -65,7 +65,7 @@ describe('fetchUserInfo', () => {
   });
 
   it('fetch FAIL', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_USER_INFO)
       .replyWithError('something happened');
 
@@ -88,7 +88,7 @@ describe('UpdateUserProf', () => {
   });
 
   it('fetch SUCCESS', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(UPDATE_USER_PROF)
       .reply(200, {userProf: {name: 'user'}, msg: {type: 'error', msg: 'message'}});
 
@@ -101,8 +101,10 @@ describe('UpdateUserProf', () => {
         type: types.REQUEST_USERINFO_SUCCESS,
         data: {name: 'user'}
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'error', msg: 'message'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'success',
+        messageId: 'updateUserProf.success',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);
@@ -110,7 +112,7 @@ describe('UpdateUserProf', () => {
   });
 
   it('fetch FAIL', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(UPDATE_USER_PROF)
       .replyWithError('something happened');
 
@@ -122,8 +124,10 @@ describe('UpdateUserProf', () => {
       }, {
         type: types.REQUEST_USERINFO_FAIL
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'error', msg: 'ユーザー情報の更新に失敗しました'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'danger',
+        messageId: 'updateUserProf.fail',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);
@@ -137,7 +141,7 @@ describe('postChangePassword', () => {
   });
 
   it('fetch SUCCESS', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(CHANGE_PASSWORD)
       .reply(200, {type: 'error', msg: 'message'});
 
@@ -147,8 +151,10 @@ describe('postChangePassword', () => {
       {
         type: types.CHANGE_PASS
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'error', msg: 'message'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'success',
+        messageId: 'changePassword.success',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);
@@ -156,7 +162,7 @@ describe('postChangePassword', () => {
   });
 
   it('fetch FAIL', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(CHANGE_PASSWORD)
       .replyWithError('something happened');
 
@@ -166,8 +172,10 @@ describe('postChangePassword', () => {
       {
         type: types.CHANGE_PASS
       }, {
-        type: types.ADD_MESSAGE,
-        msg: {type: 'error', msg: 'パスワードの更新に失敗しました'}
+        type: types.ADD_SIDE_ALERT,
+        status: 'danger',
+        messageId: 'changePassword.fail',
+        value: null
       }
     ];
     const store = mockStore(state, expectedActions, done);

@@ -1,12 +1,13 @@
 import * as types from '../../constants/ActionTypes';
 import { customFetch } from '../../utils/fetchUtils';
-import { keyToCamel, keyToSnake } from '../../utils/ChangeCaseUtils';
+import { keyToCamel } from '../../utils/ChangeCaseUtils';
 
-function addAccessAlert(status, msg) {
+export function addSideAlert(status, messageId, value) {
   return {
-    type: types.ADD_ACCESS_ALERT,
+    type: types.ADD_SIDE_ALERT,
     status,
-    msg
+    messageId,
+    value
   };
 }
 
@@ -38,8 +39,8 @@ export function fetchRoles() {
     })
     .catch(ex => {
       dispatch(requestRolesFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -57,8 +58,8 @@ export function fetchRole(id) {
       dispatch(requestRoleSuccess(keyToCamel(result)));
     })
     .catch(ex => {
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -78,49 +79,44 @@ function doneRoleAsyncAction(id) {
 }
 
 export function deleteRole(id) {
-  console.log("aaa", id)
   return (dispatch) => {
     dispatch(doRoleAsyncAction(id, 'destroy'));
     customFetch(`access/roles/${id}`, 'DELETE')
     .then(result => {
       dispatch(doneRoleAsyncAction(id));
-      dispatch(addAccessAlert('success', 'alert.access.roles.destroySuccess'));
+      dispatch(addSideAlert('success', 'alert.access.roles.destroySuccess'));
       dispatch(requestRolesSuccess(result.map(role => keyToCamel(role))));
     })
     .catch(ex => {
       dispatch(requestRolesFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
 export function storeRole(body) {
   return (dispatch) => {
     customFetch(`access/roles`, 'POST', body)
-    .then(result => {
-      dispatch(addAccessAlert('success', 'alert.access.roles.storeSuccess'));
+    .then(() => {
+      dispatch(addSideAlert('success', 'alert.access.roles.storeSuccess'));
     })
     .catch(ex => {
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
-    })
-  }
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
+  };
 }
 
 export function updateRole(id, body) {
   return (dispatch) => {
     customFetch(`access/roles/${id}`, 'PUT', body)
-    .then(result => {
-      dispatch(addAccessAlert('success', 'alert.access.roles.updateSuccess'));
+    .then(() => {
+      dispatch(addSideAlert('success', 'alert.access.roles.updateSuccess'));
     })
     .catch(ex => {
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
-    })
-  }
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
+  };
 }
-
-
-
-
 
 function addValidation(validation) {
   return {
@@ -131,7 +127,7 @@ function addValidation(validation) {
 
 export function validateRoleName(name) {
   return (dispatch) => {
-    customFetch('validation/role', 'POST', {name})
+    customFetch('validation/role', 'POST', { name })
     .then(result => {
       if (result !== 'ok') {
         dispatch(addValidation({
@@ -141,10 +137,10 @@ export function validateRoleName(name) {
             message: 'validation.name.alreadyExists'
           }
         }));
-      };
+      }
     })
     .catch(ex => {
-      dispatch(requestUsersFail());
-    })
-  }
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
+  };
 }

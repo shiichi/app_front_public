@@ -1,6 +1,15 @@
 import * as types from '../constants/ActionTypes';
 import { customFetch } from '../utils/fetchUtils';
-import { keyToCamel, keyToSnake } from '../utils/ChangeCaseUtils';
+import { keyToCamel } from '../utils/ChangeCaseUtils';
+
+export function addSideAlert(status, messageId, value) {
+  return {
+    type: types.ADD_SIDE_ALERT,
+    status,
+    messageId,
+    value
+  };
+}
 
 function requestMyProfile() {
   return {
@@ -30,8 +39,7 @@ export function fetchMyProfile() {
     })
     .catch(ex => {
       dispatch(requestMyProfileFail());
-      dispatch(addAccessAlert('danger', 'server.' + ex.status));
-    })
-  }
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
+  };
 }
-

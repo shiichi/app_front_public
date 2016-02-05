@@ -83,7 +83,7 @@ class Alert extends Component {
               const {data: {status, messageId, value}, ...style} = alerts[key];
               return (
                 <div className={'custom-alert alert-' + status} style={style} key={key}>
-                  <FormattedMessage id={messageId} values={value}>
+                  <FormattedMessage id={messageId} values={value ? value : {}}>
                     {text => <p className="alert-title">{text}</p>}
                   </FormattedMessage>
                   <span className="btn-close" title={key} onClick={this.handleClick.bind(this, key)}>×</span>

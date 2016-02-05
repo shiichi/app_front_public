@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux'
-import {reducer as formReducer} from 'redux-form';
-import { routeReducer } from 'react-router-redux'
+import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
+import { routeReducer } from 'react-router-redux';
 //my reducers
 import application from './application';
 import myProfile from './myProfile';
@@ -14,12 +14,12 @@ import pins from './pins';
 
 //reducers/index.jsから全てのreducerを取得しformReducer,routeReducerとcombine
 const rootReducer = combineReducers(Object.assign({
-    application, myProfile, alert, disposable,
-    users, roles, permissions, dependency, pins
-  }, {
-    form: formReducer,
-    routing: routeReducer
-  }
+  application, myProfile, alert, disposable,
+  users, roles, permissions, dependency, pins
+}, {
+  form: formReducer,
+  routing: routeReducer
+}
 ));
 
-export default rootReducer
+export default rootReducer;

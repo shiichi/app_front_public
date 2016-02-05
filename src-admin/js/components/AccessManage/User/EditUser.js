@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { Input, Row, Col } from 'react-bootstrap';
 //Utility
 import { validate } from '../../../utils/ValidationUtils';
@@ -16,7 +15,7 @@ import RightMenu from '../RightMenu';
 class EditUser extends Component {
   constructor(props, context) {
     super(props, context);
-    const {clearDisposable, fetchRoles, fetchUser } = props.actions;
+    const { clearDisposable, fetchRoles, fetchUser } = props.actions;
     clearDisposable();
     fetchUser(props.routeParams.id);
     fetchRoles();
@@ -24,75 +23,27 @@ class EditUser extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { user, validation, address, roles } = nextProps;
+    const { user, validation, address } = nextProps;
 
     if (user) {
       this.setState(Object.keys(user).reduce((state, key) => {
-        state[key] = {value: user[key], status: '', message: ''};
+        state[key] = { value: user[key], status: '', message: '' };
         return state;
       }, {}));
-    };
+    }
 
     if (validation) {
       this.setState(validation);
-    };
+    }
 
     if (address) {
       this.setState(Object.keys(address).reduce((state, key) => {
-        state[key] = {value: address[key], status: '', message: ''};
+        state[key] = { value: address[key], status: '', message: '' };
         return state;
       }, {}));
-    };
+    }
 
     this.props.actions.clearDisposable();
-  }
-
-  validate(name, value, checked) {
-    switch (name) {
-    case 'assigneesRoles':
-      this.setState({[name]: {value:[value]}});
-      break;
-
-    case 'status':
-    case 'confirmed':
-    case 'confirmationEmail':
-      this.setState({[name]: {value: checked ? '1' : '0'}});
-      break;
-
-    default:
-      this.setState({[name]: validate(name, value)});
-    }
-  }
-
-  handleChange(e) {
-    const { name, value, checked } = e.target;
-    this.validate(name, value, checked);
-  }
-
-  handleHover() {
-    for (let key in this.state) {
-      if (this.state[key].value === '') {
-        this.validate(key, this.state[key].status);
-      };
-    }
-  }
-
-  handleSubmit() {
-    const { routeParams: {id}, actions: {updateUser} } = this.props;
-    const Keys = Object.keys(this.state);
-    const hasError = Keys.some(key => 
-      this.state[key].status === 'error'
-    );
-
-    if (!hasError) {
-      updateUser(
-        id,
-        Keys.reduce((request, key) => {
-        　request[key] = this.state[key].value;
-        　return request;
-        }, {})
-      );
-    };
   }
 
   getAddress() {
@@ -103,15 +54,64 @@ class EditUser extends Component {
     }
   }
 
+
+  validate(name, value, checked) {
+    switch (name) {
+      case 'assigneesRoles':
+        this.setState({ [name]: { value: [value] } });
+        break;
+
+      case 'status':
+      case 'confirmed':
+      case 'confirmationEmail':
+        this.setState({ [name]: { value: checked ? '1' : '0' } });
+        break;
+
+      default:
+        this.setState({ [name]: validate(name, value) });
+    }
+  }
+
+  handleChange(e) {
+    const { name, value, checked } = e.target;
+    this.validate(name, value, checked);
+  }
+
+  handleHover() {
+    for (const key in this.state) {
+      if (this.state[key].value === '') {
+        this.validate(key, this.state[key].status);
+      }
+    }
+  }
+
+  handleSubmit() {
+    const { routeParams: { id }, actions: { updateUser } } = this.props;
+    const Keys = Object.keys(this.state);
+    const hasError = Keys.some(key =>
+      this.state[key].status === 'error'
+    );
+
+    if (!hasError) {
+      updateUser(
+        id,
+        Keys.reduce((request, key) => {
+          request[key] = this.state[key].value;
+          return request;
+        }, {})
+      );
+    }
+  }
+
   handleClick() {
-    history.back()
+    this.props.history.goBack();
   }
 
   renderRoles() {
     const { roles } = this.props;
     const { value } = this.state.assigneesRoles;
 
-    return roles.map( (role, i) =>
+    return roles.map(role =>
       <div className="col-xs-offset-2 col-xs-10" key={role.id}>
         <div className="checkbox">
           <label className>
@@ -124,17 +124,17 @@ class EditUser extends Component {
           </label>
         </div>
       </div>
-    )
+    );
   }
 
   render() {
     const {
       userId, email,
       firstName, lastName, sex, age, postalCode, state, city, street, building,
-      status, confirmed, confirmationEmail
+      status, confirmed
     } = this.state;
 
-    const hasError = Object.keys(this.state).some(key => 
+    const hasError = Object.keys(this.state).some(key =>
       this.state[key].status === 'error'
     );
 
@@ -344,6 +344,9 @@ EditUser.propTypes = {
   validation: PropTypes.string.isRequired,
   address: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
+  routeParams: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -351,7 +354,7 @@ function mapStateToProps(state) {
     user: state.disposable.editingUser,
     validation: state.disposable.validation,
     address: state.disposable.address,
-    roles: state.roles.roles,
+    roles: state.roles.roles
   };
 }
 
@@ -362,4 +365,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(EditUser);
+export default connect(mapStateToProps, mapDispatchToProps)(EditUser);

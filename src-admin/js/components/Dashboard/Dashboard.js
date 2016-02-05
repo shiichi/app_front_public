@@ -1,6 +1,4 @@
-import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
-import Icon from 'react-fa';
+import React, { Component } from 'react';
 
 class Dashboard extends Component {
   render() {

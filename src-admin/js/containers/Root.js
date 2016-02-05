@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Router, Route, Link, Redirect, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, Redirect, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
-import DiffMonitor from 'redux-devtools-diff-monitor';
+//import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
+//import DiffMonitor from 'redux-devtools-diff-monitor';
 import { IntlProvider } from 'react-intl';
 //Config
 import { _ADMIN_DOMAIN_NAME } from '../../config/env';
@@ -22,13 +22,15 @@ import Permissions from '../components/AccessManage/Permission/Permissions';
 import PinCodeManage from '../components/PinCodeManage/PinCodeManage';
 import Pins from '../components/PinCodeManage/Pins';
 import GeneratePin from '../components/PinCodeManage/GeneratePin';
+import FlightManage from '../components/FlightManage/FlightManage';
+import ReactAbsolute from '../components/FlightManage/ReactAbsolute';
 
 export default class Root extends Component {
   render() {
     const { locale } = this.props;
     return (
       <div>
-        <IntlProvider key='intl' locale={locale} messages={i18n[locale]}>
+        <IntlProvider key="intl" locale={locale} messages={i18n[locale]}>
           <Router history={browserHistory}>
             <Redirect from="/admin/single" to="/admin/single/dashboard"/>
             <Route path={_ADMIN_DOMAIN_NAME} component={App}>
@@ -45,16 +47,20 @@ export default class Root extends Component {
                 <Route path="roles/:id/edit" component={EditRoles}/>
                 <Route path="permissions" component={Permissions}/>
               </Route>
+              <Redirect from="pins" to="pins/list"/>
               <Route path="pins" component={PinCodeManage}>
                 <Route path="list" component={Pins}/>
                 <Route path="generate" component={GeneratePin}/>
+              </Route>
+              <Route path="flight" component={FlightManage}>
+                <Route path="test" component={ReactAbsolute}/>
               </Route>
             </Route>
           </Router>
         </IntlProvider>
         {/*<DevTools store={store} monitor={DiffMonitor} shortcut='ctrl+d'/>*/}
       </div>
-    )
+    );
   }
 }
 
@@ -68,4 +74,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect( mapStateToProps )(Root);
+export default connect(mapStateToProps)(Root);

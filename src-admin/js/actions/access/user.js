@@ -1,9 +1,8 @@
-import { _ADMIN_DOMAIN_NAME } from '../../../config/env';
 import * as types from '../../constants/ActionTypes';
 import { customFetch } from '../../utils/fetchUtils';
 import { keyToCamel } from '../../utils/ChangeCaseUtils';
 //import {} from '../../../config/url';
-import { routeActions } from 'react-router-redux'
+import { routeActions } from 'react-router-redux';
 
 export function addSideAlert(status, messageId, value) {
   return {
@@ -51,7 +50,7 @@ function requestUsersFail() {
 
 export function fetchUsers() {
   return (dispatch, getState) => {
-    const url = 'access/users/fetch' + getState().routing.location.search;
+    const url = `access/users/fetch${getState().routing.location.search}`;
     dispatch(requestUsers());
     customFetch(url, 'GET')
     .then(result => {
@@ -62,8 +61,8 @@ export function fetchUsers() {
     })
     .catch(ex => {
       dispatch(requestUsersFail());
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -75,14 +74,14 @@ function addEditingUser(user) {
 }
 
 export function fetchUser(id) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     customFetch(`access/user/${id}/fetch`, 'GET')
     .then(result => {
       dispatch(addEditingUser(keyToCamel(result)));
     })
     .catch(ex => {
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -94,18 +93,20 @@ export function storeUser(body) {
         'success',
         'sideAlert.success',
         { attribute: 'user', method: 'store' }));
-      dispatch(routeActions.push(`/admin/single/access/users/?filter=all&skip=${Math.floor(result / 10) * 10}&take=10`));
+      dispatch(routeActions.push(
+        `/admin/single/access/users/?filter=all&skip=${Math.floor(result / 10) * 10}&take=10`
+      ));
     })
     .catch(ex => {
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
-  }
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
+  };
 }
 
 export function updateUser(id, body) {
   return (dispatch) => {
     customFetch(`access/user/${id}`, 'PUT', body)
-    .then(result => {
+    .then(() => {
       dispatch(addSideAlert(
         'success',
         'sideAlert.success',
@@ -113,25 +114,24 @@ export function updateUser(id, body) {
       history.back();
     })
     .catch(ex => {
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
-  }
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
+  };
 }
 
 export function changePassword(id, body) {
-  console.log(id)
   return (dispatch) => {
     customFetch(`access/user/${id}/password/change`, 'POST', body)
-    .then(result => {
+    .then(() => {
       dispatch(addSideAlert(
         'success',
         'sideAlert.success',
         { attribute: 'user', method: 'changePassword' }));
     })
     .catch(ex => {
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
-  }
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
+  };
 }
 
 export function activateUser(id) {
@@ -152,8 +152,8 @@ export function activateUser(id) {
     })
     .catch(ex => {
       dispatch(doneAsyncAction(id));
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -175,12 +175,12 @@ export function deactivateUser(id) {
     })
     .catch(ex => {
       dispatch(doneAsyncAction(id));
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
-export function restoreUser(id, activePage, perpage) {
+export function restoreUser(id) {
   return (dispatch, getState) => {
     const { query } = getState().routing.location;
     dispatch(doAsyncAction(id, 'restore'));
@@ -198,8 +198,8 @@ export function restoreUser(id, activePage, perpage) {
     })
     .catch(ex => {
       dispatch(doneAsyncAction(id));
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -221,8 +221,8 @@ export function destroyUser(id) {
     })
     .catch(ex => {
       dispatch(doneAsyncAction(id));
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -244,8 +244,8 @@ export function deleteUser(id) {
     })
     .catch(ex => {
       dispatch(doneAsyncAction(id));
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -267,8 +267,8 @@ export function resendUser(id) {
     })
     .catch(ex => {
       dispatch(doneAsyncAction(id));
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -288,11 +288,11 @@ function addAddress(address) {
 
 export function fetchAddress(code) {
   return (dispatch) => {
-    customFetch(`getAddress/${code.slice(0,3)}/${code.slice(3,7)}`, 'GET')
+    customFetch(`getAddress/${code.slice(0, 3)}/${code.slice(3, 7)}`, 'GET')
     .then(result => {
       dispatch(addAddress(result));
     })
-    .catch(ex => {
+    .catch(() => {
       dispatch(addValidation({
         postalCode: {
           value: code,
@@ -300,13 +300,13 @@ export function fetchAddress(code) {
           message: 'validation.postalCode.notValid'
         }
       }));
-    })
-  }
+    });
+  };
 }
 
 export function validateEmail(email) {
   return (dispatch) => {
-    customFetch('validation/user', 'POST', {email})
+    customFetch('validation/user', 'POST', { email })
     .then(result => {
       if (result !== 'ok') {
         dispatch(addValidation({
@@ -316,10 +316,10 @@ export function validateEmail(email) {
             message: 'validation.email.alreadyExists'
           }
         }));
-      };
+      }
     })
     .catch(ex => {
-      dispatch(requestUsersFail());
-    })
-  }
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
+  };
 }

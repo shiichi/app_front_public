@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import {Treebeard} from 'react-treebeard';
+import { Treebeard } from 'react-treebeard';
 import { trans } from '../../../utils/TransUtils';
 //components
 //import AssociatedPermissions from './AssociatedPermissions';
@@ -35,8 +35,6 @@ const data = {
   ]
 };
 
-
-
 class AssociatedPermissions extends Component {
   constructor(props, context) {
     super(props, context);
@@ -45,10 +43,10 @@ class AssociatedPermissions extends Component {
     this.onToggle = this.onToggle.bind(this);
   }
 
-  onToggle(node, toggled){
-    if(this.state.cursor){this.state.cursor.active = false;}
+  onToggle(node, toggled) {
+    if (this.state.cursor) {this.state.cursor.active = false;}
     node.active = true;
-    if(node.children){ node.toggled = toggled; }
+    if (node.children) { node.toggled = toggled; }
     this.setState({ cursor: node });
   }
 
@@ -62,22 +60,22 @@ class AssociatedPermissions extends Component {
             <option value="custom">Custom</option>
           </select>
           <div id="available-permissions">
-            <div class="row">
+            <div className="row">
               <div className="col-xs-12">
                 <div className="alert alert-info">
                   <i className="fa fa-info-circle" />
-                  {trans('en','alert.access.roles.associatedPermissionsPxplanation')}
+                  {trans('en', 'alert.access.roles.associatedPermissionsPxplanation')}
                 </div>
               </div>
 
               <div className="col-xs-6">
-                <Treebeard　data={data}　onToggle={this.onToggle}/>
+                <Treebeard data={data} onToggle={this.onToggle}/>
               </div>
               <div className="col-xs-6">
                 <p><strong>Ungrouped Permissions</strong></p>
                 <p>There are no ungrouped permissions.</p>
               </div>
-              
+
             </div>
           </div>
         </div>

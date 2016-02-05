@@ -1,6 +1,6 @@
 import * as types from '../../constants/ActionTypes';
 import { customFetch } from '../../utils/fetchUtils';
-import { keyToCamel, keyToSnake } from '../../utils/ChangeCaseUtils';
+import { keyToCamel } from '../../utils/ChangeCaseUtils';
 
 function addSideAlert(status, messageId, value) {
   return {
@@ -39,8 +39,8 @@ export function fetchPins() {
     })
     .catch(ex => {
       dispatch(requestPinsFail());
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }
 
@@ -60,13 +60,13 @@ export function generatePins(request) {
   return (dispatch) => {
     dispatch(doGenerate());
     customFetch('pins/generate', 'POST', request)
-    .then(result => {
+    .then(() => {
       dispatch(doneGenerate());
       dispatch(addSideAlert('success', 'generatePin.success'));
     })
     .catch(ex => {
       dispatch(doneGenerate());
-      dispatch(addSideAlert('danger', 'server.' + ex.status));
-    })
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
+    });
   };
 }

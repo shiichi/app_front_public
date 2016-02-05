@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Pagination } from 'react-bootstrap';
-import Icon from 'react-fa';
 //Actions
 import * as AccessRoleActions from '../../../actions/access/role';
 //Components
@@ -36,7 +34,7 @@ class Roles extends Component {
                   <th>Actions</th>
                 </tr>
               </thead>
-              {!didInvalidate && !isFetching && roles && 
+              {!didInvalidate && !isFetching && roles &&
               <RolesTableBody
                 myId={myId}
                 myRoles={myRoles}
@@ -83,4 +81,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )(Roles);
+export default connect(mapStateToProps, mapDispatchToProps)(Roles);

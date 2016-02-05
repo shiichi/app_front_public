@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-//components
+//Components
 import International from './International';
 import Message from './Message';
 import Notification from './Notification';

@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import { Input, Row, Col } from 'react-bootstrap';
+import { Input } from 'react-bootstrap';
 //Utility
 import { validate } from '../../../utils/ValidationUtils';
 //Actions
@@ -16,12 +15,12 @@ class EditRoles extends Component {
   constructor(props, context) {
     super(props, context);
     const string = ['name', 'sort', 'associatedPermissions'].reduce((request, key) => {
-      request[key] = {value: '', status: '', message: ''};
+      request[key] = { value: '', status: '', message: '' };
       return request;
     }, {});
 
-    const array = [ 'permissions' ].reduce((request, key) => {
-      request[key] = {value: [], status: '', message: ''};
+    const array = ['permissions'].reduce((request, key) => {
+      request[key] = { value: [], status: '', message: '' };
       return request;
     }, {});
 
@@ -34,7 +33,7 @@ class EditRoles extends Component {
   }
 
   componentDidMount() {
-    const { routeParams: {id}, actions: {fetchRole, fetchPermissions} } = this.props;
+    const { routeParams: { id }, actions: { fetchRole, fetchPermissions } } = this.props;
     fetchRole(id);
     fetchPermissions();
   }
@@ -42,25 +41,23 @@ class EditRoles extends Component {
   componentWillReceiveProps(nextProps) {
     const { role, validation, dependency } = nextProps;
 
-    console.log(role, this.props.role);
     if (role !== null && this.props.role === null) {
-      console.log('in  if', role);
-      this.setState( Object.keys(role).reduce((state, key) => {
-        state[key] = {value: role[key], status: '', message: ''};
+      this.setState(Object.keys(role).reduce((state, key) => {
+        state[key] = { value: role[key], status: '', message: '' };
         return state;
       }, {}));
-    };
+    }
 
     if (validation !== {}) {
       this.setState(validation);
-    };
+    }
 
     if (dependency) {
       this.setState({ permissions: {
         value: this.state.permissions.value.concat(dependency),
         status: '',
         message: ''
-      }});
+      } });
     }
   }
 
@@ -68,25 +65,25 @@ class EditRoles extends Component {
     const { fetchPermissionDependency } = this.props.actions;
 
     switch (name) {
-    case 'permissions':
-      if (checked) {
-        fetchPermissionDependency(value);
-        this.setState({[name]: {
-          value: this.state[name].value.concat([Number(value)]),
-          status: '',
-          message: ''
-        }});
-      } else {
-        this.setState({[name]: {
-          value: this.state[name].value.filter(p => p !== Number(value)),
-          status: '',
-          message: ''
-        }});
-      }
-      break;
+      case 'permissions':
+        if (checked) {
+          fetchPermissionDependency(value);
+          this.setState({ [name]: {
+            value: this.state[name].value.concat([Number(value)]),
+            status: '',
+            message: ''
+          } });
+        } else {
+          this.setState({ [name]: {
+            value: this.state[name].value.filter(p => p !== Number(value)),
+            status: '',
+            message: ''
+          } });
+        }
+        break;
 
-    default:
-      this.setState({[name]: validate(name, value)});
+      default:
+        this.setState({ [name]: validate(name, value) });
     }
   }
 
@@ -95,13 +92,13 @@ class EditRoles extends Component {
     this.validate(name, value, checked);
   }
 
-  hanbleBlur(e) {
+  hanbleBlur() {
     const { validateRoleName } = this.props.actions;
     validateRoleName(this.state.name.value);
   }
 
   handleHover() {
-    for (let key in this.state) {
+    for (const key in this.state) {
       if (this.state[key].value === '') {
         this.validate(key, this.state[key].status);
       }
@@ -109,7 +106,7 @@ class EditRoles extends Component {
   }
 
   handleSubmit() {
-    const { routeParams: {id}, actions: {updateRole} } = this.props;
+    const { routeParams: { id }, actions: { updateRole } } = this.props;
     const Keys = Object.keys(this.state);
     const hasError = Keys.some(key =>
       this.state[key].status === 'error'
@@ -124,7 +121,7 @@ class EditRoles extends Component {
   }
 
   handleClick() {
-    history.back()
+    history.back();
   }
 
   renderPermissions() {
@@ -134,10 +131,11 @@ class EditRoles extends Component {
       <div className="col-xs-offset-2 col-xs-10" key={permission.id}>
         <div className="checkbox">
           <label className>
-            <input type="checkbox"
-             value={permission.id}
-             name="permissions"
-             checked={value.indexOf(permission.id) >= 0 ? true : ''}/>
+            <input
+              type="checkbox"
+              value={permission.id}
+              name="permissions"
+              checked={value.indexOf(permission.id) >= 0 ? true : ''}/>
             <span><strong>{permission.displayName}</strong></span>
           </label>
         </div>
@@ -199,7 +197,9 @@ EditRoles.propTypes = {
   role: PropTypes.object.isRequired,
   validation: PropTypes.string.isRequired,
   permissions: PropTypes.array.isRequired,
-  dependency: PropTypes.array
+  dependency: PropTypes.array,
+  routeParams: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -219,4 +219,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(EditRoles);
+export default connect(mapStateToProps, mapDispatchToProps)(EditRoles);

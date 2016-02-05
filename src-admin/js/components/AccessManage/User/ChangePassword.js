@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { Input } from 'react-bootstrap';
 //Utility
 import { validate } from '../../../utils/ValidationUtils';
@@ -14,8 +13,8 @@ class ChangePassword extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      password: {value: '', status: '', message: ''},
-      passwordConfirmation: {value: '', status: '', message: ''},
+      password: { value: '', status: '', message: '' },
+      passwordConfirmation: { value: '', status: '', message: '' },
     };
   }
 
@@ -24,21 +23,21 @@ class ChangePassword extends Component {
     const passConf = this.state.passwordConfirmation.value;
 
     switch (name) {
-    case 'password':
-      this.setState({
-        password: validate(name, value),
-        passwordConfirmation: validate('passwordConfirmation', passConf, value)
-      });
-      break;
+      case 'password':
+        this.setState({
+          password: validate(name, value),
+          passwordConfirmation: validate('passwordConfirmation', passConf, value)
+        });
+        break;
 
-    case 'passwordConfirmation':
-      this.setState({
-        passwordConfirmation: validate(name, value, pass)
-      });
-      break;
+      case 'passwordConfirmation':
+        this.setState({
+          passwordConfirmation: validate(name, value, pass)
+        });
+        break;
 
-    default:
-    };    
+      default:
+    }
   }
 
   handleChange(e) {
@@ -47,16 +46,16 @@ class ChangePassword extends Component {
   }
 
   handleHover() {
-    for (let key in this.state) {
+    for (const key in this.state) {
       if (this.state[key].value === '') {
         this.validate(key, this.state[key].status);
-      };
+      }
     }
   }
 
   handleSubmit() {
-    const { routeParams: {id}, actions: {changePassword} } = this.props;
-    const hasError = Object.keys(this.state).some(key => 
+    const { routeParams: { id }, actions: { changePassword } } = this.props;
+    const hasError = Object.keys(this.state).some(key =>
       this.state[key].status === 'error'
     );
 
@@ -65,16 +64,16 @@ class ChangePassword extends Component {
         password: this.state.password.value,
         password_confirmation: this.state.passwordConfirmation.value,
       });
-    };
+    }
   }
 
   handleClick() {
-    history.back()
+    this.props.history.goBack();
   }
 
   render() {
     const { password, passwordConfirmation } = this.state;
-    const hasError = Object.keys(this.state).some(key => 
+    const hasError = Object.keys(this.state).some(key =>
       this.state[key].status === 'error'
     );
 
@@ -116,6 +115,8 @@ class ChangePassword extends Component {
 }
 
 ChangePassword.propTypes = {
+  routeParams: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 };
 
@@ -132,4 +133,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(ChangePassword);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

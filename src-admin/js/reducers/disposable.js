@@ -15,35 +15,35 @@ const initialState = {
 
 export default function disposable(state = initialState, action) {
   switch (action.type) {
-  case ADD_EDITING_USER:
-    return Object.assign({}, state, { 
-      editingUser: Object.assign(action.user,
+    case ADD_EDITING_USER:
+      return Object.assign({}, state, {
+        editingUser: Object.assign(action.user,
         { assigneesRoles: action.user.roles.map(role => role.id) }
       )
-    });
+      });
 
-  case ADD_EDITING_ROLE:
-    return Object.assign({}, state, { 
-      editingRole: Object.assign(action.role,
+    case ADD_EDITING_ROLE:
+      return Object.assign({}, state, {
+        editingRole: Object.assign(action.role,
         { permissions: action.role.permissions.map(p => p.id) }
       )
-    });
+      });
 
-  case ADD_ADDRESS:
-    const { stateName, city, street } = action.address;
-    return Object.assign({}, state, { 
-      address: { state: stateName, city, street }
-    });
+    case ADD_ADDRESS:
+      const { stateName, city, street } = action.address;
+      return Object.assign({}, state, {
+        address: { state: stateName, city, street }
+      });
 
-  case ADD_VALIDATION:
-    return Object.assign({}, state, {
-      validation: action.validation
-    });
+    case ADD_VALIDATION:
+      return Object.assign({}, state, {
+        validation: action.validation
+      });
 
-  case CLEAR_DISPOSABLE:
-    return initialState;
+    case CLEAR_DISPOSABLE:
+      return initialState;
 
-  default:
-    return state;
+    default:
+      return state;
   }
 }

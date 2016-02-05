@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import { Input, Row, Col } from 'react-bootstrap';
 //Utility
 import { validate } from '../../../utils/ValidationUtils';
@@ -9,14 +8,13 @@ import { validate } from '../../../utils/ValidationUtils';
 import * as AccessUserActions from '../../../actions/access/user';
 import * as AccessRoleActions from '../../../actions/access/role';
 import * as InitializeActions from '../../../actions/initialize';
-import { routeActions } from 'react-router-redux';
 //Components
 import RightMenu from '../RightMenu';
 
 class CreateUser extends Component {
   constructor(props, context) {
     super(props, context);
-    const {clearDisposable, fetchRoles, fetchUser } = props.actions;
+    const { clearDisposable, fetchRoles } = props.actions;
     clearDisposable();
     fetchRoles();
 
@@ -25,12 +23,12 @@ class CreateUser extends Component {
       'firstName', 'lastName', 'sex', 'age', 'postalCode', 'state', 'city', 'street', 'building',
       'status', 'confirmed', 'confirmationEmail'
     ].reduce((request, key) => {
-      request[key] = {value: '', status: '', message: ''};
+      request[key] = { value: '', status: '', message: '' };
       return request;
     }, {});
 
-    const array = [ 'assigneesRoles' ].reduce((request, key) => {
-      request[key] = {value: [], status: '', message: ''};
+    const array = ['assigneesRoles'].reduce((request, key) => {
+      request[key] = { value: [], status: '', message: '' };
       return request;
     }, {});
 
@@ -42,80 +40,14 @@ class CreateUser extends Component {
 
     if (validation) {
       this.setState(validation);
-    };
+    }
 
     if (address) {
       this.setState(Object.keys(address).reduce((state, key) => {
-        state[key] = {value: address[key], status: '', message: ''};
+        state[key] = { value: address[key], status: '', message: '' };
         return state;
       }, {}));
-    };
-  }
-
-  validate(name, value, checked) {
-    const pass = this.state.password.value;
-    const passConf = this.state.passwordConfirmation.value;
-
-    switch (name) {
-    case 'assigneesRoles':
-      this.setState({[name]: {value:[value]}});
-      break;
-
-    case 'status':
-    case 'confirmed':
-    case 'confirmationEmail':
-      this.setState({[name]: {value: checked ? '1' : '0'}});
-      break;
-
-    case 'password':
-      this.setState({
-        password: validate(name, value),
-        passwordConfirmation: validate('passwordConfirmation', passConf, value)
-      });
-      break;
-
-    case 'passwordConfirmation':
-      this.setState({
-        [name]: validate(name, value, pass)
-      });
-      break;
-
-    default:
-      this.setState({[name]: validate(name, value)});
     }
-  }
-
-  handleChange(e) {
-    const { name, value, checked } = e.target;
-    this.validate(name, value, checked);
-  }
-
-  hanbleBlur(e) {
-    const { validateEmail } = this.props.actions;
-    validateEmail(this.state.email.value);
-  }
-
-  handleHover() {
-    for (let key in this.state) {
-      if (this.state[key].value === '') {
-        this.validate(key, this.state[key].status);
-      };
-    }
-  }
-
-  handleSubmit() {
-    const { storeUser } = this.props.actions;
-    const Keys = Object.keys(this.state);
-    const hasError = Keys.some(key => 
-      this.state[key].status === 'error'
-    );
-
-    if (!hasError) {
-      storeUser(Keys.reduce((request, key) => {
-        request[key] = this.state[key].value;
-        return request;
-      }, {}));
-    };
   }
 
   getAddress() {
@@ -126,8 +58,74 @@ class CreateUser extends Component {
     }
   }
 
+  validate(name, value, checked) {
+    const pass = this.state.password.value;
+    const passConf = this.state.passwordConfirmation.value;
+
+    switch (name) {
+      case 'assigneesRoles':
+        this.setState({ [name]: { value: [value] } });
+        break;
+
+      case 'status':
+      case 'confirmed':
+      case 'confirmationEmail':
+        this.setState({ [name]: { value: checked ? '1' : '0' } });
+        break;
+
+      case 'password':
+        this.setState({
+          password: validate(name, value),
+          passwordConfirmation: validate('passwordConfirmation', passConf, value)
+        });
+        break;
+
+      case 'passwordConfirmation':
+        this.setState({
+          [name]: validate(name, value, pass)
+        });
+        break;
+
+      default:
+        this.setState({ [name]: validate(name, value) });
+    }
+  }
+
+  handleChange(e) {
+    const { name, value, checked } = e.target;
+    this.validate(name, value, checked);
+  }
+
+  hanbleBlur() {
+    const { validateEmail } = this.props.actions;
+    validateEmail(this.state.email.value);
+  }
+
+  handleHover() {
+    for (const key in this.state) {
+      if (this.state[key].value === '') {
+        this.validate(key, this.state[key].status);
+      }
+    }
+  }
+
+  handleSubmit() {
+    const { storeUser } = this.props.actions;
+    const Keys = Object.keys(this.state);
+    const hasError = Keys.some(key =>
+      this.state[key].status === 'error'
+    );
+
+    if (!hasError) {
+      storeUser(Keys.reduce((request, key) => {
+        request[key] = this.state[key].value;
+        return request;
+      }, {}));
+    }
+  }
+
   handleClick() {
-    history.back()
+    this.props.history.goBack();
   }
 
   renderRoles() {
@@ -141,16 +139,15 @@ class CreateUser extends Component {
           </label>
         </div>
       </div>
-    )
+    );
   }
 
   render() {
     const {
       userId, email, password, passwordConfirmation,
-      firstName, lastName, sex, age, postalCode, state, city, street, building,
-      status, confirmed, confirmationEmail
+      firstName, sex, age, postalCode, state, city, street, building,
     } = this.state;
-    const hasError = Object.keys(this.state).some(key => 
+    const hasError = Object.keys(this.state).some(key =>
       this.state[key].status === 'error'
     );
 
@@ -353,13 +350,16 @@ CreateUser.propTypes = {
   validation: PropTypes.object.isRequired,
   address: PropTypes.object.isRequired,
   roles: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
+
 };
 
 function mapStateToProps(state) {
   return {
     validation: state.disposable.validation,
     address: state.disposable.address,
-    roles: state.roles.roles,
+    roles: state.roles.roles
   };
 }
 
@@ -370,4 +370,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(CreateUser);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateUser);

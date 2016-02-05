@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 const middlewares = [ thunk ];
 import * as actions from '../../../src/js/actions/timetable';
 import * as types from '../../../src/js/constants/ActionTypes';
-import { DOMAIN_NAME } from '../../../src/config/env';
+import { _DOMAIN_NAME } from '../../../src/config/env';
 import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../../src/config/url';
 
 function mockStore(getState, expectedActions, done) {
@@ -65,7 +65,7 @@ describe('fetchTimetableIfNeeded', () => {
   });
 
   it('should fetch and return SUCCESS when type changed part1', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_TIMETABLE)
       .reply(200, ['date', 'timetable']);
 
@@ -120,7 +120,7 @@ describe('fetchTimetableIfNeeded', () => {
   });
 
   it('should fetch and return SUCCESS when type changed part2', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_TIMETABLE)
       .reply(200, ['date', 'timetable']);
 
@@ -175,7 +175,7 @@ describe('fetchTimetableIfNeeded', () => {
   });
 
   it('should fetch and return SUCCESS when place changed', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_TIMETABLE)
       .reply(200, ['date', 'timetable']);
 
@@ -230,7 +230,7 @@ describe('fetchTimetableIfNeeded', () => {
   });
 
   it('should fetch and return SUCCESS when week changed', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_TIMETABLE)
       .reply(200, ['date', 'timetable']);
 
@@ -285,7 +285,7 @@ describe('fetchTimetableIfNeeded', () => {
   });
 
   it('should fetch and return FAIL', (done) => {
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
         .post(REQUEST_TIMETABLE)
         .replyWithError('something happened');
 
@@ -404,7 +404,7 @@ describe('fetchDefaultStatus', () => {
     const key = '1_1_0';
     const data = 'data';
 
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_DEFAULT_STATUS)
       .reply(200, {selector: {types: flightTypes, places, plans}, timetable: {key, data}});
 
@@ -452,7 +452,7 @@ describe('fetchDefaultStatus', () => {
     const key = '1_1_0';
     const data = 'data';
 
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_DEFAULT_STATUS)
       .reply(200, {selector: {types: flightTypes, places, plans}, timetable: {key, data}});
 
@@ -500,7 +500,7 @@ describe('fetchDefaultStatus', () => {
     const key = '1_1_0';
     const data = 'data';
 
-    nock(DOMAIN_NAME)
+    nock(_DOMAIN_NAME)
       .post(REQUEST_DEFAULT_STATUS)
       .reply(200, {selector: {types: flightTypes, places, plans}, timetable: {key, data}});
 

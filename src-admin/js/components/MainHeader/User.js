@@ -1,5 +1,5 @@
-import React, { PropTypes, Component } from 'react';
-//components
+import React, { Component } from 'react';
+//Components
 
 class User extends Component {
   render() {

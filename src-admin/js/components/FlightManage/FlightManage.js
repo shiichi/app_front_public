@@ -1,12 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
-class PinCodeManage extends Component {
+class FlightManage extends Component {
   render() {
     return (
       <div className="content-wrapper" style={{ minHeight: '916px' }}>
         <section className="content-header">
-          <h1>Pin-Code Management</h1>
+          <h1>Flight Management</h1>
         </section>
         <section className="content">
           {this.props.children}
@@ -16,9 +16,9 @@ class PinCodeManage extends Component {
   }
 }
 
-PinCodeManage.propTypes = {
+FlightManage.propTypes = {
   routing: PropTypes.object.isRequired,
-  children: PropTypes.element.isRequired
+  children: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -27,4 +27,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(PinCodeManage);
+export default connect(mapStateToProps)(FlightManage);

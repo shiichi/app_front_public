@@ -2,7 +2,7 @@ import * as types from '../constants/ActionTypes';
 import { customFetch } from '../utils/fetchUtils';
 import { REQUEST_LOG } from '../../config/url';
 
-function addSideAlert(status, messageId, value) {
+function addSideAlert(status, messageId, value = null) {
   return {
     type: types.ADD_SIDE_ALERT,
     status,
@@ -24,37 +24,34 @@ function setLogPage(page) {
   };
 }
 
-function requestLog(page) {
+function requestLog() {
   return {
     type: types.REQUEST_LOG,
-    page: page
   };
 }
 
-function requestLogSuccess(data, page) {
+function requestLogSuccess(data) {
   return {
     type: types.REQUEST_LOG_SUCCESS,
-    data: data,
-    page: page
+    data: data
   };
 }
 
-function requestLogFail(page) {
+function requestLogFail() {
   return {
     type: types.REQUEST_LOG_FAIL,
-    page: page
   };
 }
 
-export function fetchLog(page) {
+export function fetchLog() {
   return dispatch => {
-    dispatch(requestLog(page));
+    dispatch(requestLog());
     customFetch(REQUEST_LOG, 'POST')
     .then(result => {
-      dispatch(requestLogSuccess(result, page));
+      dispatch(requestLogSuccess(result));
     })
     .catch(ex => {
-      dispatch(requestLogFail(page));
+      dispatch(requestLogFail());
       dispatch(addSideAlert('danger', 'getLog.fail'));
     })
   }

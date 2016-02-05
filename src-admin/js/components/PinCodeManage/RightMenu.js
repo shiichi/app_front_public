@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 //Config
@@ -8,13 +8,13 @@ class RightMenu extends Component {
   render() {
     return (
       <div className="box-tools pull-right">
-        <div className="pull-right" style={{marginBottom: 10}}>
+        <div className="pull-right" style={{ marginBottom: 10 }}>
           <ButtonGroup>
             <Button bsStyle="primary" bsSize="small" title="Users">
-              <Link to={_ADMIN_DOMAIN_NAME + 'pins'} activeClassName="active">Generate</Link>
+              <Link to={`${_ADMIN_DOMAIN_NAME}pins`} activeClassName="active">List</Link>
             </Button>
             <Button bsStyle="primary" bsSize="small" title="Roles">
-              <Link to={_ADMIN_DOMAIN_NAME + 'pins/generate'} activeClassName="active">List</Link>
+              <Link to={`${_ADMIN_DOMAIN_NAME}pins/generate`} activeClassName="active">Generate</Link>
             </Button>
           </ButtonGroup>
         </div>

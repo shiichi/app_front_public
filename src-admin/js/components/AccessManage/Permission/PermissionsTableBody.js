@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 
 class PermissionsTableBody extends Component {
-  renderPermissions(){
-    const { myId, myRoles, myPermissions, permissions } = this.props;
+  renderPermissions() {
+    const { permissions } = this.props;
 
     return permissions.map(p =>
       <tr key={p.id} className="tr-disabled-aaa">

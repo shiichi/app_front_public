@@ -15,35 +15,35 @@ const initialState = {
 
 export default function roles(state = initialState, action) {
   switch (action.type) {
-  case REQUEST_PINS:
-    return Object.assign({}, state, {
-      isFetching: true,
-      didInvalidate: false
-    });
+    case REQUEST_PINS:
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      });
 
-  case REQUEST_PINS_SUCCESS:
-    return Object.assign({}, state, {
-      pins: action.pins,
-      isFetching: false
-    });
+    case REQUEST_PINS_SUCCESS:
+      return Object.assign({}, state, {
+        pins: action.pins,
+        isFetching: false
+      });
 
-  case REQUEST_PINS_FAIL:
-    return Object.assign({}, state, {
-      isFetching: false,
-      didInvalidate: true
-    });
+    case REQUEST_PINS_FAIL:
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: true
+      });
 
-  case DO_ASYNC_GENERATE_PINS:
-    return Object.assign({}, state, {
-      isGenerationg: true
-    });
+    case DO_ASYNC_GENERATE_PINS:
+      return Object.assign({}, state, {
+        isGenerationg: true
+      });
 
-  case DONE_ASYNC_GENERATE_PINS:
-    return Object.assign({}, state, {
-      isGenerationg: false
-    });
+    case DONE_ASYNC_GENERATE_PINS:
+      return Object.assign({}, state, {
+        isGenerationg: false
+      });
 
-  default:
-    return state;
+    default:
+      return state;
   }
 }

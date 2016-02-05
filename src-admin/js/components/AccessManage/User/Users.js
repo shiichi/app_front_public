@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Pagination } from 'react-bootstrap';
-import Icon from 'react-fa';
 //Actions
 import { routeActions } from 'react-router-redux';
 import * as AccessUserActions from '../../../actions/access/user';
@@ -30,24 +29,23 @@ class Users extends Component {
 
     if (search !== this.props.search) {
       fetchUsers();
-    };
+    }
   }
 
   handlePage(e, selectedEvent) {
-    const page = selectedEvent.eventKey;    
-    const { total, pathname, query, perPage, actions: {push} } = this.props;
+    const page = selectedEvent.eventKey;
+    const { pathname, query, perPage, actions: { push } } = this.props;
     const skip = (page - 1) * perPage;
     const url = `${pathname}?filter=${query.filter || 'all'}&skip=${skip}&take=${perPage}`;
 
     push(url);
-    this.setState({page});
+    this.setState({ page });
   }
 
   render() {
-    const { page, items } = this.state;
     const { myId, myRoles, myPermissions, users, isFetching, didInvalidate, asyncStatus, actions, query } = this.props;
     let title;
-    switch(query.filter) {
+    switch (query.filter) {
       case 'active': title = 'Active Users'; break;
       case 'deactivated': title = 'Deactivated Users'; break;
       case 'delete': title = 'Deleted Users'; break;
@@ -75,7 +73,7 @@ class Users extends Component {
                   <th>Actions</th>
                 </tr>
               </thead>
-              {!didInvalidate && !isFetching && users && 
+              {!didInvalidate && !isFetching && users &&
                 <UsersTableBody
                   myId={myId}
                   myRoles={myRoles}
@@ -143,4 +141,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )(Users);
+export default connect(mapStateToProps, mapDispatchToProps)(Users);

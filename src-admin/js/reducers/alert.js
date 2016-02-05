@@ -5,17 +5,17 @@ import {
 
 function change(state = {}, action) {
   switch (action.type) {
-  case ADD_SIDE_ALERT:
-    return Object.assign({}, state, {
-      [Date.now()]: {
-        status: action.status,
-        messageId: action.messageId,
-        value: action.value
-      }
-    })
+    case ADD_SIDE_ALERT:
+      return Object.assign({}, state, {
+        [Date.now()]: {
+          status: action.status,
+          messageId: action.messageId,
+          value: action.value
+        }
+      });
 
-  case DELETE_SIDE_ALERT:
-    return Object.keys(state)
+    case DELETE_SIDE_ALERT:
+      return Object.keys(state)
       .filter(key => action.keys.indexOf(key) === -1)
       .reduce((alerts, key) => {
         alerts[key] = {
@@ -26,8 +26,8 @@ function change(state = {}, action) {
         return alerts;
       }, {});
 
-  default:
-    return state;
+    default:
+      return state;
   }
 }
 
@@ -37,13 +37,13 @@ const initialState = {
 
 export default function alert(state = initialState, action) {
   switch (action.type) {
-  case ADD_SIDE_ALERT:
-  case DELETE_SIDE_ALERT:
-    return Object.assign({}, state, {
-      side: change(state.side, action)
-    });
+    case ADD_SIDE_ALERT:
+    case DELETE_SIDE_ALERT:
+      return Object.assign({}, state, {
+        side: change(state.side, action)
+      });
 
-  default:
-    return state;
+    default:
+      return state;
   }
 }

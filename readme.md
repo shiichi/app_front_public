@@ -1,5 +1,15 @@
 # 予約決済システム
 
-eslintをglobalにインストールして使う場合、pluginもまたglobalにインストールしないと使えない
-ローカルにeslintが入っているとglobalなeslintコマンドでもローカルを参照するようになる
-今はlocal,global共にeslint及びそのプラグインがインストールされている状態
+npm run build
+frontの用のbundle.jsを ./webpack/dist/ に生成
+
+npm run build-admin
+adminの用のbundle.jsを ./webpack/dist/ に生成
+
+npm test
+front と admin 両方をテスト
+
+npm run lint
+adminにのみLintをかける
+
+

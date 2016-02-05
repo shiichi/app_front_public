@@ -8,7 +8,7 @@ import {
   DEACTIVE_USER
 } from '../../config/url';
 
-function addSideAlert(status, messageId, value) {
+function addSideAlert(status, messageId, value = null) {
   return {
     type: types.ADD_SIDE_ALERT,
     status,
@@ -51,7 +51,6 @@ export function fetchUserInfo() {
 }
 
 export function UpdateUserProf(request) {
-  console.log(request)
   return dispatch => {
     dispatch(requestUserInfo());
     customFetch(UPDATE_USER_PROF, 'POST', request)

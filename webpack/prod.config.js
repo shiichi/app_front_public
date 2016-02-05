@@ -6,7 +6,7 @@ var autoprefixer = require('autoprefixer');
 module.exports = {
   devtool: 'source-map',
   entry: [
-    'bootstrap-sass!./src/theme/bootstrap-sass.config.js',
+    'bootstrap-loader/extractStyles',
     './src/index'
   ],
   output: {
@@ -26,7 +26,7 @@ module.exports = {
       }
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new ExtractTextPlugin('bundle.css')
+    new ExtractTextPlugin('bundle.css', { allChunks: true })
   ],
   module: {
     loaders: [
@@ -34,11 +34,18 @@ module.exports = {
         loaders: [ 'babel' ],
         exclude: /node_modules/
       }, {
-        test: /bootstrap-social.css$/,
-        loaders: ['style-loader','css-loader']
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract(
+          'style', 'css'
+        ),
       }, {
         test: /\.scss$/,
-        loader: 'css?localIdentName=[path]!postcss-loader!sass'
+        loader: ExtractTextPlugin.extract(
+          'style',
+          'css?modules&importLoaders=2&localIdentName=[name]__[local]__[hash:base64:5]' +
+          '!postcss' +
+          '!sass'
+        ),
       }, {
         test: /glyphicons-halflings-regular\.woff(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=application/font-woff"
@@ -57,15 +64,14 @@ module.exports = {
       },
       /* font-awesome */
       {
-        test: /font-awesome.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
-      }, {
         test: /fontawesome-webfont\.(otf|eot|svg|ttf|woff)\??/,
         loader: 'url-loader?limit=8192'
+      }, {
+        test: /\.jpg$/,
+        loader: "url-loader?mimetype=image/jpg"
       }
     ]
   },
-  postcss: function() {
-    return [autoprefixer({ browsers: ['last 2 versions', 'safari 5', 'ie 9', 'ios 6', 'android 4'] })];
-  }
+
+  postcss: [ autoprefixer ],
 };

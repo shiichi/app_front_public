@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import { NavDropdown, MenuItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
 import Icon from 'react-fa';
 
 class International extends Component {
@@ -10,11 +9,10 @@ class International extends Component {
   }
 
   render() {
-    const { changeSidebar } = this.props;
     return (
       <NavDropdown
         noCaret
-        title={<Icon name="globe" style={{fontSize: 18}}/>}
+        title={<Icon name="globe" style={{ fontSize: 18 }}/>}
         onSelect={this.handleClick.bind(this)}>
         <MenuItem eventKey="ja">Japanese</MenuItem>
         <MenuItem eventKey="en">English</MenuItem>

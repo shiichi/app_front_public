@@ -1,8 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Pagination } from 'react-bootstrap';
-import Icon from 'react-fa';
 //Actions
 import * as AccessPermissionActions from '../../../actions/access/permission';
 //Components
@@ -37,7 +35,7 @@ class Permissions extends Component {
                 <th>System</th>
               </tr>
             </thead>
-            {!didInvalidate && !isFetching && permissions && 
+            {!didInvalidate && !isFetching && permissions &&
             <PermissionsTableBody
               myId={myId}
               myRoles={myRoles}
@@ -51,8 +49,12 @@ class Permissions extends Component {
 }
 
 Permissions.propTypes = {
-  message: PropTypes.array,
-  reservation: PropTypes.object.isRequired,
+  myId: PropTypes.number.isRequired,
+  myRoles: PropTypes.array.isRequired,
+  myPermissions: PropTypes.array.isRequired,
+  permissions: PropTypes.array.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  didInvalidate: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired
 };
 
@@ -75,4 +77,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )(Permissions);
+export default connect(mapStateToProps, mapDispatchToProps)(Permissions);

@@ -17,6 +17,7 @@ class AccessManage extends Component {
 }
 
 AccessManage.propTypes = {
+  children: PropTypes.element.isRequired,
   routing: PropTypes.object.isRequired
 };
 
@@ -26,4 +27,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect( mapStateToProps )(AccessManage);
+export default connect(mapStateToProps)(AccessManage);

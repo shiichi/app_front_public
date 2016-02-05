@@ -1,19 +1,15 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { browserHistory } from 'react-router';
+import { syncHistory } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import persistState from 'redux-localstorage';
-import {reducer as formReducer} from 'redux-form';
-import * as reducers from '../reducers';
+import rootReducer from '../reducers';
 
-//reducers/index.jsから全てのreducerを取得,formReducerとそれらをcombine
-const allReducers = {
-  ...reducers,
-  form: formReducer
-};
-const rootReducer = combineReducers(allReducers);
+const reduxRouterMiddleware = syncHistory(browserHistory);
 
 const createStoreWithMiddleware = compose(
-  applyMiddleware(thunk, promise),
+  applyMiddleware(thunk, promise, reduxRouterMiddleware),
   persistState(['jwtToken'])
 )(createStore);
 
