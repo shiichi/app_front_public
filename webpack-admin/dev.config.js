@@ -1,13 +1,14 @@
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 
 module.exports = {
-  devtool: 'inline-source-map',
+  //devtool: 'inline-source-map',
+  devtool: 'cheap-module-source-map',
+  
   entry: [
     'webpack-hot-middleware/client?path=http://localhost:3001/__webpack_hmr',
-    'bootstrap-loader/extractStyles',
+    'bootstrap-loader',
     './src-admin/index',
   ],
   output: {
@@ -16,11 +17,11 @@ module.exports = {
     publicPath: 'http://localhost:3001/static/'
   },
   plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify("dev")
+      'process.env.NODE_ENV': JSON.stringify("development")
     }),
-    new ExtractTextPlugin('bundle.css', { allChunks: true })
   ],
   module: {
     loaders: [
@@ -29,17 +30,20 @@ module.exports = {
         exclude: /node_modules/
       }, {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract(
-          'style', 'css'
-        ),
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]',
+          'postcss',
+        ]
+
       }, {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract(
+        loaders: [
           'style',
-          'css?modules&importLoaders=2&localIdentName=[name]__[local]__[hash:base64:5]' +
-          '!postcss' +
-          '!sass'
-        ),
+          'css?modules&importLoaders=2&localIdentName=[name]__[local]__[hash:base64:5]',
+          'postcss',
+          'sass',
+        ],
       }, {
         test: /glyphicons-halflings-regular\.woff(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=application/font-woff"

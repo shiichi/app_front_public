@@ -1,12 +1,11 @@
 import React, { PropTypes, Component } from 'react';
-import Icon from 'react-fa';
-//Components
+import CircularProgress from 'material-ui/lib/circular-progress';
 
 class Loading extends Component {
   render() {
     return (
       <div className="center-block">
-        <Icon spin name="spinner" className="text-center"/>
+      <div><CircularProgress /></div>
       </div>
     );
   }

@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 
 class Dashboard extends Component {
   render() {
+
+const divStyle = {
+  height: 100,
+  width: '100%',
+  backgroundColor: 'black',
+  opacity:'.5',
+}
+
     return (
       <div className="content-wrapper" style={{ minHeight: '916px' }}>
         <section className="content-header">
@@ -9,6 +17,7 @@ class Dashboard extends Component {
         </section>
         <section className="content">
           <div className="box box-success">
+          <div style={divStyle}></div>
             <div className="box-header with-border">
               <h3 className="box-title">Welcome Admin Istrator!</h3>
               <div className="box-tools pull-right">
