@@ -3,9 +3,7 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 
 module.exports = {
-  //devtool: 'inline-source-map',
-  devtool: 'cheap-module-source-map',
-  
+  devtool: 'cheap-module-source-map',  
   entry: [
     'webpack-hot-middleware/client?path=http://localhost:3001/__webpack_hmr',
     'bootstrap-loader',

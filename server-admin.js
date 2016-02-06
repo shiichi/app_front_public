@@ -12,7 +12,6 @@ app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
   reload: true,
   hot: true,
-  //historyApiFallback: true,
   headers: { 'Access-Control-Allow-Origin': '*' } }));
 app.use(webpackHotMiddleware(compiler));
 
