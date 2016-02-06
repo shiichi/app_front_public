@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Router, Route, Link, Redirect, IndexRoute, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
-import DiffMonitor from 'redux-devtools-diff-monitor';
+//import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
+//import DiffMonitor from 'redux-devtools-diff-monitor';
 import { IntlProvider } from 'react-intl';
 //Config
 import { _ADMIN_DOMAIN_NAME } from '../../config/env';
