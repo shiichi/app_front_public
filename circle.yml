@@ -6,6 +6,8 @@ machine:
   environment:
     LARABEL_REPO: origin
     LARABEL_BRANCH: testtest
+    NEXT_BUILD_PROJECT: lravel-prod-image
+
   # hosts:
     # l.com: 127.0.0.1
 
@@ -37,3 +39,4 @@ deployment:
     branch: test
     commands:
       - cd laravel_app && sh release.sh
+      - curl -X POST https://circleci.com/api/v1/project/${NEXT_BUILD_PROJECT}/HoritaWorks/tree/master?circle-token=25100e424b3d8b41a04637da43615e9c526592ee
