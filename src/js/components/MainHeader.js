@@ -20,7 +20,7 @@ class MainHeader extends Component {
             </div>
             <div id="navbar" className="navbar-collapse collapse">
               <ul className="nav navbar-nav navbar-left">
-                <li><a className="linkInThePage" href="http://l.com/auth/logout">ログアウト</a></li>
+                <li><a className="linkInThePage" href="http://l.com/logout">ログアウト</a></li>
               </ul>
             </div>
           </div>
