@@ -3,11 +3,8 @@ machine:
     version: 5.5.0
 
 dependencies:
-  cache_directories:
-    - ""
-  pre:
-    - npm install
   override:
+    - npm install
     - npm update npm@3.7.2 -g
 
 
