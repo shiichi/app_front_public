@@ -21,8 +21,3 @@ git add --all :/
 git commit -m "[auto] release branch (${CI_RELEASE_VERSION})"
 #リモートにプッシュ
 git push ${CI_REMOTE_REPOSITORY} ${CI_RELEASE_BRANCH}
-
-curl \
-  --header "Accept: application/vnd.github.v3+json" \
-  --data "{\"title\": \"[auto] ${CI_RELEASE_BRANCH}\", \"head\":\"${CI_RELEASE_BRANCH}\", \"base\":\"master\" }" \
-  https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls?access_token=<github_api_token>
