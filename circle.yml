@@ -1,12 +1,37 @@
 machine:
+  timezone:
+    Asia/Tokyo
   node:
     version: 5.5.0
+  environment:
+    LARABEL_REPO: origin
+    LARABEL_BRANCH: testtest
+    NEXT_BUILD_PROJECT: laravel-prod-image
+    CIRCLE_CI_API_KEY: 5aea22358cc6913340482940712d96da0297e20a
+
+
+dependencies:
+  pre:
+    - node -v
+  override:
+    - npm install
+    - npm update npm@3.7.2 -g
+    - npm rebuild node-sass
+
 
 test:
   override:
-    - npm update npm@3.7.2 -g
-    - npm install
-    - npm rebuild node-sass
     - npm run test
     - npm run build
     - npm run build-admin
+
+deployment:
+  github:
+    branch: test
+    commands:
+      - git clone -b master git@github.com:HoritaWorks/laravel_app.git
+      - cp -fR webpack/dist laravel_app/public/dist-front
+      - cp -fR webpack-admin/dist laravel_app/public/dist-admin
+      - mv release.sh laravel_app/
+      - cd laravel_app && sh release.sh
+      - curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}
