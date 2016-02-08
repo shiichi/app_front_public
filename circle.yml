@@ -5,7 +5,7 @@ machine:
     version: 5.5.0
   environment:
     LARABEL_REPO: origin
-    LARABEL_BRANCH: testtest
+    LARABEL_BRANCH: release
   # hosts:
     # l.com: 127.0.0.1
 
@@ -25,14 +25,11 @@ test:
     - npm run test
     - npm run build
     - npm run build-admin
-    - git clone -b ${LARABEL_BRANCH} git@github.com:HoritaWorks/laravel_app.git
-    - cp -fR webpack/dist laravel_app/public/dist-front
-    - cp -fR webpack-admin/dist laravel_app/public/dist-admin
-    - mv release.sh laravel_app/
+
 
 
 deployment:
   github:
     branch: test
     commands:
-      - cd laravel_app && sh release.sh
+      - sh release.sh
