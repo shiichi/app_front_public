@@ -5,7 +5,7 @@ machine:
     version: 5.5.0
   environment:
     LARABEL_REPO: origin
-    LARABEL_BRANCH: master
+    LARABEL_BRANCH: testtest
   # hosts:
     # l.com: 127.0.0.1
 
