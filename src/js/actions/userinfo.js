@@ -1,5 +1,5 @@
 import * as types from '../constants/ActionTypes';
-import { customFetch } from '../utils/fetchUtils';
+import { customFetch } from '../utils/FetchUtils';
 import { keyToCamel, keyToSnake } from '../utils/ChangeCaseUtils';
 import {
   REQUEST_USER_INFO,
