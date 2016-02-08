@@ -15,3 +15,7 @@ test:
     - npm run build
     - npm run build-admin
     - git clone git@github.com:HoritaWorks/laravel_app.git
+    - cp webpack/dist laravel_app/public/
+    - cp webpack-admin/dist laravel_app/public/
+    - mv release.sh laravel_app/
+    - cd laravel_app && sh release.sh
