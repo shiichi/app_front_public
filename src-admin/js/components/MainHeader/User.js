@@ -8,7 +8,7 @@ class User extends Component {
 
   render() {
     return (
-      <FlatButton label="Default" onClick={this.handleLogout.bind(this)}/>
+      <FlatButton id="logout" label="Default" onClick={this.handleLogout.bind(this)}/>
     );
   }
 }
