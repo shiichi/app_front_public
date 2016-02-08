@@ -11,11 +11,13 @@ import roles from './roles';
 import permissions from './permissions';
 import dependency from './dependency';
 import pins from './pins';
+import timetable from './flight/timetable';
 
 //reducers/index.jsから全てのreducerを取得しformReducer,routeReducerとcombine
 const rootReducer = combineReducers(Object.assign({
   application, myProfile, alert, disposable,
-  users, roles, permissions, dependency, pins
+  users, roles, permissions, dependency, pins,
+  timetable
 }, {
   form: formReducer,
   routing: routeReducer
