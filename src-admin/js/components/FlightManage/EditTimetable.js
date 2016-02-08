@@ -7,39 +7,35 @@ import TimetableBox from './TimetableBox';
 class EditTimetable extends Component {
   constructor(props, context) {
     super(props, context);
-    // this.props.actions.fetchTimetable('1_1_0', {
-    //   flight_type: 1,
-    //   place: 1,
-    //   week:0
-    // });
+    this.props.actions.fetchTimetable('1_1_0', {
+      flight_type: 1,
+      place: 1,
+      week:0
+    });
   }
 
   render() {
-    const { data, isFetching, didInvalidate, fetchTimetableIfNeeded } = this.props;
+    const { timetable, isFetching, didInvalidate, fetchTimetable } = this.props;
     return (
       <div className="timetable-box">
         <SelectDate
           isFetching={isFetching}
-          fetchTimetableIfNeeded={fetchTimetableIfNeeded}/>
+          fetchTimetable={fetchTimetable}/>
         <TimetableBox
+          timetable={timetable}
           isFetching={isFetching}
           didInvalidate={didInvalidate}
-          data={data}
-          fetchTimetableIfNeeded={fetchTimetableIfNeeded}/>
+          fetchTimetable={fetchTimetable}/>
       </div>
     );
   }
 }
 
 EditTimetable.propTypes = {
-  routing: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired
+  timetable: PropTypes.object.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  didInvalidate: PropTypes.bool.isRequired,
+  fetchTimetable: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
-  return {
-    routing: state.routing
-  };
-}
-
-export default connect(mapStateToProps)(EditTimetable);
+export default EditTimetable;

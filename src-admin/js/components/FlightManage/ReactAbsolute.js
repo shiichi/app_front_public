@@ -66,11 +66,11 @@ class ReactAbsolute extends Component {
     console.log(e.target);
   }
 
-  handleOpen(e) {
+  handleOpen() {
     this.setState({open: true});
   };
 
-  handleClose(e) {
+  handleClose() {
     this.setState({open: false});
   };
 

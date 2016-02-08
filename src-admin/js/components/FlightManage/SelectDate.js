@@ -1,4 +1,6 @@
 import React, { PropTypes, Component } from 'react';
+import FontIcon from 'material-ui/lib/font-icon';
+import Colors from 'material-ui/lib/styles/colors';
 
 class SelectDate extends Component {
   handleClicked(e) {
@@ -12,10 +14,13 @@ class SelectDate extends Component {
   }
 
   render() {
+const iconStyles = {
+  marginRight: 24,
+};
     return (
       <div className="page-nation clearfix" onClick={this.handleClicked.bind(this)}>
-        <div className="btn-buck"></div>
-        <div className="btn-next"></div>
+        <FontIcon className="material-icons" style={iconStyles} color={Colors.blue500}>videogame_asset</FontIcon>
+        <FontIcon className="material-icons" style={iconStyles} color={Colors.blue500}>videogame_asset</FontIcon>
       </div>
     );
   }
