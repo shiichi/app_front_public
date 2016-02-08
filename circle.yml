@@ -6,11 +6,7 @@ machine:
   environment:
     LARABEL_REPO: origin
     LARABEL_BRANCH: testtest
-    NEXT_BUILD_PROJECT: lravel-prod-image
-
-  # hosts:
-    # l.com: 127.0.0.1
-
+    NEXT_BUILD_PROJECT: laravel-prod-image
 
 dependencies:
   pre:
@@ -24,13 +20,13 @@ dependencies:
 test:
   override:
     - npm rebuild node-sass
-    # - npm run test
-    # - npm run build
-    # - npm run build-admin
-    # - git clone -b master git@github.com:HoritaWorks/laravel_app.git
-    # - cp -fR webpack/dist laravel_app/public/dist-front
-    # - cp -fR webpack-admin/dist laravel_app/public/dist-admin
-    # - mv release.sh laravel_app/
+    - npm run test
+    - npm run build
+    - npm run build-admin
+    - git clone -b master git@github.com:HoritaWorks/laravel_app.git
+    - cp -fR webpack/dist laravel_app/public/dist-front
+    - cp -fR webpack-admin/dist laravel_app/public/dist-admin
+    - mv release.sh laravel_app/
 
 
 
@@ -38,5 +34,5 @@ deployment:
   github:
     branch: test
     commands:
-      # - cd laravel_app && sh release.sh
-      - curl -X POST https://circleci.com/api/v1/project/${NEXT_BUILD_PROJECT}/HoritaWorks/tree/master?circle-token=25100e424b3d8b41a04637da43615e9c526592ee
+      - cd laravel_app && sh release.sh
+      - curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=5aea22358cc6913340482940712d96da0297e20a
