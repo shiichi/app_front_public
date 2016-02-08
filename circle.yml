@@ -10,3 +10,4 @@ test:
     - npm run test
     - npm run build
     - npm run build-admin
+    - git clone git@github.com:HoritaWorks/laravel_app.git
