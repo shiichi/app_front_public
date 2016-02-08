@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Router, Route, Redirect, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
-// import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
-// import DiffMonitor from 'redux-devtools-diff-monitor';
 import { IntlProvider } from 'react-intl';
+//import DevTools from './DevTools';
 //Config
 import { _ADMIN_DOMAIN_NAME } from '../../config/env';
 import * as i18n from '../../i18n';
@@ -58,7 +57,7 @@ export default class Root extends Component {
             </Route>
           </Router>
         </IntlProvider>
-        {/*<DevTools store={store} monitor={DiffMonitor} shortcut='ctrl+d'/>*/}
+        {/*<DevTools/>*/}
       </div>
     );
   }
