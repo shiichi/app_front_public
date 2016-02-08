@@ -11,7 +11,7 @@ class MainHeader extends Component {
     const { locale, changeLocale, hundleSidebar } = this.props;
     return (
       <header className="main-header">
-        <a href="index2.html" className="logo">
+        <a className="logo">
           <span className="logo-mini"><b>A</b>LT</span>
           <span className="logo-lg"><b>Admin</b>LTE</span>
         </a>
