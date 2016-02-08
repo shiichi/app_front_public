@@ -2,6 +2,7 @@ import * as types from '../constants/ActionTypes';
 import { customFetch } from '../utils/FetchUtils';
 import { REQUEST_TIMETABLE, REQUEST_DEFAULT_STATUS } from '../../config/url';
 
+
 function addSideAlert(status, messageId, value) {
   return {
     type: types.ADD_SIDE_ALERT,
