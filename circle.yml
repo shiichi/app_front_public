@@ -1,8 +1,18 @@
 machine:
+  timezone:
+    America/Los_Angeles # Set the timezone
   node:
     version: 5.5.0
+  environment:
+    CIRCLE_ENV: test
+    DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
+  hosts:
+    l.com: 127.0.0.1
+
 
 dependencies:
+  pre:
+    - node -v
   override:
     - npm install
     - npm update npm@3.7.2 -g
