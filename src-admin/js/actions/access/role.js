@@ -1,5 +1,5 @@
 import * as types from '../../constants/ActionTypes';
-import { customFetch } from '../../utils/fetchUtils';
+import { customFetch } from '../../utils/FetchUtils';
 import { keyToCamel } from '../../utils/ChangeCaseUtils';
 
 export function addSideAlert(status, messageId, value) {
