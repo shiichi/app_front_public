@@ -21,20 +21,6 @@ class SidebarMenu extends Component {
         <li className="link pin">
           <Link to={`${_ADMIN_DOMAIN_NAME}pins`} activeClassName="active" ><Icon name="calendar" /> PinCode Management</Link>
         </li>
-        <li className=" treeview">
-          <a href="#">
-            <span>Log Viewer</span>
-            <i className="fa fa-angle-left pull-right" />
-          </a>
-          <ul className="treeview-menu " style={{ display: 'none' }}>
-            <li className>
-              <a href="http://l.com/admin/log-viewer">Dashboard</a>
-            </li>
-            <li className>
-              <a href="http://l.com/admin/log-viewer/logs">Logs</a>
-            </li>
-          </ul>
-        </li>
       </ul>
     );
   }
