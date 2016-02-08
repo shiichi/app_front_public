@@ -1,6 +1,6 @@
 machine:
   timezone:
-    America/Los_Angeles # Set the timezone
+    Asia/Tokyo
   node:
     version: 5.5.0
   environment:

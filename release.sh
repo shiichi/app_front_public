@@ -4,9 +4,6 @@
 
 set -e
 
-    LARABEL_REPO: test
-    LARABEL_BRANCH: sample
-
 git config --global user.email "eigotyoubunn30@gmail.com" #コミットユーザの有効なメールアドレス
 git config --global user.name "atyenoria" #コミットユーザの名前
 
