@@ -11,4 +11,4 @@ CI_REMOTE_REPOSITORY="${LARABEL_REPO}"
 git checkout -b ${CI_RELEASE_BRANCH}
 git add --all :/
 git commit -m "[auto] release branch (${CI_RELEASE_VERSION})"
-git push ${CI_REMOTE_REPOSITORY} ${CI_RELEASE_BRANCH}
+git push -f ${CI_REMOTE_REPOSITORY} ${CI_RELEASE_BRANCH}

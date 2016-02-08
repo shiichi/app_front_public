@@ -28,4 +28,9 @@ test:
     - cp -fR webpack/dist laravel_app/public/dist-front
     - cp -fR webpack-admin/dist laravel_app/public/dist-admin
     - mv release.sh laravel_app/
-    - cd laravel_app && sh release.sh
+
+deployment:
+  github:
+    branch: develop
+    commands:
+      - cd laravel_app && sh release.sh
