@@ -12,7 +12,7 @@ machine:
 
 dependencies:
   pre:
-    # - node -v
+    - node -v
     - npm -v
   override:
     - npm install
