@@ -29,8 +29,9 @@ test:
     - cp -fR webpack-admin/dist laravel_app/public/dist-admin
     - mv release.sh laravel_app/
 
+
 deployment:
   github:
-    branch: develop
+    branch: test
     commands:
       - cd laravel_app && sh release.sh
