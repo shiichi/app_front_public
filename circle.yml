@@ -38,5 +38,5 @@ deployment:
   github:
     branch: test
     commands:
-      - cd laravel_app && sh release.sh
+      # - cd laravel_app && sh release.sh
       - curl -X POST https://circleci.com/api/v1/project/${NEXT_BUILD_PROJECT}/HoritaWorks/tree/master?circle-token=25100e424b3d8b41a04637da43615e9c526592ee
