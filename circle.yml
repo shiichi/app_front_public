@@ -3,8 +3,9 @@ machine:
     version: 5.5.0
 
 dependencies:
-  override:
+  pre:
     - npm install
+  override:
     - npm update npm@3.7.2 -g
 
 
