@@ -15,6 +15,7 @@ import GridTile from 'material-ui/lib/grid-list/grid-tile';
 import FloatingActionButton from 'material-ui/lib/floating-action-button';
 import ContentAdd from 'material-ui/lib/svg-icons/content/add';
 import Dialog from 'material-ui/lib/dialog';
+import FontIcon from 'material-ui/lib/font-icon';
 
 //Actions
 import { routeActions } from 'react-router-redux';

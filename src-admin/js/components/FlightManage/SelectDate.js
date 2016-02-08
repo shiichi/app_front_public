@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
-import FontIcon from 'material-ui/lib/font-icon';
 import Colors from 'material-ui/lib/styles/colors';
+import IconButton from 'material-ui/lib/icon-button';
+import ActionHome from 'material-ui/lib/svg-icons/action/home';
 
 class SelectDate extends Component {
   handleClicked(e) {
@@ -18,9 +19,16 @@ const iconStyles = {
   marginRight: 24,
 };
     return (
-      <div className="page-nation clearfix" onClick={this.handleClicked.bind(this)}>
-        <FontIcon className="material-icons" style={iconStyles} color={Colors.blue500}>videogame_asset</FontIcon>
-        <FontIcon className="material-icons" style={iconStyles} color={Colors.blue500}>videogame_asset</FontIcon>
+      <div style={{height: 500}}>
+        <IconButton tooltip="SVG Icon">
+          <ActionHome />
+        </IconButton>
+    <IconButton
+      iconClassName="material-icons"
+      tooltip="Ligature"
+    >
+      home
+    </IconButton>
       </div>
     );
   }

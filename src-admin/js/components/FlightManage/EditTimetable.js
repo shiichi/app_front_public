@@ -7,11 +7,11 @@ import TimetableBox from './TimetableBox';
 class EditTimetable extends Component {
   constructor(props, context) {
     super(props, context);
-    this.props.actions.fetchTimetable('1_1_0', {
-      flight_type: 1,
-      place: 1,
-      week:0
-    });
+    // this.props.actions.fetchTimetable('1_1_0', {
+    //   flight_type: 1,
+    //   place: 1,
+    //   week:0
+    // });
   }
 
   render() {
