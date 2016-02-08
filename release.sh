@@ -12,7 +12,7 @@ CI_RELEASE_VERSION=`date +"v%Y%m%d%H%M%S"`
 # リリースブランチ名
 CI_RELEASE_BRANCH="${LARABEL_BRANCH}"
 # リモートリポジトリ
-CI_REMOTE_REPOSITORY="git@github.com:${CIRCLE_PROJECT_USERNAME}/${LARABEL_REPO}.git"
+CI_REMOTE_REPOSITORY="${LARABEL_REPO}"
 # リリースブランチ作成
 git checkout -b ${CI_RELEASE_BRANCH}
 #変更ファイルををすべて追加

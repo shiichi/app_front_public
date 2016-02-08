@@ -1,11 +1,11 @@
 machine:
-  # timezone:
-    # Asia/Tokyo
+  timezone:
+    Asia/Tokyo
   node:
     version: 5.5.0
   environment:
-    LARABEL_REPO: test
-    LARABEL_BRANCH: sample
+    LARABEL_REPO: origin
+    LARABEL_BRANCH: testtest
   # hosts:
     # l.com: 127.0.0.1
 
@@ -25,7 +25,7 @@ test:
     - npm run build
     - npm run build-admin
     - git clone git@github.com:HoritaWorks/laravel_app.git
-    - cp webpack/dist laravel_app/public/
-    - cp webpack-admin/dist laravel_app/public/
+    - cp -fR webpack/dist laravel_app/public/dist-front
+    - cp -fR webpack-admin/dist laravel_app/public/dist-admin
     - mv release.sh laravel_app/
     - cd laravel_app && sh release.sh
