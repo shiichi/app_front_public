@@ -96,7 +96,7 @@ class CreditCard extends Component {
           </div>
           <div className="webpayForm" ref="webpayForm"></div>
           <div className="pay">
-            <input type="submit" value="チケットを購入" className="btn btn-danger" />
+            <input type="submit" value="チケットを購入" className="btn btn-danger" id="payBywebpay"/>
           </div>
         </form>
       </div>

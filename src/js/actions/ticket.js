@@ -39,6 +39,7 @@ export function requestTicketFail() {
 export function fetchWebpay(request) {
   return dispatch => {
     dispatch(requestTicket());
+    console.log('aaa')
     customFetch(WEBPAY, 'POST', request)
     .then(result => {
       if (result.msg.type === 'error') {

@@ -17,12 +17,12 @@ class NavHeader extends Component {
           <tbody>
             <tr>
               <td>予約中</td>
-              <td><span className="">{ reservations }</span></td>
+              <td><span id="reservations">{ reservations }</span></td>
               <td>件</td>
             </tr>
             <tr>
               <td>チケット</td>
-              <td><span className="">{ remainingTickets }</span></td>
+              <td><span id="remainingTickets">{ remainingTickets }</span></td>
               <td>枚</td>
             </tr>
           </tbody>
