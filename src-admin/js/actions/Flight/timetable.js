@@ -12,34 +12,36 @@ function addSideAlert(status, messageId, value) {
 function requestTimetable(key) {
   return {
     type: types.REQUEST_TIMETABLE,
-    key: key
+    key
   };
 }
 
-function requestTimetableSuccess(key, data) {
+function requestTimetableSuccess(key, timetables) {
   return {
     type: types.REQUEST_TIMETABLE_SUCCESS,
-    key: key,
-    data: data,
+    key,
+    timetables,
   };
 }
 
 function requestTimetableFail(key) {
   return {
     type: types.REQUEST_TIMETABLE_FAIL,
-    key: key
+    key
   };
 }
 
-export function fetchTimetable(key, request) {
+export function fetchTimetable(request) {
   return dispatch => {
+    const key = `${request.type}_${request.type}`;
     dispatch(requestTimetable(key));
-    customFetch('api/getTimetable', 'POST', request)
+    customFetch('flight/timetables', 'POST', request)
     .then(result => {
       dispatch(requestTimetableSuccess(key, result));
     })
     .catch(ex => {
       dispatch(requestTimetableFail(key));
+      dispatch(addSideAlert('danger', `server.${ex.status}`));
     })
   };
 }

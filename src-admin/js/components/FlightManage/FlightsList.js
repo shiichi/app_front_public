@@ -18,11 +18,6 @@ import EditTimetable from './EditTimetable';
 class FlightsList extends Component {
   constructor(props, context) {
     super(props, context);
-    props.actions.fetchTimetable('1_1_0', {
-      flight_type: 1,
-      place: 1,
-      week:0
-    });
     this.state = {
       status: {
         '1_1': { active: true, open: 17, reserved: 3, img: '/img/gymnasium.jpg' },
@@ -48,8 +43,6 @@ class FlightsList extends Component {
   }
 
   handleOpen(key) {
-    console.log(key);
-
     this.setState({open: true});
   };
 
@@ -58,7 +51,7 @@ class FlightsList extends Component {
   };
 
   render() {
-    console.log(this.state)
+    const { fetchTimetable } = this.props.actions;
     const { status } = this.state;
     const actions = [
       <FlatButton
@@ -108,12 +101,13 @@ class FlightsList extends Component {
             actions={actions}
             modal={true}
             open={this.state.open}
-            contentStyle={this.styles().customContentStyle}>
+            contentStyle={this.styles().customContentStyle}
+            bodyStyle={this.styles().dialog}>
             <EditTimetable
               data={null}
               isFetching={true}
               didInvalidate={false}
-              fetchTimetable={false}/>
+              fetchTimetable={fetchTimetable}/>
           </Dialog>
         </div>
       </Paper>
@@ -161,8 +155,15 @@ class FlightsList extends Component {
 
       customContentStyle: {
         width: '90%',
+        height: '90%',
         maxWidth: 'none',
       },
+
+      dialog: {
+        overflow: 'scroll',
+        height: 400,
+        //maxHeight: 350
+      }
     }
   }
 }

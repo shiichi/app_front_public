@@ -1,26 +1,52 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import RaisedButton from 'material-ui/lib/raised-button';
+import IconButton from 'material-ui/lib/icon-button';
+import FontIcon from 'material-ui/lib/font-icon';
+
 //Components
 import SelectDate from './SelectDate';
 import TimetableBox from './TimetableBox';
 
 class EditTimetable extends Component {
-  constructor(props, context) {
-    super(props, context);
-    // this.props.actions.fetchTimetable('1_1_0', {
-    //   flight_type: 1,
-    //   place: 1,
-    //   week:0
-    // });
+  constructor(props) {
+    super(props);
+    props.fetchTimetable({
+      type: 1,
+      place: 1,
+      days: [0,1,2,3,4,5,6]
+    });
   }
 
   render() {
+    const S = {
+      btn: {
+        position: 'fixed',
+        width: 10,
+        height: '50%',
+        zIndex: 1900,
+      },
+      icon: {
+        position: 'fixed',
+        width: 10,
+        height: '100%',
+        zIndex: 1900,
+      },
+      back: {
+
+      },
+      next:{
+
+      },
+      timetable: {
+
+      }
+    }
+
     const { timetable, isFetching, didInvalidate, fetchTimetable } = this.props;
     return (
-      <div className="timetable-box">
-        <SelectDate
-          isFetching={isFetching}
-          fetchTimetable={fetchTimetable}/>
+      <div>
+        <RaisedButton label="Default" style={S.btn}/>
         <TimetableBox
           timetable={timetable}
           isFetching={isFetching}

@@ -4,14 +4,11 @@ import {
   REQUEST_TIMETABLE_FAIL,
 } from '../../constants/ActionTypes';
 
-const initialState = {
+function change(state = {
   isFetching: false,
   didInvalidate: false,
-  key: null,
-  timetable: null
-};
-
-export default function timetable(state = initialState, action) {
+  timetables: null
+}, action) {
   switch (action.type) {
   case REQUEST_TIMETABLE:
     return Object.assign({}, state, {
@@ -23,8 +20,10 @@ export default function timetable(state = initialState, action) {
     return Object.assign({}, state, {
       isFetching: false,
       didInvalidate: false,
-      key: action.key,
-      timetable: action.timetable,
+      timetables: action.timetables.reduce((timetables, t) => {
+        timetables[t[0][0] * 100 + t[0][1]] = t;
+        return timetables;
+      }, {}),
     });
 
   case REQUEST_TIMETABLE_FAIL:
@@ -37,3 +36,18 @@ export default function timetable(state = initialState, action) {
     return state;
   }
 }
+
+export default function timetables(state = {}, action) {
+  switch (action.type) {
+  case REQUEST_TIMETABLE:
+  case REQUEST_TIMETABLE_SUCCESS:
+  case REQUEST_TIMETABLE_FAIL:
+    return Object.assign({}, state, {
+      [action.key]: change(state[action.key], action)
+    });
+
+  default:
+    return state;
+  }
+}
+
