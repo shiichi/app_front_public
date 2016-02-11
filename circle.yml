@@ -1,7 +1,7 @@
 general:
   branches:
     only:
-      - build
+      - master
 
 machine:
   timezone:
@@ -10,7 +10,7 @@ machine:
     version: 5.5.0
   environment:
     LARABEL_REPO: origin
-    LARABEL_BRANCH: prod
+    LARABEL_BRANCH: app-front-master-build
     NEXT_BUILD_PROJECT: laravel-prod-image
     CIRCLE_CI_API_KEY: 5aea22358cc6913340482940712d96da0297e20a
 
@@ -35,11 +35,11 @@ test:
 
 deployment:
   github:
-    branch: master
+    branch: build
     commands:
       - git clone -b master git@github.com:HoritaWorks/laravel_app.git
       - cp -fR webpack/dist laravel_app/public/dist-front
       - cp -fR webpack-admin/dist laravel_app/public/dist-back
       - mv release.sh laravel_app/
       - cd laravel_app && sh release.sh
-      - curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}
+      # - curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}
