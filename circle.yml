@@ -1,5 +1,7 @@
-# general:
-#   tag: /release-.*/
+general:
+  branches:
+    only:
+      - master
 
 machine:
   timezone:
@@ -44,8 +46,8 @@ test:
 #       - cd laravel_app && sh release.sh
 
 deployment:
-  release:
-    tag: /*/
+  github:
+    branch: master
     commands:
       - ls -lat
       - ls -lat
