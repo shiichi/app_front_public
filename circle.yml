@@ -34,12 +34,19 @@ test:
       - ls
 
 
+# deployment:
+#   github:
+#     tag: /v[0-9]+(\.[0-9]+)*/
+#     commands:
+#       - git clone -b master git@github.com:HoritaWorks/laravel_app.git
+#       - cp -fR webpack/dist laravel_app/public/dist-front
+#       - cp -fR webpack-admin/dist laravel_app/public/dist-back
+#       - mv release.sh laravel_app/
+#       - cd laravel_app && sh release.sh
+
 deployment:
-  github:
-    tag: /v[0-9]+(\.[0-9]+)*/
+  release:
+    tag: /release-.*/
+    owner: circleci
     commands:
-      - git clone -b master git@github.com:HoritaWorks/laravel_app.git
-      - cp -fR webpack/dist laravel_app/public/dist-front
-      - cp -fR webpack-admin/dist laravel_app/public/dist-back
-      - mv release.sh laravel_app/
-      - cd laravel_app && sh release.sh
+      - ./deploy_master.sh
