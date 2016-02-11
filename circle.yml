@@ -10,7 +10,7 @@ machine:
     version: 5.5.0
   environment:
     LARABEL_REPO: origin
-    LARABEL_BRANCH: app-front-master-build
+    LARABEL_BRANCH: build
     NEXT_BUILD_PROJECT: laravel-prod-image
     CIRCLE_CI_API_KEY: 5aea22358cc6913340482940712d96da0297e20a
 
@@ -20,7 +20,7 @@ dependencies:
     - node -v
     - npm -v
   override:
-      - ls
+      # - ls
     # - npm install
     # - npm update npm@3.7.2 -g
     # - npm rebuild node-sass
@@ -39,7 +39,7 @@ test:
 deployment:
   release:
     tag: /build/
-    owner: circleci
+    owner: atyenoria
     commands:
       - git clone -b master git@github.com:HoritaWorks/laravel_app.git
       - cp -fR webpack/dist laravel_app/public/dist-front
