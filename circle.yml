@@ -49,4 +49,4 @@ deployment:
     tag: /release-.*/
     owner: atyenoria
     commands:
-      - ls -la
+      - ls -lat
