@@ -3,3 +3,31 @@
 @import "access";
 @import "alert";
 @import "react-bs-table";
+
+html {height:100%;}
+body {height:100%;}
+
+
+.saturday{
+	background-color: #9BD7EC;
+
+	p{
+		color:#005BC5;
+	}
+
+	&.active{
+		position: relative;
+		
+		p:before{
+			content: "";
+			display: block;
+			background-color: #4A90E2;
+			border-radius: 4px 4px 0 0;
+			height: 5px;
+			width: 100%;
+			position: absolute;
+		    right: 0px;
+    		top: 0px;			
+		}
+	}
+}

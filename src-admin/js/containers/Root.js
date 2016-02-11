@@ -6,6 +6,9 @@ import { IntlProvider } from 'react-intl';
 //Config
 import { _ADMIN_DOMAIN_NAME } from '../../config/env';
 import * as i18n from '../../i18n';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 //Components
 import App from './App';
 import Dashboard from '../components/Dashboard/Dashboard';

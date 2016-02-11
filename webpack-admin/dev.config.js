@@ -1,10 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 
 module.exports = {
-  //devtool: 'cheap-module-source-map',
-  devtool: 'eval',  
+  devtool: 'cheap-module-source-map',
+  //devtool: 'eval',  
   entry: [
     'webpack-hot-middleware/client?path=http://localhost:3001/__webpack_hmr',
     'bootstrap-loader',
@@ -19,8 +20,10 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify("development")
+      'process.env.NODE_ENV': JSON.stringify("development"),
+      'process.env.BABEL_ENV': JSON.stringify("development"),
     }),
+    new ExtractTextPlugin('bundle.css', { allChunks: true })
   ],
   module: {
     loaders: [
@@ -29,12 +32,9 @@ module.exports = {
         exclude: /node_modules/
       }, {
         test: /\.css$/,
-        loaders: [
-          'style',
-          'css?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]',
-          'postcss',
-        ]
-
+        loader: ExtractTextPlugin.extract(
+          'style', 'css'
+        )
       }, {
         test: /\.scss$/,
         loaders: [
@@ -62,7 +62,7 @@ module.exports = {
       /* font-awesome */
       {
         test: /fontawesome-webfont\.(otf|eot|svg|ttf|woff)\??/,
-        loader: 'url-loader?limit=8192'
+        loader: "url-loader?limit=8192"
       }, {
         test: /\.jpg$/,
         loader: "url-loader?mimetype=image/jpg"

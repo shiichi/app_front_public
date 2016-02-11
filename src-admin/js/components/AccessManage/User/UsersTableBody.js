@@ -2,6 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Icon from 'react-fa';
+import SocialGroup from 'material-ui/lib/svg-icons/social/group';
+import ContentCreate from 'material-ui/lib/svg-icons/content/create';
 //Config
 import { _ADMIN_DOMAIN_NAME } from '../../../../config/env';
 //Utility

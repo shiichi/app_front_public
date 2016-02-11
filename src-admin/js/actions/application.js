@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes';
+//import { routeActions } from 'react-router-redux';
 
 export function changeLocale(locale) {
   return {

@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 // import injectTapEventPlugin from 'react-tap-event-plugin';
-//Material-UI-components
+
+// Material-UI-components
 import FlatButton from 'material-ui/lib/flat-button';
 import RaisedButton from 'material-ui/lib/raised-button';
 import Checkbox from 'material-ui/lib/checkbox';
@@ -29,34 +29,18 @@ class ReactAbsolute extends Component {
     super(props, context);
     this.state = {
       status: {
-        1: {
-          active: true,
-          img: '/img/gymnasium.jpg',
-          open: 17,
-          reserved: 3,
-        },
-
-        2: {
-          active: true,
-          img: '/img/country.jpg',
-          open: 17,
-          reserved: 3,
-        },
-
-        3: {
-          active: true,
-          img: '/img/morikoro.jpg',
-          open: 17,
-          reserved: 3,
-        },
-
-        4: {
-          active: false,
-          img: '/img/river.jpg',
-          imgStyle: { opacity: 0.3 },
-          open: 17,
-          reserved: 3,
-        },
+        '1_1': { active: true, open: 17, reserved: 3, img: '/img/gymnasium.jpg' },
+        '1_2': { active: true, open: 17, reserved: 3, img: '/img/country.jpg' },
+        '1_3': { active: true, open: 17, reserved: 3, img: '/img/morikoro.jpg' },
+        '1_4': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },          
+        '2_1': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },         
+        '2_2': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },         
+        '2_3': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },         
+        '2_4': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },         
+        '3_1': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },         
+        '3_2': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },         
+        '3_3': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },         
+        '3_4': { active: false, open: 17, reserved: 3, img: '/img/river.jpg' },         
       },
       open: false
     };
@@ -67,7 +51,9 @@ class ReactAbsolute extends Component {
     console.log(e.target);
   }
 
-  handleOpen() {
+  handleOpen(key) {
+    console.log(key);
+
     this.setState({open: true});
   };
 
@@ -76,20 +62,13 @@ class ReactAbsolute extends Component {
   };
 
   render() {
-    const { status } = this.state;
     console.log(this.state)
+    const { status } = this.state;
     const actions = [
       <FlatButton
         label="Cancel"
         secondary={true}
-        onClick={this.handleClose.bind(this)}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        disabled={true}
-        onClick={this.handleClose.bind(this)}
-      />,
+        onClick={this.handleClose.bind(this)}/>
     ];
 
     return (
@@ -110,8 +89,12 @@ class ReactAbsolute extends Component {
                     <span style={{fontSize: '2rem', marginRight: '2rem'}}>{status[key].open}</span>
                     <span style={{fontSize: '1.5rem', marginRight: '.5rem'}}>予約数</span>
                     <span style={{fontSize: '2rem', marginRight: '.5rem'}}>{status[key].reserved}</span>
-                  </p> : ""}>
-                <img src={status[key].img} style={Object.assign({}, this.styles().img, status[key].imgStyle)}/>
+                  </p> : ""}
+              >
+                <img
+                  src={status[key].img}
+                  style={Object.assign({}, this.styles().img, status[key].active ? {} : { opacity: 0.3 })}
+                  onClick={this.handleOpen.bind(this, key)}/>
                 {!status[key].active &&
                 <FloatingActionButton
                   onClick={this.hundleClick.bind(this)}
@@ -124,12 +107,12 @@ class ReactAbsolute extends Component {
           </GridList>
         </div>
         <div>
-          <RaisedButton label="Modal Dialog" onClick={this.handleOpen.bind(this)} />
           <Dialog
             title="開講状況の変更"
             actions={actions}
             modal={true}
-            open={this.state.open}>
+            open={this.state.open}
+            contentStyle={this.styles().customContentStyle}>
             <EditTimetable
               data={null}
               isFetching={true}
@@ -144,7 +127,7 @@ class ReactAbsolute extends Component {
   styles() {
     return {
       paper: {
-        height: 500,
+        height: 700,
         width: '95%',
         margin: 20,
         textAlign: 'center',
@@ -159,13 +142,13 @@ class ReactAbsolute extends Component {
 
       gridList: {
         width: 800,
-        height: 300,
+        height: 600,
         overflowY: 'auto',
+        marginTop: 24,
         marginBottom: 24,
       },
 
       button: {
-        marginRight: 20,
         position: 'absolute',
         top: 60,
         left: 62,
@@ -178,6 +161,11 @@ class ReactAbsolute extends Component {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%,-50%)',
+      },
+
+      customContentStyle: {
+        width: '90%',
+        maxWidth: 'none',
       },
     }
   }

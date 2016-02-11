@@ -16,16 +16,16 @@ module.exports = {
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify("prod")
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
       }
     }),
-    new webpack.optimize.AggressiveMergingPlugin(),
     new ExtractTextPlugin('bundle.css', { allChunks: true })
   ],
   module: {

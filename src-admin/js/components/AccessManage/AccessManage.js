@@ -1,10 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import Colors from 'material-ui/lib/styles/colors';
 
 class AccessManage extends Component {
   render() {
     return (
-      <div className="content-wrapper" style={{ minHeight: '916px' }}>
+      <div style={{ minHeight: '916px', background: Colors.blueGrey50}}>
         <section className="content-header">
           <h1>Access Management</h1>
         </section>

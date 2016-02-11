@@ -1,52 +1,108 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-//actions
+// Actions
 import * as ApplicationActions from '../actions/application';
 import * as MyProfileActions from '../actions/myProfile';
 import * as InitializeActions from '../actions/initialize';
-//components
-import MainHeader from '../components/MainHeader/MainHeader';
-import MainSidebar from '../components/MainSidebar/MainSidebar';
-import Alert from '../components/Common/Alert';
+import { routeActions } from 'react-router-redux';
 
+// Theme
+import ThemeManager from 'material-ui/lib/styles/theme-manager';
+import ThemeDecorator from 'material-ui/lib/styles/theme-decorator';
+import MyTheme from '../theme/theme';
+// Components
+import {
+  AppBar, Paper, IconButton, IconMenu, MenuItem, ThemeWrapper
+} from 'material-ui';
+import Alert from '../components/Common/Alert';
+import MainSidebar from '../components/MainSidebar/MainSidebar';
+// Icons
+import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
+import SocialPublic from 'material-ui/lib/svg-icons/social/public';
+
+@ThemeDecorator(ThemeManager.getMuiTheme(MyTheme))
 class App extends Component {
   constructor(props, context) {
     super(props, context);
-    this.handleSidebar = this.handleSidebar.bind(this);
     props.actions.fetchMyProfile();
-    this.state = { sidebar: 'min' };
+    this.state = {
+      open: true
+    };
   }
 
-  handleSidebar() {
-    if (this.state.sidebar === 'min') {
-      this.setState({ sidebar: 'collapse' });
-    } else {
-      this.setState({ sidebar: 'min' });
-    }
+  handleToggle() {
+    this.setState({open: !this.state.open});
+  }
+
+  handleClick(e, key) {
+    console.log(key)
+  }
+
+  handleLocale(key) {
+    const { changeLocale } = this.props.actions;
+    changeLocale(key);
+  }
+
+  handleSignOut(e, key) {
+    window.location.href = '/logout';
   }
 
   render() {
-    const { locale, myProfile, alert, children, actions: {
-      changeLocale, deleteSideAlerts } } = this.props;
+    const { locale, myProfile, alert, children, routing, actions: {
+      changeLocale, deleteSideAlerts, push
+    }} = this.props;
+
+    const styles = {
+      leftNav: {
+        height: '100%',
+        width: 230,
+        position: 'fixed',
+        textAlign: 'center',
+        display: 'inline-block'   
+      },
+    }
 
     return (
-      <div className={`hold-transition skin-black sidebar-${this.state.sidebar}`}>
-        <div id="dashboard-container">
-          <div className="wrapper">
-            <MainHeader
-              locale={locale}
-              changeLocale={changeLocale}
-              hundleSidebar={this.handleSidebar}
-            />
-            <MainSidebar myProfile={myProfile}/>
-            <Alert
-              alert={alert}
-              deleteSideAlerts={deleteSideAlerts}
-            />
-            {children}
-          </div>
-        </div>
+      <div id="dashboard-container">
+        <Alert alert={alert} deleteSideAlerts={deleteSideAlerts} />
+        <AppBar
+          style={styles.appBar}
+          title="H works App"
+          onLeftIconButtonTouchTap={this.handleToggle.bind(this)}
+          iconElementRight={
+            <div>
+              <IconMenu
+                iconButtonElement={<IconButton><MoreVertIcon/></IconButton>}
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                onTouchTap={this.handleLocale}
+                onRequestChange={this.handleLocale}>
+                <MenuItem primaryText="Top" onTouchTap={this.handleClick.bind(this, 'top')}/>
+                <MenuItem primaryText="My Page" onTouchTap={this.handleClick.bind(this, 'myPage')}/>
+                <MenuItem primaryText="Sign out" onTouchTap={this.handleSignOut}/>
+              </IconMenu>
+              <IconMenu
+                iconButtonElement={<IconButton><SocialPublic /></IconButton>}
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+                <MenuItem primaryText="English" onTouchTap={this.handleLocale.bind(this, 'en')}/>
+                <MenuItem primaryText="Japanese" onTouchTap={this.handleLocale.bind(this, 'ja')}/>
+              </IconMenu>
+            </div>
+          }
+        />
+        <Paper style={Object.assign({}, styles.leftNav, {
+          left: this.state.open ? 0 : -230,
+        })}>
+          <MainSidebar
+            myProfile={myProfile}
+            pathname={routing.location.pathname}
+            push={push}/>
+        </Paper>
+        <Paper style={{marginLeft: this.state.open ? 230 : 0, marginTop: 64}}>
+          {children}
+        </Paper> 
       </div>
     );
   }
@@ -74,7 +130,8 @@ function mapDispatchToProps(dispatch) {
   const actions = Object.assign(
     ApplicationActions,
     MyProfileActions,
-    InitializeActions
+    InitializeActions,
+    routeActions
   );
   return {
     actions: bindActionCreators(actions, dispatch)

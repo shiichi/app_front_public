@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import Colors from 'material-ui/lib/styles/colors';
 
 class Dashboard extends Component {
   render() {
     return (
-      <div className="content-wrapper" style={{ minHeight: '916px' }}>
+      <div style={{ minHeight: '916px', background: Colors.blueGrey50}}>
         <section className="content-header">
           <h1>Dashboard</h1>
         </section>

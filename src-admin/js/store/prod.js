@@ -10,7 +10,7 @@ const reduxRouterMiddleware = syncHistory(browserHistory);
 
 const createStoreWithMiddleware = compose(
   applyMiddleware(thunk, promise, reduxRouterMiddleware),
-  persistState(['jwtToken'])
+  persistState(['application'])
 )(createStore);
 
 export default function configureStore(initialState) {

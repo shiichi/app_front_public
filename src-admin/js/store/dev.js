@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { browserHistory } from 'react-router';
 import { syncHistory } from 'react-router-redux';
-//import { devTools, persistState as persistDevToolsState } from 'redux-devtools';
-import { persistState as persistDevToolsState } from 'redux-devtools';
+import { devTools, persistState as persistDevToolsState } from 'redux-devtools';
+//import { persistState as persistDevToolsState } from 'redux-devtools';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import createLogger from 'redux-logger';
@@ -13,16 +13,16 @@ import rootReducer from '../reducers';
 // Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(browserHistory);
 const logger = createLogger({
-  predicate: () => process.env.NODE_ENV === `dev`
+  predicate: () => process.env.NODE_ENV === `development`
 });
 
 //persistStateはdevToolsより上に記述
 const createStoreWithMiddleware = compose(
   applyMiddleware(thunk, promise, logger, reduxRouterMiddleware),
   persistState(['application']),
-  //devTools(),
+  devTools(),
   //DevTools.instrument(),
-  //persistDevToolsState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
+  persistDevToolsState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
 )(createStore);
 
 export default function configureStore(initialState) {
