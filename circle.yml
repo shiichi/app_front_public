@@ -32,6 +32,7 @@ test:
     # - npm run build
     # - npm run build-admin
       - ls
+      - ls
 
 
 # deployment:
@@ -47,7 +48,6 @@ test:
 deployment:
   release:
     tag: /release-.*/
-    owner: circleci
     commands:
       - ls -lat
       - ls -lat
