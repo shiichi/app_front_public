@@ -1,5 +1,5 @@
-general:
-  tag: /release-.*/
+# general:
+#   tag: /release-.*/
 
 machine:
   timezone:
