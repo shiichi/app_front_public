@@ -20,6 +20,7 @@ machine:
 dependencies:
   pre:
     - node -v
+    - npm -v
   override:
     - npm install
     - npm update npm@3.7.2 -g
