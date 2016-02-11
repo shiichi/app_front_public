@@ -10,7 +10,7 @@ machine:
     version: 5.5.0
   environment:
     LARABEL_REPO: origin
-    LARABEL_BRANCH: prod
+    LARABEL_BRANCH: build
     NEXT_BUILD_PROJECT: laravel-prod-image
     CIRCLE_CI_API_KEY: 5aea22358cc6913340482940712d96da0297e20a
 
