@@ -50,3 +50,4 @@ deployment:
     owner: atyenoria
     commands:
       - ls -lat
+      - ls -lat
