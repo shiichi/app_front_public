@@ -61,6 +61,10 @@ class App extends Component {
         textAlign: 'center',
         display: 'inline-block'   
       },
+      appBar: {
+        position: 'fixed',
+        top: 0
+      }
     }
 
     return (

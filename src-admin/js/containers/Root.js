@@ -25,7 +25,7 @@ import PinCodeManage from '../components/PinCodeManage/PinCodeManage';
 import Pins from '../components/PinCodeManage/Pins';
 import GeneratePin from '../components/PinCodeManage/GeneratePin';
 import FlightManage from '../components/FlightManage/FlightManage';
-import ReactAbsolute from '../components/FlightManage/ReactAbsolute';
+import FlightsList from '../components/FlightManage/FlightsList';
 
 export default class Root extends Component {
   render() {
@@ -55,7 +55,7 @@ export default class Root extends Component {
                 <Route path="generate" component={GeneratePin}/>
               </Route>
               <Route path="flight" component={FlightManage}>
-                <Route path="test" component={ReactAbsolute}/>
+                <Route path="test" component={FlightsList}/>
               </Route>
             </Route>
           </Router>

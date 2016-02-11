@@ -8,7 +8,7 @@
     "test": "NODE_ENV=test mocha 'test/UnitTest/**/*.js' --recursive --compilers js:babel-core/register --require ./test/UnitTest/setup.js --require ./test/UnitTest/css-null-compiler.js",
     "test:watch": "npm test -- --watch",
     "build": "webpack --bail --config webpack/prod.config.js",
-    "build-admin": "webpack --bail --config webpack-admin/prod.config.js"
+    "build-admin": "BABEL_ENV='production' webpack --bail --config webpack-admin/prod.config.js"
   },
   "license": "MIT",
   "repository": {

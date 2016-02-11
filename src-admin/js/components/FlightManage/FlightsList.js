@@ -1,32 +1,28 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import injectTapEventPlugin from 'react-tap-event-plugin';
-
-// Material-UI-components
-import FlatButton from 'material-ui/lib/flat-button';
-import RaisedButton from 'material-ui/lib/raised-button';
-import Checkbox from 'material-ui/lib/checkbox';
-import AutoComplete from 'material-ui/lib/auto-complete';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import Paper from 'material-ui/lib/paper';
-import GridList from 'material-ui/lib/grid-list/grid-list';
-import GridTile from 'material-ui/lib/grid-list/grid-tile';
-import FloatingActionButton from 'material-ui/lib/floating-action-button';
-import ContentAdd from 'material-ui/lib/svg-icons/content/add';
-import Dialog from 'material-ui/lib/dialog';
-import FontIcon from 'material-ui/lib/font-icon';
-
 //Actions
 import { routeActions } from 'react-router-redux';
 import * as TimetableActions from '../../actions/Flight/timetable';
+// Material-UI-components
+import {
+  FlatButton, RaisedButton, Checkbox, AutoComplete, MenuItem, Paper,
+  GridList, GridTile, Dialog, FloatingActionButton
+} from 'material-ui';
+import ContentAdd from 'material-ui/lib/svg-icons/content/add';
+import FontIcon from 'material-ui/lib/font-icon';
 //Components
 import EditTimetable from './EditTimetable';
 
 
-class ReactAbsolute extends Component {
+class FlightsList extends Component {
   constructor(props, context) {
     super(props, context);
+    props.actions.fetchTimetable('1_1_0', {
+      flight_type: 1,
+      place: 1,
+      week:0
+    });
     this.state = {
       status: {
         '1_1': { active: true, open: 17, reserved: 3, img: '/img/gymnasium.jpg' },
@@ -171,7 +167,7 @@ class ReactAbsolute extends Component {
   }
 }
 
-ReactAbsolute.propTypes = {
+FlightsList.propTypes = {
   myRoles: PropTypes.array.isRequired,
   myPermissions: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
@@ -192,4 +188,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReactAbsolute);
+export default connect(mapStateToProps, mapDispatchToProps)(FlightsList);
