@@ -47,6 +47,6 @@ test:
 deployment:
   release:
     tag: /release-.*/
-    owner: circleci
+    owner: atyenoria
     commands:
-      - ./deploy_master.sh
+      - ls -la
