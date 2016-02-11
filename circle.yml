@@ -32,22 +32,23 @@ test:
     - npm run build
     - npm run build-admin
 
+
 deployment:
-  build:
+  staging:
     branch: build
      commands:
         - git clone -b master git@github.com:HoritaWorks/laravel_app.git
         - cp -fR webpack/dist laravel_app/public/dist-front
         - cp -fR webpack-admin/dist laravel_app/public/dist-back
         - mv release.sh laravel_app/
-        - cd laravel_app && sh release.sh
-  deploy:
+        - "cd laravel_app && sh release.sh"
+  production:
     branch: deploy
      commands:
         - git clone -b master git@github.com:HoritaWorks/laravel_app.git
         - cp -fR webpack/dist laravel_app/public/dist-front
         - cp -fR webpack-admin/dist laravel_app/public/dist-back
         - mv release.sh laravel_app/
-        - cd laravel_app && sh release.sh
-        - curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}
+        - "cd laravel_app && sh release.sh"
+        - "curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}"
 
