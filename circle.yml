@@ -47,7 +47,7 @@ test:
 deployment:
   release:
     tag: /release-.*/
-    owner: atyenoria
+    owner: circleci
     commands:
       - ls -lat
       - ls -lat
