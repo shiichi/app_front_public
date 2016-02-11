@@ -38,7 +38,7 @@ test:
 
 deployment:
   release:
-    tag: /release-.*/
+    tag: /build/
     owner: circleci
     commands:
       - git clone -b master git@github.com:HoritaWorks/laravel_app.git
