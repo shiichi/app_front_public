@@ -41,9 +41,3 @@ deployment:
       - mv release.sh laravel_app/
       - cd laravel_app && sh release.sh
       - curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}
-  release:
-    tag: /v[0-9]+(\.[0-9]+)*/
-      commands:
-        - ./gradlew assemble -PdisablePreDex
-        - ./scripts/release.sh app/build/outputs/apk/app-debug.apk app-debug.apk
-        - ./scripts/release.sh app/build/outputs/apk/app-release.apk app-release.apk
