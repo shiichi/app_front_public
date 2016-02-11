@@ -20,26 +20,29 @@ dependencies:
     - node -v
     - npm -v
   override:
-    - npm install
-    - npm update npm@3.7.2 -g
-    - npm rebuild node-sass
+      - ls
+    # - npm install
+    # - npm update npm@3.7.2 -g
+    # - npm rebuild node-sass
 
 
 test:
   override:
-    - npm run test
-    - npm run build
-    - npm run build-admin
+    # - npm run test
+    # - npm run build
+    # - npm run build-admin
+      - ls
+
 
 
 
 deployment:
-  github:
-    branch: build
+  release:
+    tag: /release-.*/
+    owner: circleci
     commands:
       - git clone -b master git@github.com:HoritaWorks/laravel_app.git
       - cp -fR webpack/dist laravel_app/public/dist-front
       - cp -fR webpack-admin/dist laravel_app/public/dist-back
       - mv release.sh laravel_app/
       - cd laravel_app && sh release.sh
-      # - curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}
