@@ -20,7 +20,7 @@ dependencies:
     - node -v
     - npm -v
   override:
-      # - ls
+      - ls
     # - npm install
     # - npm update npm@3.7.2 -g
     # - npm rebuild node-sass
