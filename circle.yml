@@ -11,9 +11,13 @@ machine:
   node:
     version: 5.5.0
   environment:
-    LARABEL_REPO: origin
-    LARABEL_BRANCH: build
+    LARABEL_PUSH_REPO: origin
+    LARABEL_PUSH_BRANCH: build
+    LARABEL_CLONE_URL: git@github.com:HoritaWorks/laravel_app.git
+    LARABEL_CLONE_BRANCH: master
     NEXT_BUILD_PROJECT: laravel-prod-image
+
+
 
 
 dependencies:
@@ -34,21 +38,22 @@ test:
 
 
 deployment:
-  staging:
+  github:
     branch: build
     commands:
-      - git clone -b master git@github.com:HoritaWorks/laravel_app.git
-      - cp -fR webpack/dist laravel_app/public/dist-front
-      - cp -fR webpack-admin/dist laravel_app/public/dist-back
-      - mv release.sh laravel_app/
-      - "cd laravel_app && sh release.sh"
+      - "git clone -b $LARABEL_CLONE_BRANCH $LARABEL_CLONE_URL"
+      - "cd webpack && mv dist dist-front && cd .. && cp -fr webpack/dist-front laravel_app/public"
+      - "cd webpack-admin && mv dist dist-back && cd .. &&  cp -fr webpack-admin/dist-back laravel_app/public"
+      - "mv release.sh laravel_app && cd laravel_app && sh release.sh"
+      - rm -rf laravel_app
+      # - "curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}"
+
   production:
     branch: deploy
     commands:
-      - git clone -b master git@github.com:HoritaWorks/laravel_app.git
-      - cp -fR webpack/dist laravel_app/public/dist-front
-      - cp -fR webpack-admin/dist laravel_app/public/dist-back
-      - mv release.sh laravel_app/
-      - "cd laravel_app && sh release.sh"
+      - "git clone -b $LARABEL_CLONE_BRANCH $LARABEL_CLONE_URL"
+      - "cd webpack && mv dist dist-front && cd .. && cp -fr webpack/dist-front laravel_app/public"
+      - "cd webpack-admin && mv dist dist-back && cd .. &&  cp -fr webpack-admin/dist-back laravel_app/public"
+      - "mv release.sh laravel_app && cd laravel_app && sh release.sh"
+      - rm -rf laravel_app
       - "curl -X POST https://circleci.com/api/v1/project/HoritaWorks/${NEXT_BUILD_PROJECT}/tree/master?circle-token=${CIRCLE_CI_API_KEY}"
-
