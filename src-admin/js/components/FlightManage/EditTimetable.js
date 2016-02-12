@@ -33,6 +33,7 @@ class EditTimetable extends Component {
         zIndex: 1900,
       },
       back: {
+        
 
       },
       next:{
