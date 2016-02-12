@@ -10,9 +10,9 @@ module.exports = {
     './src-admin/index',
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, '../dist/admin'),
     filename: 'bundle.js',
-    publicPath: '/dist-admin/'
+    publicPath: '../dist/admin/'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
